@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <html lang="<%= I18n.locale %>">
     <head>
         <title>
@@ -39,23 +39,18 @@
             <meta name="robots" content="noindex, nofollow">
         <% end %>
 
-	<% if @title %>
-		<meta property="og:title" content="<%=@title%>" />
-		<meta property="og:type" content="article" />
-		<!-- Only for requests pages
-		<meta property="article:published_time" content="$request->createdDate->iso8601" />
-		<meta property="article:modified_time" content="$request->updatedDate->iso8601" />
-		<meta property="article:author:username" content="$request->username" />
-		-->
-	<% else %>
-		<meta property="og:title" content="<%= _('Make and browse Freedom of Information (FOI) requests') %>" />
-		<meta property="og:type" content="website" />
-	<% end %>
-	<!--<meta property="og:description" content="$request->requestText->substring(...)" />-->
-	<meta property="og:site_name" content="<%= site_name %>" />
-	<meta property="og:locale" content="<%= I18n.locale %>" />
-	<meta property="og:url" content="$request->URL" />
-	<!--<meta property="og:image" content="http://www.whatdotheyknow.com/alavetelitheme/images/logo-trans.png?1343343155" />-->
+    <% if @title %>
+    <meta property="og:title" content="<%= @title %>" />
+    <meta property="og:type" content="article" />
+    <%= yield :og_meta %>
+    <% else %>
+    <meta property="og:title" content="<%= _('Make and browse Freedom of Information (FOI) requests') %>" />
+    <meta property="og:type" content="website" />
+    <% end %>
+    <meta property="og:site_name" content="<%= site_name %>" />
+    <meta property="og:locale" content="<%= I18n.locale %>" />
+    <meta property="og:url" content="<%= main_url(request.request_uri) %>" />
+    <!--<meta property="og:image" content="http://www.whatdotheyknow.com/alavetelitheme/images/logo-trans.png" />-->
 
         <%= render :partial => 'general/before_head_end' %>
     </head>
