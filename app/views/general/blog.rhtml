@@ -5,7 +5,7 @@
   <div class="act_link">
     <h2><%= _("Stay up to date") %></h2>
     <img src="/images/twitter-16.png" alt="twitter icon"  class="twitter-icon"> <a href="https://twitter.com/<%= @twitter_user %>"><%= _("Follow us on twitter") %></a><br/><br/>
-    <img src="/images/feed-16.png" alt="RSS icon" valign="middle"> <a href="<%= @feed_url %>"><%= _("Subscribe to blog") %></a>
+    <img src="/images/feed-16.png" alt="RSS icon"> <a href="<%= @feed_url %>"><%= _("Subscribe to blog") %></a>
   </div>
   <% if Configuration::twitter_widget_id %>
   <div id="twitter">
@@ -26,9 +26,9 @@
           <p class="subtitle"><%= _("Posted on {{date}} by {{author}}", :date=>simple_date(Time.parse(item['pubDate'][0])), :author=>item['creator']) %></p>
           <div>
             <% if item['encoded'] %>
-              <%= item['encoded'] %>
+              <%= raw item['encoded'] %>
             <% elsif item['description'] %>
-              <%= item['description'] %>
+              <%= raw item['description'] %>
             <% end %>
           </div>
           <p><em>

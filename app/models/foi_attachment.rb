@@ -219,7 +219,7 @@ class FoiAttachment < ActiveRecord::Base
 
 
     def ensure_filename!
-        if self.filename.nil?
+        if self.filename.blank?
             calc_ext = AlaveteliFileTypes.mimetype_to_extension(self.content_type)
             if !calc_ext
                 calc_ext = "bin"
@@ -317,8 +317,7 @@ class FoiAttachment < ActiveRecord::Base
             text = CGI.escapeHTML(text)
             text = MySociety::Format.make_clickable(text)
             html = text.gsub(/\n/, '<br>')
-            return '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd"><html><head><title></title></head><body>' + html + "</body></html>", wrapper_id
+            return '<!DOCTYPE html><html><head><title></title></head><body>' + html + "</body></html>", wrapper_id
         end
 
         # the extractions will also produce image files, which go in the

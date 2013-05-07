@@ -23,6 +23,8 @@ class ProfilePhoto < ActiveRecord::Base
 
     belongs_to :user
 
+    validate :data_and_draft_checks
+
     # deliberately don't strip_attributes, so keeps raw photo properly
 
     attr_accessor :x, :y, :w, :h
@@ -81,7 +83,9 @@ class ProfilePhoto < ActiveRecord::Base
         end
     end
 
-    def validate
+    private
+
+    def data_and_draft_checks
         if self.data.nil?
             errors.add(:data, N_("Please choose a file containing your photo."))
             return
@@ -97,7 +101,7 @@ class ProfilePhoto < ActiveRecord::Base
         end
 
         if !self.draft && (self.image.columns != WIDTH || self.image.rows != HEIGHT)
-            errors.add(:data, N_("Failed to convert image to the correct size: at %{cols}x%{rows}, need %{width}x%{height}" % { :cols => self.image.columns, :rows => self.image.rows, :width => WIDTH, :height => HEIGHT }))
+            errors.add(:data, N_("Failed to convert image to the correct size: at {{cols}}x{{rows}}, need {{width}}x{{height}}", :cols => self.image.columns, :rows => self.image.rows, :width => WIDTH, :height => HEIGHT))
         end
 
         if self.draft && self.user_id

@@ -16,7 +16,7 @@ class PublicBodyController < ApplicationController
             return
         end
         @locale = self.locale_from_params()
-        PublicBody.with_locale(@locale) do
+        I18n.with_locale(@locale) do
             @public_body = PublicBody.find_by_url_name_with_historic(params[:url_name])
             raise ActiveRecord::RecordNotFound.new("None found") if @public_body.nil?
             if @public_body.url_name.nil?
@@ -25,22 +25,20 @@ class PublicBodyController < ApplicationController
             end
             # If found by historic name, or alternate locale name, redirect to new name
             if  @public_body.url_name != params[:url_name]
-                redirect_to show_public_body_url(:url_name => @public_body.url_name)
+                redirect_to :url_name => @public_body.url_name
                 return
             end
 
             set_last_body(@public_body)
 
-            top_url = main_url("/")
+            top_url = frontpage_url
             @searched_to_send_request = false
             referrer = request.env['HTTP_REFERER']
             if !referrer.nil? && referrer.match(%r{^#{top_url}search/.*/bodies$})
                 @searched_to_send_request = true
             end
             @view = params[:view]
-            params[:latest_status] = @view
-
-            query = make_query_from_params
+            query = make_query_from_params(params.merge(:latest_status => @view))
             query += " requested_from:#{@public_body.url_name}"
             # Use search query for this so can collapse and paginate easily
             # XXX really should just use SQL query here rather than Xapian.
@@ -71,7 +69,7 @@ class PublicBodyController < ApplicationController
         @public_body = PublicBody.find_by_url_name_with_historic(params[:url_name])
         raise ActiveRecord::RecordNotFound.new("None found") if @public_body.nil?
 
-        PublicBody.with_locale(self.locale_from_params()) do
+        I18n.with_locale(self.locale_from_params()) do
             if params[:submitted_view_email]
                 if verify_recaptcha
                     flash.discard(:error)
@@ -129,7 +127,7 @@ class PublicBodyController < ApplicationController
                 @description = _("in the category ‘{{category_name}}’", :category_name=>category_name)
             end
         end
-        PublicBody.with_locale(@locale) do
+        I18n.with_locale(@locale) do
             @public_bodies = PublicBody.paginate(
               :order => "public_body_translations.name", :page => params[:page], :per_page => 100,
               :conditions => conditions,

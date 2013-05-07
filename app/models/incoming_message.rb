@@ -284,6 +284,7 @@ class IncomingMessage < ActiveRecord::Base
     # Lotus notes quoting yeuch!
     def remove_lotus_quoting(text, replacement = "FOLDED_QUOTED_SECTION")
         text = text.dup
+        return text if self.info_request.user_name.nil?
         name = Regexp.escape(self.info_request.user_name)
 
         # To end of message sections
@@ -694,7 +695,7 @@ class IncomingMessage < ActiveRecord::Base
 
         text = text.gsub(/\n/, '<br>')
         text = text.gsub(/(?:<br>\s*){2,}/, '<br><br>') # remove excess linebreaks that unnecessarily space it out
-        return text
+        return text.html_safe
     end
 
 

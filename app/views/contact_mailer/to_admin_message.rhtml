@@ -1,0 +1,11 @@
+<%= raw @message.strip %>
+
+---------------------------------------------------------------------
+<%= _('Message sent using {{site_name}} contact form, ', :site_name=>site_name)%>
+<%=(@logged_in_user ? ("logged in as user " + user_url(@logged_in_user)) : "not logged in")%><% if !@last_request.nil? %>
+
+<%= _('Last request viewed: ')%><%= request_url(@last_request) %>
+<% end %> <% if !@last_body.nil? %>
+
+<%= _('Last authority viewed: ')%><%= public_body_url(@last_body) %>
+<% end %>---------------------------------------------------------------------

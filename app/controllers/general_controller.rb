@@ -19,53 +19,51 @@ class GeneralController < ApplicationController
     # New, improved front page!
     def frontpage
         medium_cache
-        behavior_cache :tag => [session[:user_id], request.url] do
-            # get some example searches and public bodies to display
-            # either from config, or based on a (slow!) query if not set
-            body_short_names = Configuration::frontpage_publicbody_examples.split(/\s*;\s*/).map{|s| "'%s'" % s.gsub(/'/, "''") }.join(", ")
-            @locale = self.locale_from_params()
-            locale_condition = 'public_body_translations.locale = ?'
-            conditions = [locale_condition, @locale]
-            PublicBody.with_locale(@locale) do
-                if body_short_names.empty?
-                    # This is too slow
-                    @popular_bodies = PublicBody.visible.find(:all,
-                        :order => "info_requests_count desc",
-                        :limit => 32,
-                        :conditions => conditions,
-                        :joins => :translations
-                    )
-                else
-                    conditions[0] += " and public_bodies.url_name in (" + body_short_names + ")"
-                    @popular_bodies = PublicBody.find(:all,
-                         :conditions => conditions,
-                         :joins => :translations)
-                end
+        # get some example searches and public bodies to display
+        # either from config, or based on a (slow!) query if not set
+        body_short_names = Configuration::frontpage_publicbody_examples.split(/\s*;\s*/).map{|s| "'%s'" % s.gsub(/'/, "''") }.join(", ")
+        @locale = self.locale_from_params()
+        locale_condition = 'public_body_translations.locale = ?'
+        conditions = [locale_condition, @locale]
+        I18n.with_locale(@locale) do
+            if body_short_names.empty?
+                # This is too slow
+                @popular_bodies = PublicBody.visible.find(:all,
+                    :order => "info_requests_count desc",
+                    :limit => 32,
+                    :conditions => conditions,
+                    :joins => :translations
+                )
+            else
+                conditions[0] += " and public_bodies.url_name in (" + body_short_names + ")"
+                @popular_bodies = PublicBody.find(:all,
+                     :conditions => conditions,
+                     :joins => :translations)
             end
-            # Get some successful requests
-            begin
-                query = 'variety:response (status:successful OR status:partially_successful)'
-                sortby = "newest"
-                max_count = 5
-                xapian_object = perform_search([InfoRequestEvent], query, sortby, 'request_title_collapse', max_count)
-                @request_events = xapian_object.results.map { |r| r[:model] }
+        end
+        # Get some successful requests
+        begin
+            query = 'variety:response (status:successful OR status:partially_successful)'
+            sortby = "newest"
+            max_count = 5
+            xapian_object = perform_search([InfoRequestEvent], query, sortby, 'request_title_collapse', max_count)
+            @request_events = xapian_object.results.map { |r| r[:model] }
 
-                # If there are not yet enough successful requests, fill out the list with
-                # other requests
-                if @request_events.count < max_count
-                    @request_events_all_successful = false
-                    query = 'variety:sent'
-                    xapian_object = perform_search([InfoRequestEvent], query, sortby, 'request_title_collapse', max_count-@request_events.count)
-                    more_events = xapian_object.results.map { |r| r[:model] }
-                    @request_events += more_events
-                    # Overall we still want the list sorted with the newest first
-                    @request_events.sort!{|e1,e2| e2.created_at <=> e1.created_at}
-                else
-                    @request_events_all_successful = true
-                end
-            rescue
-                @request_events = []
+            # If there are not yet enough successful requests, fill out the list with
+            # other requests
+            if @request_events.count < max_count
+                @request_events_all_successful = false
+                query = 'variety:sent'
+                xapian_object = perform_search([InfoRequestEvent], query, sortby, 'request_title_collapse', max_count-@request_events.count)
+                more_events = xapian_object.results.map { |r| r[:model] }
+                @request_events += more_events
+                # Overall we still want the list sorted with the newest first
+                @request_events.sort!{|e1,e2| e2.created_at <=> e1.created_at}
+            else
+                @request_events_all_successful = true
             end
+        rescue
+            @request_events = []
         end
     end
 
@@ -153,10 +151,10 @@ class GeneralController < ApplicationController
             params[:query] = @query
         end
         if @variety_postfix != "all" && @requests
-            @query, _ = make_query_from_params
+            @query, _ = make_query_from_params(params)
         end
         @inputted_sortby = @sortby
-        @common_query = get_tags_from_params
+        @common_query = get_tags_from_params(params)
         if @sortby.nil?
             # Parse query, so can work out if it has prefix terms only - if so then it is a
             # structured query which should show newest first, rather than a free text search
@@ -231,7 +229,5 @@ class GeneralController < ApplicationController
         @locale = self.locale_from_params()
         render(:layout => false, :content_type => 'text/css')
     end
-
-
 end
 
