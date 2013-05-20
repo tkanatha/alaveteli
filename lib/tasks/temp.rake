@@ -230,13 +230,14 @@ namespace :temp do
                 end
             end
 
+            puts "total_attachments: #{total_attachments}"
+            puts "attachments_with_different_hexdigest: #{attachments_with_different_hexdigest}"
+            puts "files_with_different_numbers_of_attachments: #{files_with_different_numbers_of_attachments}"
+            puts "no_tnef_attachments: #{no_tnef_attachments}"
+            puts "no_parts_in_multipart: #{no_parts_in_multipart}"
+
         end
 
-        puts "total_attachments: #{total_attachments}"
-        puts "attachments_with_different_hexdigest: #{attachments_with_different_hexdigest}"
-        puts "files_with_different_numbers_of_attachments: #{files_with_different_numbers_of_attachments}"
-        puts "no_tnef_attachments: #{no_tnef_attachments}"
-        puts "no_parts_in_multipart: #{no_parts_in_multipart}"
 
     end
 
