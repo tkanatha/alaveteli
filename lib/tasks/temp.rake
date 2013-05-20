@@ -152,6 +152,9 @@ namespace :temp do
         # Now check each file:
         filename_to_attachments.sort.each do |filename, old_attachments|
 
+            puts "----------------------------------"
+            puts "considering filename #{filename}"
+
             # Currently it doesn't seem to be possible to reuse the
             # attachment parsing code in Alaveteli without saving
             # objects to the database, so reproduce what it does:
