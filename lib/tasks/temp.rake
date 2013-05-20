@@ -118,6 +118,10 @@ namespace :temp do
         filename_to_attachments = Hash.new {|h,k| h[k] = []}
 
         filename_index = nil
+
+        STDERR.puts "Loading CSV file..."
+
+        lines_done = 0
         header_line = true
         CSV.foreach('attachment-hexdigests.csv') do |row|
             if header_line
@@ -130,7 +134,11 @@ namespace :temp do
                 filename = row[filename_index]
                 filename_to_attachments[filename].push OldAttachment.new *row
             end
+            lines_done += 1
+            # break if lines_done > 30000
         end
+
+        STDERR.puts "done."
 
         total_attachments = 0
         attachments_with_different_hexdigest = 0
