@@ -150,7 +150,7 @@ namespace :temp do
         tnef_error = "tnef produced no attachments"
 
         # Now check each file:
-        filename_to_attachments.each do |filename, old_attachments|
+        filename_to_attachments.sort.each do |filename, old_attachments|
 
             # Currently it doesn't seem to be possible to reuse the
             # attachment parsing code in Alaveteli without saving
