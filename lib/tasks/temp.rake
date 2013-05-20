@@ -191,7 +191,8 @@ namespace :temp do
             end
 
             if attachment_attributes.length != old_attachments.length
-                puts "#{filename} the number of old attachments #{old_attachments.length} didn't match the number of new attachments #{attachment_attributes.length}"
+                more_or_fewer = attachment_attributes.length > old_attachments.length ? 'more' : 'fewer'
+                puts "#{filename} the number of old attachments #{old_attachments.length} didn't match the number of new attachments #{attachment_attributes.length} (#{more_or_fewer})"
                 files_with_different_numbers_of_attachments += 1
             else
                 old_attachments.each_with_index do |old_attachment, i|
