@@ -93,13 +93,15 @@ namespace :temp do
 
                 result.each do |row|
                     info_request_id = row['info_request_id']
-                    raw_email_directory = File.join(AlaveteliConfiguration::raw_emails_location,
+                    raw_email_directory = File.join(Configuration::raw_emails_location,
                                                     info_request_id[0..2],
                                                     info_request_id)
-                    row['raw_email_filepath'] = File.join(raw_email_directory,
-                                                          row['incoming_message_id'])
+                    row['raw_email_filepath'] = filepath = File.join(raw_email_directory,
+                                                                     row['incoming_message_id'])
                     row_array = columns.map { |c| row[c] }
                     csv << row_array
+
+                    f.puts filepath
                 end
 
             end
