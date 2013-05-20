@@ -85,8 +85,7 @@ namespace :temp do
                    WHERE
                      im.id = fa.incoming_message_id
                    ORDER BY
-                     (info_request_id, incoming_message_id, url_part_number)
-                   LIMIT 20}
+                     (info_request_id, incoming_message_id, url_part_number)}
 
                 columns = result.fields + ['raw_email_filepath']
 
