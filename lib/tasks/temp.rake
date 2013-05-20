@@ -69,17 +69,40 @@ namespace :temp do
 
         File.open('raw-email-files', 'w') do |f|
             CSV.open('attachment-hexdigests.csv', 'w') do |csv|
-                csv << ['filepath', 'i', 'url_part_number', 'hexdigest']
-                IncomingMessage.all(:order => 'RANDOM()', :limit => 1000).each do |incoming_message|
-                    # raw_email.filepath fails unless the
-                    # incoming_message has an associated request
-                    next unless incoming_message.info_request
-                    raw_email = incoming_message.raw_email
-                    f.puts raw_email.filepath
-                    incoming_message.foi_attachments.each_with_index do |attachment, i|
-                        csv << [raw_email.filepath, i, attachment.url_part_number, attachment.hexdigest]
-                    end
+
+                result = ActiveRecord::Base.connection.execute %q{
+                    SELECT
+                     im.info_request_id,
+                     im.id AS incoming_message_id,
+                     im.raw_email_id,
+                     fa.id AS foi_attachment_id,
+                     fa.filename,
+                     fa.url_part_number,
+                     fa.hexdigest
+                   FROM
+                     incoming_messages im,
+                     foi_attachments fa
+                   WHERE
+                     im.id = fa.incoming_message_id
+                   ORDER BY
+                     (info_request_id, incoming_message_id, url_part_number)
+                   LIMIT 20}
+
+                columns = result.fields + ['raw_email_filepath']
+
+                csv << columns
+
+                result.each do |row|
+                    info_request_id = row['info_request_id']
+                    raw_email_directory = File.join(AlaveteliConfiguration::raw_emails_location,
+                                                    info_request_id[0..2],
+                                                    info_request_id)
+                    row['raw_email_filepath'] = File.join(raw_email_directory,
+                                                          row['incoming_message_id'])
+                    row_array = columns.map { |c| row[c] }
+                    csv << row_array
                 end
+
             end
         end
 
@@ -92,16 +115,20 @@ namespace :temp do
         require 'csv'
         require 'digest/md5'
 
-        OldAttachment = Struct.new :filename, :attachment_index, :url_part_number, :hexdigest
-
         filename_to_attachments = Hash.new {|h,k| h[k] = []}
 
+        filename_index = nil
         header_line = true
-        CSV.foreach('attachment-hexdigests.csv') do |filename, attachment_index, url_part_number, hexdigest|
+        CSV.foreach('attachment-hexdigests.csv') do |row|
             if header_line
+                columns = row
+                headers_as_symbol = columns.map { |e| e.to_sym }
+                filename_index = columns.index 'raw_email_filepath'
+                OldAttachment = Struct.new *headers_as_symbol
                 header_line = false
             else
-                filename_to_attachments[filename].push OldAttachment.new filename, attachment_index, url_part_number, hexdigest
+                filename = row[filename_index]
+                filename_to_attachments[filename].push OldAttachment.new *row
             end
         end
 
