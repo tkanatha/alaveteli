@@ -160,11 +160,16 @@ namespace :temp do
             File.open(filename, 'rb') do |f|
                 raw_email = f.read
             end
+
+            # With this very simple analysis, uudecoded attachments
+            # are always wrong, so just ignore any with one of those:
+            next if raw_email =~ /^begin.+^`\n^end\n/m
+
             mail = MailHandler.mail_from_raw_email(raw_email)
 
             begin
                 attachment_attributes = MailHandler.get_attachment_attributes(mail)
-            rescue IOError => e
+            rescue IOError, MailHandler::TNEFParsingError => e
                 if e.message == tnef_error
                     puts "#{filename} #{tnef_error}"
                     no_tnef_attachments += 1
