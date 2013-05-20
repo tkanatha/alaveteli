@@ -157,7 +157,7 @@ namespace :temp do
             # objects to the database, so reproduce what it does:
 
             raw_email = nil
-            File.open(filename) do |f|
+            File.open(filename, 'rb') do |f|
                 raw_email = f.read
             end
             mail = MailHandler.mail_from_raw_email(raw_email)
