@@ -708,21 +708,6 @@ module ActsAsXapian
         for model_class in model_classes
             model_class_count = model_class.count
             0.step(model_class_count, batch_size) do |i|
-
-              # fully reopen the database each time (with a new object)
-              # (so doc ids and so on aren't preserved across the fork)
-              @@db_path = ActsAsXapian.db_path + ".new"
-              ActsAsXapian.writable_init
-              STDOUT.puts("ActsAsXapian.rebuild_index: New batch. #{model_class.to_s} from #{i} to #{i + batch_size} of #{model_class_count} pid #{Process.pid.to_s}") if verbose
-              model_class.find(:all, :limit => batch_size, :offset => i, :order => :id).each do |model|
-                  STDOUT.puts("ActsAsXapian.rebuild_index      #{model_class} #{model.id}") if verbose
-                  model.xapian_index(terms, values, texts)
-              end
-              ActsAsXapian.writable_db.flush
-              ActsAsXapian.writable_db.close
-              # database connection won't survive a fork, so shut it down
-              ActiveRecord::Base.connection.disconnect!
-
               # We fork here, so each batch is run in a different process. This is
               # because otherwise we get a memory "leak" and you can't rebuild very
               # large databases (however long you have!)
@@ -733,8 +718,22 @@ module ActsAsXapian
                         raise "batch fork child failed, exiting also"
                     end
                     # database connection doesn't survive a fork, rebuild it
-                    ActiveRecord::Base.establish_connection
+                    ActiveRecord::Base.connection.reconnect!
               else
+
+                    # fully reopen the database each time (with a new object)
+                    # (so doc ids and so on aren't preserved across the fork)
+                    @@db_path = ActsAsXapian.db_path + ".new"
+                    ActsAsXapian.writable_init
+                    STDOUT.puts("ActsAsXapian.rebuild_index: New batch. #{model_class.to_s} from #{i} to #{i + batch_size} of #{model_class_count} pid #{Process.pid.to_s}") if verbose
+                    model_class.find(:all, :limit => batch_size, :offset => i, :order => :id).each do |model|
+                      STDOUT.puts("ActsAsXapian.rebuild_index      #{model_class} #{model.id}") if verbose
+                      model.xapian_index(terms, values, texts)
+                    end
+                    ActsAsXapian.writable_db.flush
+                    ActsAsXapian.writable_db.close
+                    # database connection won't survive a fork, so shut it down
+                    ActiveRecord::Base.connection.disconnect!
                     # brutal exit, so other shutdown code not run (for speed and safety)
                     Kernel.exit! 0
               end
