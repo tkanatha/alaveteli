@@ -116,6 +116,15 @@ namespace :temp do
         require 'csv'
         require 'digest/md5'
 
+        # Make sure that a test public body exists:
+        name = "Example Quango"
+        pb = PublicBody.find_by_name(name) || PublicBody.new(:name => name)
+        pb.update_attributes!(:short_name => name,
+                              :last_edit_editor => "mark",
+                              :last_edit_comment => "an example edit",
+                              :url_name => "example-quango",
+                              :request_email => "mark-examplequango@longair.net")
+
         filename_to_attachments = Hash.new {|h,k| h[k] = []}
 
         filename_index = nil
@@ -136,10 +145,13 @@ namespace :temp do
                 filename_to_attachments[filename].push OldAttachment.new *row
             end
             lines_done += 1
-            # break if lines_done > 30000
+            break if lines_done > 30000
         end
 
         STDERR.puts "done."
+
+
+
 
         total_attachments = 0
         attachments_with_different_hexdigest = 0
@@ -164,6 +176,34 @@ namespace :temp do
             File.open(filename, 'rb') do |f|
                 raw_email = f.read
             end
+
+            mail = MailHandler.mail_from_raw_email(raw_email)
+
+            for address in (mail.to || []) + (mail.cc || [])
+                # Look for an InfoRequest to add this to...
+                info_request_id, hash = InfoRequest._extract_id_hash_from_email address
+                if info_request_id > 0
+                    puts "going to fetch or create InfoRequest with id #{info_request_id}"
+                    info_request = InfoRequest.find_by_id(info_request_id) || InfoRequest.new(:id => info_request_id)
+                    info_request.update_attributes!(:title => "Recreated Request with ID #{info_request_id}",
+                                                    :prominence => 'normal',
+                                                    :external_url => 'http://example.org/',
+                                                    :awaiting_description => true,
+                                                    :public_body => pb)
+                    puts "info_request is #{info_request.inspect} and valid: #{info_request.valid?}"
+                    break
+                end
+                return
+            end
+
+
+
+
+
+            next
+
+
+
 
             # With this very simple analysis, uudecoded attachments
             # are always wrong, so just ignore any with one of those:
