@@ -44,6 +44,7 @@ I18n.available_locales = available_locales.map {|locale_name| locale_name.to_sym
 I18n.default_locale = default_locale
 
 # Customise will_paginate URL generation
+STDERR.puts "in config/alaveteli.rb setting custom WillPaginate renderer"
 WillPaginate::ViewHelpers.pagination_options[:renderer] = 'WillPaginateExtension::LinkRenderer'
 
 # Load monkey patches and other things from lib/

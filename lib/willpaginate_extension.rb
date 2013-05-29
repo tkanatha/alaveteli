@@ -2,6 +2,7 @@
 module WillPaginateExtension
     class LinkRenderer < WillPaginate::ActionView::LinkRenderer
         def page_link(page, text, attributes = {})
+            STDERR.puts "=== in custom page_link"
             # Hack for admin pages, when proxied via https on mySociety servers, they
             # need a relative URL.
             url = url_for(page)
@@ -18,6 +19,7 @@ module WillPaginateExtension
         # Returns URL params for +page_link_or_span+, taking the current GET params
         # and <tt>:params</tt> option into account.
         def url_for(page)
+            STDERR.puts "=== in custom url_for"
             page_one = page == 1
             unless @url_string and !page_one
                 @url_params = {}
