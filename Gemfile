@@ -48,6 +48,8 @@ gem 'gettext'
 gem 'locale'
 gem 'routing-filter'
 
+gem 'ruby-prof'
+
 group :test do
   gem 'fakeweb'
   gem 'coveralls', :require => false
@@ -64,6 +66,7 @@ group :develop do
   gem 'bootstrap-sass'
   gem 'compass'
   gem 'annotate'
+
 end
 
 group :test, :development do
