@@ -40,6 +40,7 @@ class TrackMailer < ApplicationMailer
         done_something = false
         now = Time.now()
         one_week_ago = now - 7.days
+        two_weeks_ago = now - 14.days
         User.find_each(:conditions => [ "last_daily_track_email < ?",
                                          now - 1.day ]) do |user|
             next if !user.should_be_emailed? || !user.receive_email_alerts
@@ -55,7 +56,9 @@ class TrackMailer < ApplicationMailer
                 # earlier, so this is safe (with a week long margin of error). If the alerts break
                 # for a whole week, then they will miss some items. Tough.
                 done_info_request_events = {}
-                tt_sent = track_thing.track_things_sent_emails.find(:all, :conditions => ['created_at > ?', now - 14.days])
+                tt_sent = track_thing.track_things_sent_emails.find(:all,
+                                                                    :conditions => ['created_at > ?',
+                                                                    two_weeks_ago])
                 for t in tt_sent
                     if not t.info_request_event_id.nil?
                         done_info_request_events[t.info_request_event_id] = 1
