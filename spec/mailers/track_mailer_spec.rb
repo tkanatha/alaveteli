@@ -213,6 +213,65 @@ describe TrackMailer do
         end
     end
 
+    describe "when sending alerts for a track" do
+
+        before(:each) do
+            load_raw_emails_data
+            get_fixtures_xapian_index
+            # set the time the comment event happened at to within the last week
+            ire = info_request_events(:silly_comment_event)
+            ire.created_at = Time.now - 3.days
+            ire.save!
+        end
+
+        it "should send alerts" do
+            # Don't do clever locale-insertion-unto-URL stuff
+            RoutingFilter.active = false
+
+            TrackMailer.alert_tracks
+
+            deliveries = ActionMailer::Base.deliveries
+            deliveries.size.should == 1
+            mail = deliveries[0]
+            mail.body.should =~ /Alter your subscription/
+            mail.to_addrs.first.to_s.should include(users(:silly_name_user).email)
+            mail.body.to_s =~ /(http:\/\/.*\/c\/(.*))/
+            mail_url = $1
+            mail_token = $2
+
+            mail.body.should_not =~ /&amp;/
+
+            mail.body.should_not include('sent a request') # request not included
+            mail.body.should_not include('sent a response') # response not included
+            mail.body.should include('added an annotation') # comment included
+
+            mail.body.should =~ /This a the daftest comment the world has ever seen/ # comment text included
+
+            # Given we can't click the link, check the token is right instead
+            post_redirect = PostRedirect.find_by_email_token(mail_token)
+            expected_url = 'http://test.host/user/silly_emnameem#email_subscriptions'
+            post_redirect.uri.should == expected_url
+
+            # Check nothing more is delivered if we try again
+            deliveries.clear
+            TrackMailer.alert_tracks
+            deliveries = ActionMailer::Base.deliveries
+            deliveries.size.should == 0
+
+            # Restore the routing filters
+            RoutingFilter.active = true
+        end
+
+        it "should send localised alerts" do
+            user = users(:silly_name_user)
+            user.locale = "es"
+            user.save!
+            TrackMailer.alert_tracks
+            deliveries = ActionMailer::Base.deliveries
+            mail = deliveries[0]
+            mail.body.should include('el equipo de ')
+        end
+    end
 end
 
 
