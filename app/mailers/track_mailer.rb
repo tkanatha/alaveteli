@@ -35,7 +35,7 @@ class TrackMailer < ApplicationMailer
     # weeks.
 
     # Useful query to run by hand to see how many alerts are due:
-    #   User.find(:all, :conditions => [ "last_daily_track_email < ?", Time.now - 1.day ]).size
+    #   User.count(:all, :conditions => [ "last_daily_track_email < ?", Time.now - 1.day ])
     def self.alert_tracks
         done_something = false
         now = Time.now()
