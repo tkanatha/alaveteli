@@ -58,8 +58,8 @@ class TrackMailer < ApplicationMailer
         tt_sent = track_thing.track_things_sent_emails.find(:all,
                                                             :conditions => ['created_at > ?',
                                                             two_weeks_ago])
-        for t in tt_sent
-            if not t.info_request_event_id.nil?
+        tt_sent.each do |t|
+            if t.info_request_event_id
                 done_info_request_events[t.info_request_event_id] = 1
             end
         end
@@ -105,11 +105,13 @@ class TrackMailer < ApplicationMailer
             next if !user.should_be_emailed? || !user.receive_email_alerts
 
             email_about_things = []
-            track_things = TrackThing.find(:all, :conditions => [ "tracking_user_id = ? and track_medium = ?", user.id, 'email_daily' ])
-            for track_thing in track_things
+            TrackThing.find(:all, :conditions => ["tracking_user_id = ? and track_medium = ?",
+                                                  user.id,
+                                                  'email_daily']).each do |track_thing|
 
-
-                alert_results, xapian_object = get_alert_results(track_thing, one_week_ago, two_weeks_ago)
+                alert_results, xapian_object = get_alert_results(track_thing,
+                                                                 one_week_ago,
+                                                                 two_weeks_ago)
                 # If there were more alerts for this track, then store them
                 if alert_results.size > 0
                     email_about_things.push([track_thing, alert_results, xapian_object])
