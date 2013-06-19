@@ -29,6 +29,24 @@ class TrackMailer < ApplicationMailer
         "#{AlaveteliConfiguration::track_sender_name} <#{AlaveteliConfiguration::track_sender_email}>"
     end
 
+    def self.record_sent_emails(email_about_things)
+        # Given a list of track_things, alert_results, and xapian_objects
+        # record that we've now sent those alerts to that user
+        for track_thing, alert_results in email_about_things
+            alert_results.each do |result|
+                track_things_sent_email = TrackThingsSentEmail.new
+                track_things_sent_email.track_thing_id = track_thing.id
+                if result[:model].class.to_s == "InfoRequestEvent"
+                    track_things_sent_email.info_request_event_id = result[:model].id
+                else
+                    raise "need to add other types to TrackMailer.alert_tracks (mark alerted)"
+                end
+                track_things_sent_email.save!
+            end
+        end
+    end
+
+
     # Send email alerts for tracked things.  Never more than one email
     # a day, nor about events which are more than a week old, nor
     # events about which emails have been sent within the last two
@@ -102,19 +120,7 @@ class TrackMailer < ApplicationMailer
                 end
             end
 
-            # Record that we've now sent those alerts to that user
-            for track_thing, alert_results in email_about_things
-                for result in alert_results
-                    track_things_sent_email = TrackThingsSentEmail.new
-                    track_things_sent_email.track_thing_id = track_thing.id
-                    if result[:model].class.to_s == "InfoRequestEvent"
-                        track_things_sent_email.info_request_event_id = result[:model].id
-                    else
-                        raise "need to add other types to TrackMailer.alert_tracks (mark alerted)"
-                    end
-                    track_things_sent_email.save!
-                end
-            end
+            self.record_sent_emails(email_about_things)
             user.last_daily_track_email = now
             user.no_xapian_reindex = true
             user.save!
