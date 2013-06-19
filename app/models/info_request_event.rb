@@ -58,6 +58,10 @@ class InfoRequestEvent < ActiveRecord::Base
         ]
     end
 
+    def self.xapian_date_format(datetime)
+        datetime.strftime("%Y%m%d%H%M%S")
+    end
+
     validates_inclusion_of :event_type, :in => enumerate_event_types
 
     # user described state (also update in info_request)
@@ -175,11 +179,11 @@ class InfoRequestEvent < ActiveRecord::Base
     end
     def described_at_numeric
         # format it here as no datetime support in Xapian's value ranges
-        return self.described_at.strftime("%Y%m%d%H%M%S")
+        InfoRequestEvent.xapian_date_format(self.described_at)
     end
     def created_at_numeric
         # format it here as no datetime support in Xapian's value ranges
-        return self.created_at.strftime("%Y%m%d%H%M%S")
+        InfoRequestEvent.xapian_date_format(self.created_at)
     end
 
     def incoming_message_selective_columns(fields)
