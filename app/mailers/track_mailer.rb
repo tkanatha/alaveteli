@@ -46,6 +46,47 @@ class TrackMailer < ApplicationMailer
         end
     end
 
+    def self.get_alert_results(track_thing, one_week_ago, two_weeks_ago)
+        # What have we alerted on already?
+        #
+        # We only use track_things_sent_emails records which are less than 14 days old.
+        # In the search query loop below, we also only use items described in last 7 days.
+        # An item described that recently definitely can't appear in track_things_sent_emails
+        # earlier, so this is safe (with a week long margin of error). If the alerts break
+        # for a whole week, then they will miss some items. Tough.
+        done_info_request_events = {}
+        tt_sent = track_thing.track_things_sent_emails.find(:all,
+                                                            :conditions => ['created_at > ?',
+                                                            two_weeks_ago])
+        for t in tt_sent
+            if not t.info_request_event_id.nil?
+                done_info_request_events[t.info_request_event_id] = 1
+            end
+        end
+        # Query for things in this track. We use described_at for the
+        # ordering, so we catch anything new (before described), or
+        # anything whose new status has been described.
+        xapian_object = ActsAsXapian::Search.new([InfoRequestEvent], track_thing.track_query,
+             :sort_by_prefix => 'described_at',
+             :sort_by_ascending => true,
+             :collapse_by_prefix => nil,
+             :limit => 100)
+        # Go through looking for unalerted things
+        alert_results = []
+        for result in xapian_object.results
+            if result[:model].class.to_s != "InfoRequestEvent"
+                raise "need to add other types to TrackMailer.alert_tracks (unalerted)"
+            end
+
+            next if track_thing.created_at >= result[:model].described_at # made before the track was created
+            next if result[:model].described_at < one_week_ago # older than 1 week (see 14 days / 7 days in comment above)
+            next if done_info_request_events.include?(result[:model].id) # definitely already done
+
+            # OK alert this one
+            alert_results.push(result)
+        end
+        [alert_results, xapian_object]
+    end
 
     # Send email alerts for tracked things.  Never more than one email
     # a day, nor about events which are more than a week old, nor
@@ -66,45 +107,9 @@ class TrackMailer < ApplicationMailer
             email_about_things = []
             track_things = TrackThing.find(:all, :conditions => [ "tracking_user_id = ? and track_medium = ?", user.id, 'email_daily' ])
             for track_thing in track_things
-                # What have we alerted on already?
-                #
-                # We only use track_things_sent_emails records which are less than 14 days old.
-                # In the search query loop below, we also only use items described in last 7 days.
-                # An item described that recently definitely can't appear in track_things_sent_emails
-                # earlier, so this is safe (with a week long margin of error). If the alerts break
-                # for a whole week, then they will miss some items. Tough.
-                done_info_request_events = {}
-                tt_sent = track_thing.track_things_sent_emails.find(:all,
-                                                                    :conditions => ['created_at > ?',
-                                                                    two_weeks_ago])
-                for t in tt_sent
-                    if not t.info_request_event_id.nil?
-                        done_info_request_events[t.info_request_event_id] = 1
-                    end
-                end
 
-                # Query for things in this track. We use described_at for the
-                # ordering, so we catch anything new (before described), or
-                # anything whose new status has been described.
-                xapian_object = ActsAsXapian::Search.new([InfoRequestEvent], track_thing.track_query,
-                    :sort_by_prefix => 'described_at',
-                    :sort_by_ascending => true,
-                    :collapse_by_prefix => nil,
-                    :limit => 100)
-                # Go through looking for unalerted things
-                alert_results = []
-                for result in xapian_object.results
-                    if result[:model].class.to_s != "InfoRequestEvent"
-                        raise "need to add other types to TrackMailer.alert_tracks (unalerted)"
-                    end
 
-                    next if track_thing.created_at >= result[:model].described_at # made before the track was created
-                    next if result[:model].described_at < one_week_ago # older than 1 week (see 14 days / 7 days in comment above)
-                    next if done_info_request_events.include?(result[:model].id) # definitely already done
-
-                    # OK alert this one
-                    alert_results.push(result)
-                end
+                alert_results, xapian_object = get_alert_results(track_thing, one_week_ago, two_weeks_ago)
                 # If there were more alerts for this track, then store them
                 if alert_results.size > 0
                     email_about_things.push([track_thing, alert_results, xapian_object])
