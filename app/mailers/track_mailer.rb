@@ -46,6 +46,7 @@ class TrackMailer < ApplicationMailer
         end
     end
 
+    # Get the events that need alerting on for a given track_thing
     def self.get_alert_results(track_thing, one_week_ago, two_weeks_ago)
         # What have we alerted on already?
         #
@@ -88,11 +89,39 @@ class TrackMailer < ApplicationMailer
         [alert_results, xapian_object]
     end
 
+    def self.send_user_alert(user, now, one_week_ago, two_weeks_ago)
+        email_about_things = []
+        TrackThing.find(:all, :conditions => ["tracking_user_id = ? and track_medium = ?",
+                                              user.id,
+                                              'email_daily']).each do |track_thing|
+
+            alert_results, xapian_object = get_alert_results(track_thing, one_week_ago, two_weeks_ago)
+
+            # If there were more alerts for this track, then store them
+            if alert_results.size > 0
+                email_about_things.push([track_thing, alert_results, xapian_object])
+            end
+        end
+
+        # If we have anything to send, then send everything for the user in one mail
+        if email_about_things.size > 0
+            # Send the email
+
+            I18n.with_locale(user.get_locale) do
+                TrackMailer.event_digest(user, email_about_things).deliver
+            end
+        end
+
+        self.record_sent_emails(email_about_things)
+        user.last_daily_track_email = now
+        user.no_xapian_reindex = true
+        user.save!
+    end
+
     # Send email alerts for tracked things.  Never more than one email
     # a day, nor about events which are more than a week old, nor
     # events about which emails have been sent within the last two
     # weeks.
-
     # Useful query to run by hand to see how many alerts are due:
     #   User.count(:all, :conditions => [ "last_daily_track_email < ?", Time.now - 1.day ])
     def self.alert_tracks
@@ -103,34 +132,7 @@ class TrackMailer < ApplicationMailer
         User.find_each(:conditions => [ "last_daily_track_email < ?",
                                          now - 1.day ]) do |user|
             next if !user.should_be_emailed? || !user.receive_email_alerts
-
-            email_about_things = []
-            TrackThing.find(:all, :conditions => ["tracking_user_id = ? and track_medium = ?",
-                                                  user.id,
-                                                  'email_daily']).each do |track_thing|
-
-                alert_results, xapian_object = get_alert_results(track_thing,
-                                                                 one_week_ago,
-                                                                 two_weeks_ago)
-                # If there were more alerts for this track, then store them
-                if alert_results.size > 0
-                    email_about_things.push([track_thing, alert_results, xapian_object])
-                end
-            end
-
-            # If we have anything to send, then send everything for the user in one mail
-            if email_about_things.size > 0
-                # Send the email
-
-                I18n.with_locale(user.get_locale) do
-                    TrackMailer.event_digest(user, email_about_things).deliver
-                end
-            end
-
-            self.record_sent_emails(email_about_things)
-            user.last_daily_track_email = now
-            user.no_xapian_reindex = true
-            user.save!
+            send_user_alert(user, now, one_week_ago, two_weeks_ago)
             done_something = true
         end
         return done_something
