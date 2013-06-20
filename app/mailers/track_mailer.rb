@@ -92,6 +92,7 @@ class TrackMailer < ApplicationMailer
         [alert_results, xapian_object]
     end
 
+    # send an alert email to a user if there's anything to alert on
     def self.send_user_alert(user, now, one_week_ago, two_weeks_ago)
         email_about_things = []
         TrackThing.find(:all, :conditions => ["tracking_user_id = ? and track_medium = ?",
@@ -109,7 +110,6 @@ class TrackMailer < ApplicationMailer
         # If we have anything to send, then send everything for the user in one mail
         if email_about_things.size > 0
             # Send the email
-
             I18n.with_locale(user.get_locale) do
                 TrackMailer.event_digest(user, email_about_things).deliver
             end
@@ -126,19 +126,18 @@ class TrackMailer < ApplicationMailer
     # events about which emails have been sent within the last two
     # weeks.
     # Useful query to run by hand to see how many alerts are due:
-    #   User.count(:all, :conditions => [ "last_daily_track_email < ?", Time.now - 1.day ])
+    # User.count(:all, :conditions => [ "last_daily_track_email < ?", Time.now - 1.day ])
     def self.alert_tracks
         done_something = false
         now = Time.now()
         one_week_ago = now - 7.days
         two_weeks_ago = now - 14.days
-        User.find_each(:conditions => [ "last_daily_track_email < ?",
-                                         now - 1.day ]) do |user|
+        User.find_each(:conditions => ["last_daily_track_email < ?", now - 1.day ]) do |user|
             next if !user.should_be_emailed? || !user.receive_email_alerts
             send_user_alert(user, now, one_week_ago, two_weeks_ago)
             done_something = true
         end
-        return done_something
+        done_something
     end
 
     def self.alert_tracks_loop
