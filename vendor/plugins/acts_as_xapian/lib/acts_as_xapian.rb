@@ -207,11 +207,10 @@ module ActsAsXapian
                       elsif value[3] == :string
                           value_range = Xapian::StringValueRangeProcessor.new(value[1])
                       elsif value[3] == :number
-                          value_range = Xapian::NumberValueRangeProcessor.new(value[1])
+                          value_range = Xapian::NumberValueRangeProcessor.new(value[1], value[2]+":", true)
                       else
                           raise "Unknown value type '" + value[3].to_s + "'"
                       end
-
                       @@query_parser.add_valuerangeprocessor(value_range)
 
                       # stop it being garbage collected, as
@@ -286,7 +285,6 @@ module ActsAsXapian
                 collapse_by_prefix = options[:collapse_by_prefix] || nil
 
                 ActsAsXapian.enquire.query = self.query
-
                 if sort_by_prefix.nil?
                     ActsAsXapian.enquire.sort_by_relevance!
                 else
@@ -796,6 +794,8 @@ module ActsAsXapian
                 end
             elsif type == :boolean
                 value ? true : false
+            elsif type == :number
+                Xapian::sortable_serialise(value.to_i)
             else
                 # Arrays are for terms which require multiple of them, e.g. tags
                 if value.kind_of?(Array)

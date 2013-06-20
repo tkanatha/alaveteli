@@ -67,7 +67,13 @@ class TrackMailer < ApplicationMailer
         # Query for things in this track. We use described_at for the
         # ordering, so we catch anything new (before described), or
         # anything whose new status has been described.
-        xapian_object = ActsAsXapian::Search.new([InfoRequestEvent], track_thing.track_query,
+        min_described_at = InfoRequestEvent.xapian_date_format(one_week_ago)
+        if track_thing.created_at > min_described_at
+            min_described_at =  InfoRequestEvent.xapian_date_format(track_thing.created_at)
+        end
+        query = track_thing.track_query + " described_at:#{min_described_at}.."
+
+        xapian_object = ActsAsXapian::Search.new([InfoRequestEvent], query,
              :sort_by_prefix => 'described_at',
              :sort_by_ascending => true,
              :collapse_by_prefix => nil,
@@ -78,9 +84,6 @@ class TrackMailer < ApplicationMailer
             if result[:model].class.to_s != "InfoRequestEvent"
                 raise "need to add other types to TrackMailer.alert_tracks (unalerted)"
             end
-
-            next if track_thing.created_at >= result[:model].described_at # made before the track was created
-            next if result[:model].described_at < one_week_ago # older than 1 week (see 14 days / 7 days in comment above)
             next if done_info_request_events.include?(result[:model].id) # definitely already done
 
             # OK alert this one
