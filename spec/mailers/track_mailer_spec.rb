@@ -13,7 +13,7 @@ describe TrackMailer do
 
         it 'should ask for all the users whose last daily track email was sent more than a day ago' do
             expected_conditions = [ "last_daily_track_email < ?", Time.utc(2007, 11, 11, 23, 59)]
-            User.should_receive(:find).with(:all, :conditions => expected_conditions).and_return([])
+            User.should_receive(:find_each).with(:conditions => expected_conditions)
             TrackMailer.alert_tracks
         end
 
@@ -26,7 +26,7 @@ describe TrackMailer do
                                          :url_name => 'test-name',
                                          :get_locale => 'en',
                                          :should_be_emailed? => true)
-                User.stub!(:find).and_return([@user])
+                User.stub!(:find_each).and_yield(@user)
                 @user.stub!(:receive_email_alerts).and_return(true)
                 @user.stub!(:no_xapian_reindex=)
             end
@@ -69,11 +69,15 @@ describe TrackMailer do
                     @xapian_search = mock('xapian search', :results => [])
                     @found_event = mock_model(InfoRequestEvent, :described_at => @track_thing.created_at + 1.day)
                     @search_result = {:model => @found_event}
-                    InfoRequest.stub!(:full_search).and_return(@xapian_search)
+                    ActsAsXapian::Search.stub!(:new).and_return(@xapian_search)
                 end
 
                 it 'should ask for the events returned by the tracking query' do
-                    InfoRequest.should_receive(:full_search).with([InfoRequestEvent], 'test query', 'described_at', true, nil, 100, 1).and_return(@xapian_search)
+                    ActsAsXapian::Search.should_receive(:new).with([InfoRequestEvent], 'test query',
+                        :sort_by_prefix => 'described_at',
+                        :sort_by_ascending => true,
+                        :collapse_by_prefix => nil,
+                        :limit => 100).and_return(@xapian_search)
                     TrackMailer.alert_tracks
                 end
 
@@ -124,7 +128,7 @@ describe TrackMailer do
                                          :save! => true,
                                          :url_name => 'test-name',
                                          :should_be_emailed? => false)
-                User.stub!(:find).and_return([@user])
+                User.stub!(:find_each).and_yield(@user)
                 @user.stub!(:receive_email_alerts).and_return(true)
                 @user.stub!(:no_xapian_reindex=)
             end

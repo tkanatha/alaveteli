@@ -112,7 +112,7 @@ module MailHandler
                     if first_from.is_a?(ActiveSupport::Multibyte::Chars)
                         return nil
                     else
-                        return first_from.display_name ? eval(%Q{"#{first_from.display_name}"}) : nil
+                        return (first_from.display_name || nil)
                     end
                 else
                     return nil
@@ -367,7 +367,9 @@ module MailHandler
             end
 
             def address_from_string(string)
-                Mail::Address.new(string).address
+                mail = Mail.new
+                mail.from = string
+                mail.from[0]
             end
         end
     end
