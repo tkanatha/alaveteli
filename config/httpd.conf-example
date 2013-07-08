@@ -43,6 +43,17 @@ RewriteMap escape int:escape
 RewriteCond %{DOCUMENT_ROOT}/views_cache/request/$2/$1/${escape:$3} -f
 RewriteRule ^/request/((\d{1,3})\d*)/(response/\d+/attach/(html/)?\d+/.+) /views_cache/request/$2/$1/${escape:$3} [L]
 
+<Location />
+    AuthType Basic
+    AuthName "Please Log In."
+    AuthUserFile /etc/apache/admin-htpasswd
+    AuthGroupFile /etc/apache/admin-htgroup
+    Require group admin-secure
+    Order deny,allow
+    Deny from all
+    Satisfy any
+</Location>
+
 
 <IfModule mod_passenger.c>
  # Set this to something like 100 if you have memory leak issues
