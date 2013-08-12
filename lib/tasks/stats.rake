@@ -91,4 +91,29 @@ namespace :stats do
     end
   end
 
+  desc 'Update statistics in the public_bodies table'
+  task :update_public_bodies_stats => :environment do
+    PublicBody.all.each do |public_body|
+      [["info_requests_count=", nil],
+       ["info_requests_successful_count=", ['successful', 'partially_successful']],
+       # FIXME: the commented-out line below would be any request
+       # waiting for a response; instead we need to go through all the
+       # info_requests, call calculate_status on each and count those
+       # that return 'waiting_response_overdue' or
+       # 'waiting_response_very_overdue'.
+       # ["info_requests_overdue=", ['waiting_response']],
+       ["info_requests_not_held_count=", ['not_held']]].each do |column, states|
+        where_clause = 'public_body_id = :pb'
+        parameters = {:pb => public_body.id}
+        if states
+          where_clause += " AND described_state in (:states)"
+          parameters[:states] = states
+        end
+        public_body.send(column,
+                         InfoRequest.where(where_clause,
+                                           parameters).count.to_s)
+        public_body.save!
+      end
+    end
+  end
 end
