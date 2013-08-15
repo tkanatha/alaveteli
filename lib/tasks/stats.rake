@@ -97,12 +97,6 @@ namespace :stats do
       puts "Finding statistics for #{public_body.name}"
       [["info_requests_count=", nil],
        ["info_requests_successful_count=", ['successful', 'partially_successful']],
-       # FIXME: the commented-out line below would be any request
-       # waiting for a response; instead we need to go through all the
-       # info_requests, call calculate_status on each and count those
-       # that return 'waiting_response_overdue' or
-       # 'waiting_response_very_overdue'.
-       # ["info_requests_overdue=", ['waiting_response']],
        ["info_requests_not_held_count=", ['not_held']]].each do |column, states|
         puts "  Aggregating data for column #{column}"
         where_clause = 'public_body_id = :pb'
@@ -114,8 +108,23 @@ namespace :stats do
         public_body.send(column,
                          InfoRequest.where(where_clause,
                                            parameters).count.to_s)
-        public_body.save!
       end
+      # Now looking for values of 'waiting_response_overdue' and
+      # 'waiting_response_very_overdue' which aren't directly in the
+      # described_state column, and instead need to
+      puts "  Counting overdue requests"
+      overdue_count = 0
+      very_overdue_count = 0
+      InfoRequest.find_each(:conditions => {:public_body_id => public_body.id}) do |ir|
+        case ir.calculate_status
+        when 'waiting_response_very_overdue'
+          very_overdue_count += 1
+        when 'waiting_response_overdue'
+          overdue_count += 1
+        end
+      end
+      public_body.info_requests_overdue = overdue_count + very_overdue_count
+      public_body.save!
     end
   end
 end

@@ -169,6 +169,11 @@ class PublicBodyController < ApplicationController
                    :title => 'Public bodies with the fewest successful requests',
                    :y_axis => 'Percentage of total requests',
                    :highest => false}]],
+             ['info_requests_overdue',
+              [{
+                   :title => 'Public bodies with most overdue requests',
+                   :y_axis => 'Percentage of requests that are overdue',
+                   :highest => true}]],
              ['info_requests_not_held_count',
               [{
                    :title => 'Public bodies that most frequently replied with "Not Held"',
