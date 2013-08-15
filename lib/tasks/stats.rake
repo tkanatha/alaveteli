@@ -94,6 +94,7 @@ namespace :stats do
   desc 'Update statistics in the public_bodies table'
   task :update_public_bodies_stats => :environment do
     PublicBody.all.each do |public_body|
+      puts "Finding statistics for #{public_body.name}"
       [["info_requests_count=", nil],
        ["info_requests_successful_count=", ['successful', 'partially_successful']],
        # FIXME: the commented-out line below would be any request
@@ -103,6 +104,7 @@ namespace :stats do
        # 'waiting_response_very_overdue'.
        # ["info_requests_overdue=", ['waiting_response']],
        ["info_requests_not_held_count=", ['not_held']]].each do |column, states|
+        puts "  Aggregating data for column #{column}"
         where_clause = 'public_body_id = :pb'
         parameters = {:pb => public_body.id}
         if states
