@@ -31,7 +31,7 @@ class OutgoingMessage < ActiveRecord::Base
       self.default_url_options[:protocol] = "https"
     end
 
-    strip_attributes!
+    strip_attributes :allow_empty => true
 
     belongs_to :info_request
     validates_presence_of :info_request

@@ -26,7 +26,7 @@
 require 'digest/sha1'
 
 class User < ActiveRecord::Base
-    strip_attributes!
+    strip_attributes :allow_empty => true
 
     validates_presence_of :email, :message => _("Please enter your email address")
 
@@ -98,7 +98,7 @@ class User < ActiveRecord::Base
     end
 
     # Don't display any leading/trailing spaces
-    # XXX we have strip_attributes! now, so perhaps this can be removed (might
+    # XXX we have strip_attributes now, so perhaps this can be removed (might
     # be still needed for existing cases)
     def name
         name = read_attribute(:name)

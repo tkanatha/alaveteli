@@ -28,7 +28,7 @@ require 'digest/sha1'
 class InfoRequest < ActiveRecord::Base
     include Rails.application.routes.url_helpers
 
-    strip_attributes!
+    strip_attributes :allow_empty => true
 
     validates_presence_of :title, :message => N_("Please enter a summary of your request")
     validates_format_of :title, :with => /[a-zA-Z]/, :message => N_("Please write a summary with some text in it"), :if => Proc.new { |info_request| !info_request.title.nil? && !info_request.title.empty? }

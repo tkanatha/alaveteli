@@ -21,7 +21,7 @@
 # Email: hello@mysociety.org; WWW: http://www.mysociety.org/
 
 class Comment < ActiveRecord::Base
-    strip_attributes!
+    strip_attributes :allow_empty => true
 
     belongs_to :user
     belongs_to :info_request
