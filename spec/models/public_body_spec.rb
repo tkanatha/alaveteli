@@ -178,6 +178,27 @@ describe PublicBody, " when saving" do
 
         public_body.name.should == "Mark's Public Body"
     end
+
+    it 'should strip spaces on saving, even for translated fields' do
+        @public_body.name = "Testing Public Body"
+        @public_body.short_name = "TPB"
+        @public_body.request_email = "request@localhost"
+        @public_body.last_edit_editor = "*test*"
+        @public_body.last_edit_comment = "This is a test"
+        @public_body.save!
+
+        old_short_name = @public_body.short_name
+        old_request_email = @public_body.request_email
+        short_name_with_spaces = "   #{old_short_name}   "
+        request_email_with_spaces = "   #{old_request_email}   "
+        @public_body.short_name = short_name_with_spaces
+        @public_body.request_email = request_email_with_spaces
+        @public_body.save!
+
+        @public_body.short_name.should == old_short_name.strip
+        @public_body.request_email.should == old_request_email.strip
+    end
+
 end
 
 describe PublicBody, "when searching" do
