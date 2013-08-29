@@ -138,7 +138,7 @@ class PublicBodyController < ApplicationController
         end
         conditions = [locale_condition] + condition_parameters
         I18n.with_locale(@locale) do
-            @public_bodies = PublicBody.where(conditions).joins(:translations).order("public_body_translations.name").paginate(
+            @public_bodies = PublicBody.where(conditions).includes(:translations).order("public_body_translations.name").paginate(
               :page => params[:page], :per_page => 100
             )
             respond_to do |format|

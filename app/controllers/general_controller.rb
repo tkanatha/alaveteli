@@ -25,13 +25,13 @@ class GeneralController < ApplicationController
                     :order => "info_requests_count desc",
                     :limit => 32,
                     :conditions => conditions,
-                    :joins => :translations
+                    :include => :translations
                 )
             else
                 conditions[0] += " and public_bodies.url_name in (" + body_short_names + ")"
                 @popular_bodies = PublicBody.find(:all,
                      :conditions => conditions,
-                     :joins => :translations)
+                     :include => :translations)
             end
         end
         # Get some successful requests

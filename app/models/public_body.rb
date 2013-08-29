@@ -108,7 +108,7 @@ class PublicBody < ActiveRecord::Base
     def self.find_by_url_name_with_historic(name)
         found = PublicBody.find(:all,
                                 :conditions => ["public_body_translations.url_name=?", name],
-                                :joins => :translations,
+                                :include => :translations,
                                 :readonly => false)
         # If many bodies are found (usually because the url_name is the same across
         # locales) return any of them

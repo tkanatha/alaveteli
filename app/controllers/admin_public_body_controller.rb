@@ -24,7 +24,7 @@ class AdminPublicBodyController < AdminController
             if @page == ""
                 @page = nil
             end
-            @public_bodies = PublicBody.joins(:translations).where(@query.nil? ? "public_body_translations.locale = '#{underscore_locale}'" :
+            @public_bodies = PublicBody.includes(:translations).where(@query.nil? ? "public_body_translations.locale = '#{underscore_locale}'" :
                                 ["(lower(public_body_translations.name) like lower('%'||?||'%') or
                                  lower(public_body_translations.short_name) like lower('%'||?||'%') or
                                  lower(public_body_translations.request_email) like lower('%'||?||'%' )) AND (public_body_translations.locale = '#{underscore_locale}')", @query, @query, @query]).paginate :order => "public_body_translations.name", :page => @page, :per_page => 100
