@@ -78,7 +78,9 @@ describe PublicBodyController, "when listing bodies" do
         response.should be_success
     end
 
-    it "should list all bodies from default locale, even when there are no translations for selected locale" do
+    it "if fallback is requested, should list all bodies from default locale, even when there are no translations for selected locale" do
+        config = MySociety::Config.load_default()
+        config['PUBLIC_BODY_LIST_FALLBACK_TO_DEFAULT_LOCALE'] = true
         I18n.with_locale(:en) do
             @english_only = PublicBody.new(:name => 'English only',
                                           :short_name => 'EO',
@@ -89,6 +91,7 @@ describe PublicBodyController, "when listing bodies" do
         end
         get :list, {:locale => 'es'}
         assigns[:public_bodies].include?(@english_only).should == true
+        config['PUBLIC_BODY_LIST_FALLBACK_TO_DEFAULT_LOCALE'] = false
     end
 
     it 'should show public body names in the selected locale language if present' do
