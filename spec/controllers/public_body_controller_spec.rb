@@ -99,6 +99,14 @@ describe PublicBodyController, "when listing bodies" do
         result
     end
 
+    it "with no fallback, should only return bodies from the current locale" do
+        @english_only = make_single_language_example :en
+        @spanish_only = make_single_language_example :es
+        get :list, {:locale => 'es'}
+        assigns[:public_bodies].include?(@english_only).should == false
+        assigns[:public_bodies].include?(@spanish_only).should == true
+    end
+
     it "if fallback is requested, should list all bodies from default locale, even when there are no translations for selected locale" do
         AlaveteliConfiguration.stub!(:public_body_list_fallback_to_default_locale).and_return(true)
         @english_only = make_single_language_example :en
