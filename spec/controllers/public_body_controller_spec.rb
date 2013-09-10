@@ -1,6 +1,8 @@
 # coding: utf-8
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
+require 'nokogiri'
+
 describe PublicBodyController, "when showing a body" do
     render_views
 
@@ -138,6 +140,18 @@ describe PublicBodyController, "when listing bodies" do
         PublicBody.internal_admin_body
         get :list, {:locale => 'en'}
         response.should_not contain('Internal admin authority')
+    end
+
+    it 'should order on the translated name, even with the fallback' do
+      # The names of each public body is in:
+      #    <span class="head"><a>Public Body Name</a></span>
+      # ... eo extract all of those, and check that they are ordered:
+      AlaveteliConfiguration.stub!(:public_body_list_fallback_to_default_locale).and_return(true)
+      get :list, {:locale => 'es'}
+      parsed = Nokogiri::HTML(response.body)
+      public_body_names = parsed.xpath '//span[@class="head"]/a/text()'
+      public_body_names = public_body_names.map { |pb| pb.to_s }
+      public_body_names.should == public_body_names.sort
     end
 
     it 'should show public body names in the selected locale language if present for a locale with underscores' do
