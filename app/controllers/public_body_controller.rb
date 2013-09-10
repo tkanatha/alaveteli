@@ -137,31 +137,15 @@ class PublicBodyController < ApplicationController
                 @description = _("in the category ‘{{category_name}}’", :category_name=>category_name)
             end
         end
+        conditions = [where_condition] + where_parameters
         I18n.with_locale(@locale) do
-            # Using raw SQL here is rather unpleasant, but I can't see
-            # any way within ActiveRecord to achieve all of the
-            # following (a) avoid duplicate listings of bodies
-            # translated into the default and current locales with the
-            # fallback option (b) keep the ordering by translated
-            # name.  (If you use 'SELECT DISTINCT ON
-            # public_bodies.id', then the primary ordering can't be on
-            # public_body_translations.name.) (c) still use Rails's
-            # pagination.
-            query =  %Q{
-SELECT *
-FROM (
-    SELECT DISTINCT ON (public_bodies.id)
-                       public_bodies.*,
-                       public_body_translations.name AS translated_name
-    FROM public_bodies
-        INNER JOIN public_body_translations
-            ON public_body_translations.public_body_id = public_bodies.id
-    WHERE #{where_condition}) ordered_by_id
-ORDER BY translated_name}
-            @public_bodies = PublicBody.paginate_by_sql(
-                [query] + where_parameters,
-                :page => params[:page],
-                :per_page => 100)
+            select_clause = "DISTINCT ON (public_bodies.id)" \
+                " public_bodies.*, public_body_translations.name AS translated_name"
+            @public_bodies = PublicBody.select(select_clause) \
+                .where(conditions) \
+                .joins(:translations).paginate(
+              :page => params[:page], :per_page => 100
+            )
             respond_to do |format|
                 format.html { render :template => "public_body/list" }
             end
