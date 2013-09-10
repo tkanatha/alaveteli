@@ -113,6 +113,14 @@ describe PublicBodyController, "when listing bodies" do
         assigns[:public_bodies].include?(@spanish_only).should == true
     end
 
+    it "if fallback is requested, make sure that there are no duplicates listed" do
+        AlaveteliConfiguration.stub!(:public_body_list_fallback_to_default_locale).and_return(true)
+        get :list, {:locale => 'es'}
+        pb_ids = assigns[:public_bodies].map { |pb| pb.id }
+        unique_pb_ids = pb_ids.uniq
+        pb_ids.sort.should === unique_pb_ids.sort
+    end
+
     it 'should show public body names in the selected locale language if present' do
         get :list, {:locale => 'es'}
         response.should contain('El Department for Humpadinking')
