@@ -3,8 +3,12 @@
 export RAILS_ENV=$1
 set -e
 
+LOC=`dirname "$0"`
+
+cd "$LOC"/..
+
 if [ -x /usr/bin/xapian-compact ]; then
-    XAPIAN_DB_DIR=$( cd "$( dirname "$0" )" && pwd )/../vendor/plugins/acts_as_xapian/xapiandbs
+    XAPIAN_DB_DIR=vendor/plugins/acts_as_xapian/xapiandbs
     if [ -e "$XAPIAN_DB_DIR/$RAILS_ENV.new" ]; then
 	echo >&2 "Didn't compact Xapian database because there was an existing database at $XAPIAN_DB_DIR/$RAILS_ENV.new"
 	exit 1
@@ -17,7 +21,7 @@ SU
 	mv "$XAPIAN_DB_DIR/$RAILS_ENV" "$XAPIAN_DB_DIR/$RAILS_ENV.tmp"
 	mv "$XAPIAN_DB_DIR/$RAILS_ENV.new" "$XAPIAN_DB_DIR/$RAILS_ENV"
 	rm -rf "$XAPIAN_DB_DIR/$RAILS_ENV.tmp"
-	/etc/init.d/apache2 restart
+	touch tmp/restart.txt
     fi
 else
     echo >&2 "Could not find xapian-compact script; have you installed xapian-tools?"
