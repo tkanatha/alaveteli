@@ -2528,6 +2528,24 @@ describe RequestController, "#select_authorities" do
                 response.should be_success
             end
 
+            it 'should render the "select_authorities" template' do
+                get :select_authorities, {}, {:user_id => @user.id}
+                response.should render_template('request/select_authorities')
+            end
+
+            it 'should assign a list of search results to the view if passed a query' do
+                get :select_authorities, {:query => "Quango"}, {:user_id => @user.id}
+                assigns[:search_bodies].results.size.should == 1
+                assigns[:search_bodies].results[0][:model].name.should == public_bodies(:geraldine_public_body).name
+            end
+
+            it 'should assign a list of public bodies to the view if passed a list of ids' do
+                get :select_authorities, {:public_bodies => [public_bodies(:humpadink_public_body).id]},
+                                         {:user_id => @user.id}
+                assigns[:public_bodies].size.should == 1
+                assigns[:public_bodies][0].name.should == public_bodies(:humpadink_public_body).name
+            end
+
         end
 
         context "when the current user can't make batch requests" do

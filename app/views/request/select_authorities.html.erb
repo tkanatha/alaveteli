@@ -1,4 +1,66 @@
 <% @title = _("Select the authorities to write to")  %>
+<h1 style="clear: left"><%= _('1. Select authorities') %></h1>
+<div id="authority_selection">
+  <%= form_tag(select_authorities_path, {:id => "search_form", :method => 'get'}) do %>
+    <div>
+      <p>
+        <%= _("Search for the authorities you'd like information from:") %>
+      </p>
+      <%= text_field_tag 'query', params[:query], { :size => 30, :title => "type your search term here" } %>
+      <% if !@public_bodies.blank? %>
+         <%- @public_bodies.each do |public_body| %>
+           <%= hidden_field_tag "public_bodies[]", public_body.id %>
+         <%- end %>
+      <% end %>
+      <%= submit_tag _('Search') %>
+    </div>
+  <% end %>
 
-  <h1><%= _('1. Select the authorities') %></h1>
+
+  <% if !@search_bodies.nil? %>
+    <% if @search_bodies.results.size > 0 %>
+      <h3><%= _('Top search results:') %></h3>
+      <p>
+        <%= _('Select each one you would like to send your request to')%>
+      </p>
+    <% else %>
+      <h3><%= _('No results found.') %></h3>
+    <% end %>
+    <div id="authority_search_ahead_results">
+      <%- @include_checkbox_in_authority_listing = true %>
+      <%= form_tag(select_authorities_path, {:id => "select_form"}) do %>
+        <% if !@public_bodies.blank? %>
+          <% @public_bodies.each do |public_body| %>
+            <%= hidden_field_tag "public_bodies[]", public_body.id %>
+          <% end %>
+        <% end %>
+
+        <% for result in @search_bodies.results %>
+          <%= render :partial => 'public_body/body_listing_single', :locals => { :public_body => result[:model] } %>
+        <% end %>
+        <% if @search_bodies.results.size > 0 %>
+          <%= submit_tag _('Select checked authorities') %>
+        <% end %>
+      <% end %>
+    </div>
+    <%= will_paginate WillPaginate::Collection.new(@page, @per_page, @search_bodies.matches_estimated), :params => {:controller=>"request", :action => "select_authorities"} %>
+  <% end %>
+</div>
+
+<div id="authority_preview">
+  <h2><%= _("Selected authorities") %></h2>
+  <% if @public_bodies.blank? %>
+    <%= _("You haven't selected any authorities yet.")%>
+  <% else %>
+    <%= form_tag(new_batch_path, {:id => "select_form"}) do %>
+      <%- @include_checkbox_in_authority_listing = false %>
+      <%- @public_bodies.each do |public_body| %>
+        <%= hidden_field_tag "public_bodies[]", public_body.id %>
+        <%= render :partial => 'public_body/body_listing_single', :locals => { :public_body => public_body } %>
+      <% end %>
+      <%= submit_tag _('Make a request to these authorities') %>
+    <% end %>
+  <% end %>
+</div>
+
 
