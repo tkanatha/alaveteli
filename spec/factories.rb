@@ -115,6 +115,10 @@ FactoryGirl.define do
             external_url 'http://www.example.org/request/external'
         end
 
+        factory :batch_request_template do
+            public_body nil
+            is_batch_request_template true
+        end
     end
 
     factory :user do

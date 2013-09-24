@@ -783,6 +783,36 @@ describe InfoRequest do
         end
     end
 
+    describe 'when working out a subject for initial requests' do
+
+        before do
+            @info_request = FactoryGirl.build(:info_request)
+        end
+
+        it 'should return a standard subject' do
+            @info_request.email_subject_request.should == "Freedom of Information request - Example Title"
+        end
+
+        context 'when the public body the request is to is the General Register Office' do
+
+            it 'should return a customised subject' do
+                @info_request.public_body.stub!(:url_name).and_return("general_register_office")
+                @info_request.email_subject_request.should == "Freedom of Information request GQ - Example Title"
+            end
+
+        end
+
+        context 'when the request is being used as a batch request template' do
+
+            it 'should return a standard subject' do
+                @info_request = FactoryGirl.build(:batch_request_template)
+                @info_request.email_subject_request.should == "Freedom of Information request - Example Title"
+            end
+
+        end
+
+    end
+
     describe 'when working out a subject for a followup emails' do
 
         it "should not be confused by an nil subject in the incoming message" do

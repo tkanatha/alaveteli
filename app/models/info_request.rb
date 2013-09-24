@@ -278,13 +278,14 @@ public
     def email_subject_request
         # XXX pull out this general_register_office specialisation
         # into some sort of separate jurisdiction dependent file
-        if self.public_body.url_name == 'general_register_office'
+        if !self.is_batch_request_template? && self.public_body.url_name == 'general_register_office'
             # without GQ in the subject, you just get an auto response
             _('{{law_used_full}} request GQ - {{title}}',:law_used_full=>self.law_used_full,:title=>self.title.html_safe)
         else
             _('{{law_used_full}} request - {{title}}',:law_used_full=>self.law_used_full,:title=>self.title.html_safe)
         end
     end
+
     def email_subject_followup(incoming_message = nil)
         if incoming_message.nil? || !incoming_message.valid_to_reply_to? || !incoming_message.subject
             'Re: ' + self.email_subject_request
