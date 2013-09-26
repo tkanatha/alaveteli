@@ -1,5 +1,5 @@
 // Import Settings
-@import main_menu-settings;
+@import "main_menu-settings";
 
 .main_menu{
     //@include grid-row;
@@ -49,15 +49,15 @@
             transition: background-color 0.5s ease-out;
 
             &:hover{
-                background-color: lighten($c-alaveteli-blue, 5%);
+                background-color: lighten($main_menu-link_bg, 5%);
             }
         }
         &.active a{
             &{
-                background-color: $c-alaveteli-cream-contrast;
+                background-color: $main_menu-active_link_bg;
                 padding-top: 1em;
                 margin-top: -0.5em;
-                color: $c-alaveteli-blue;
+                color: $main_menu-bg;
                 font-weight: bold;
             }
         }
@@ -66,7 +66,7 @@
 }
 
 .page_header{
-    background-color: mix($c-alaveteli-blue, $c-alaveteli-black, 50%);
+    background-color: mix($main_menu-bg, $main_menu-active_link_bg, 50%);
 }
 .logo{
     @include grid-row;
