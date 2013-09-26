@@ -1,7 +1,7 @@
 // Import Settings
 @import "request_view-settings";
 
-.request_view{
+.request_show{
     @include grid-row;
 
     &>header{
