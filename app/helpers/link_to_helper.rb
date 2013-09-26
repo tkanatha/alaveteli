@@ -266,6 +266,20 @@ module LinkToHelper
         end
     end
 
+    def attachment_path(attachment)
+        get_attachment_path(:id => attachment.incoming_message.info_request_id,
+                            :incoming_message_id => attachment.incoming_message.id,
+                            :part => attachment.url_part_number,
+                            :file_name => attachment.display_filename)
+    end
+
+    def html_attachment_path(attachment)
+        get_attachment_as_html_path(:id => attachment.incoming_message.info_request_id,
+                                    :incoming_message_id => attachment.incoming_message.id,
+                                    :part => attachment.url_part_number,
+                                    :file_name => attachment.display_filename + '.html')
+    end
+
     # Basic date format
     def simple_date(date)
         date = date.in_time_zone.to_date unless date.is_a? Date
