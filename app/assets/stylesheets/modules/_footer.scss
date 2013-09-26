@@ -1,0 +1,15 @@
+// Import Settings
+@import "footer-settings";
+
+.footer{
+    padding: 2em 4em;
+    color:$c-footer-text;
+    background-color: $c-footer-background;
+    a{
+        color: $c-footer-link;
+    }
+}
+
+.footer-nav{
+    @include block-grid(5);
+}
