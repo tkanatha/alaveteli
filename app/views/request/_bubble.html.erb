@@ -12,13 +12,7 @@
                                     :incoming_message_id => incoming_message.id, :part => a.url_part_number,
                                     :file_name => a.display_filename + '.html')
                         %>
-                        <% img_filename = "icon_" + a.content_type.sub('/', '_') + "_large.png"
-                        full_filename = File.expand_path(File.join(File.dirname(__FILE__), "../../assets/images", img_filename))
-                        if File.exist?(full_filename) %>
-                            <%= link_to image_tag(img_filename, :class => "attachment_image", :alt => "Attachment"), attachment_path %>
-                        <% else %>
-                            <%= link_to image_tag("icon_unknown.png", :class => "attachment_image", :alt => "Attachment"), attachment_path %>
-                        <% end %>
+                        <%= link_to image_tag(a.icon_name, :class => "attachment_image", :alt => "Attachment"), attachment_path %>
                         <strong><%= h a.display_filename %></strong>
                         <br>
                         <%= a.display_size %>

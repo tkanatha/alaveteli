@@ -280,6 +280,9 @@ module LinkToHelper
                                     :file_name => attachment.display_filename + '.html')
     end
 
+    def attachment_icon(attachment)
+    end
+
     # Basic date format
     def simple_date(date)
         date = date.in_time_zone.to_date unless date.is_a? Date
