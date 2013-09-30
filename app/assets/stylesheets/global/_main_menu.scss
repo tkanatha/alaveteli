@@ -1,0 +1,80 @@
+// Base Colours if not overriden
+$main_menu-bg: #333 !default;
+$main_menu-search_bg: #eee !default;
+$main_menu-search_text: #333 !default;
+$main_menu-link_bg: #333 !default;
+$main_menu-bg: #333 !default;
+
+.main_menu{
+    //@include grid-row;
+    background-color: $main_menu-bg;
+
+    ul{
+        // @include inline-list;
+        list-style: none;
+        @include grid-row;
+
+    }
+    li{
+        @include grid-column(2);
+        &.menu-help{ @include grid-column(1); padding: 0; }
+        &.menu-search{
+            @include grid-column(3);
+            padding: 0.35em 0;
+
+            input{
+                background-color: mix($main_menu-search_bg, $main_menu-bg, 50%);
+                border: none;
+                padding: 0.25em;
+                width: 80%;
+                transition: all 0.3s ease-out;
+                color: $main_menu-search_text;
+                &:focus{
+                    background-color: $main_menu-search_bg;
+                }
+            }
+            label{
+                cursor: pointer;
+                width: 20%;
+                img{
+                    max-width: 100%;
+                }
+            }
+        }
+        padding: 0;
+        a{
+            display:block;
+            width:100%;
+            height:100%;
+            background-color: $main_menu-link_bg;
+            color: $main_menu-link_text;
+            text-align: center;
+            padding: 0.5em 0;
+            transition: background-color 0.5s ease-out;
+
+            &:hover{
+                background-color: lighten($c-alaveteli-blue, 5%);
+            }
+        }
+        &.active a{
+            &{
+                background-color: $c-alaveteli-cream-contrast;
+                padding-top: 1em;
+                margin-top: -0.5em;
+                color: $c-alaveteli-blue;
+                font-weight: bold;
+            }
+        }
+    }
+
+}
+
+.page_header{
+    background-color: mix($c-alaveteli-blue, $c-alaveteli-black, 50%);
+}
+.logo{
+    @include grid-row;
+    margin-top: -3em;
+    margin-bottom: 1em;
+    padding: 1em;
+}

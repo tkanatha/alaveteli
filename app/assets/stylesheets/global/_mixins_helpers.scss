@@ -1,0 +1,22 @@
+// Image Replacement from https://raw.github.com/h5bp/html5-boilerplate/master/css/main.css
+
+//.ir {
+//    background-color: transparent;
+//    border: 0;
+//    overflow: hidden;
+//    /* IE 6/7 fallback */
+//    *text-indent: -9999px;
+//    
+//    &:before {
+//        content: "";
+//        display: block;
+//        width: 0;
+//        height: 150%;
+//    }
+//}
+
+.ir{
+    text-indent: 150%;
+    white-space: nowrap;
+    overflow: hidden;
+}

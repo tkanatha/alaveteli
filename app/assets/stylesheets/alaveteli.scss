@@ -1,0 +1,27 @@
+// This includes all of the foundation global elements.
+@import "foundation_variables";
+@import "theme_settings";
+
+// Foundation
+@import "foundation/foundation";
+
+// Global Styles
+@import "global/mixins_helpers";
+@import "global/ms_header";
+@import "global/contact_form";
+
+
+$main_menu-bg: $c-alaveteli-blue;
+$main_menu-search_bg: $c-alaveteli-cream-contrast;
+$main_menu-search_text: $c-alaveteli-blue;
+$main_menu-link_bg: $c-alaveteli-blue;
+$main_menu-link_text: $c-alaveteli-cream;
+$main_menu-bg: $c-alaveteli-blue;
+$main_menu-bg: $c-alaveteli-blue;
+
+@import "global/main_menu";
+
+// Theme Styles
+
+
+

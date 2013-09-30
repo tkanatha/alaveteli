@@ -1,0 +1,113 @@
+/*
+
+This is a contact form, either within the header dropdown or standalone on a page.
+
+
+
+*/
+.contact_form{
+    
+    form{
+        background-image: url(../img/contact_sent-neutral@x2.png);
+        background-repeat:no-repeat;
+        background-position: 50% 20%;
+        background-size: 60% auto;
+    }
+    h2{
+        @include grid-row;
+        
+    }
+    legend{
+        display:none;
+    }
+    fieldset{
+        background-color: #eee;
+        -moz-transition: all 1s ease-out;
+        -webkit-transition: all 1s ease-out;
+        transition: all 1s ease-out;
+    }
+    &.sent{
+        fieldset{
+            -webkit-transform: translate3d(-100%,-200%,0) rotate(-30deg);
+            -moz-transform: translate3d(-100%,-200%,0) rotate(-30deg);
+            -ms-transform: translate3d(-100%,-200%,0) rotate(-30deg);
+            transform: translate3d(-100%,-200%,0) rotate(-30deg);
+        }
+    }
+    a{
+        color: #2284a1;
+    }
+    
+    .contact_info,
+    .mysociety_elsewhere{
+        @include grid-column(12);
+        @media #{$small} {
+            @include grid-column(6);
+        }
+        
+        dt{ font-weight:normal; }
+        dd{ font-weight:bold; }
+    }
+    .contact_info{
+        dl{
+            @media #{$small}{
+                margin-top: 2em;
+            }
+        }
+    }
+    .mysociety_elsewhere{ 
+        ul{
+            @include block-grid(3, $block-grid-default-spacing, true);
+            @extend .no-bullet;
+            a{
+                @extend .ir;
+                display: block;
+                padding: 2em 1em;
+                background-repeat: no-repeat;
+                background-position: center center;
+                background-size: auto 80%;
+            }
+            li.twitter a{ background-image: url('../img/social_twitter.svg');}
+            li.facebook a{ background-image: url('../img/social_facebook.svg');}
+            li.github a{ background-image: url('../img/social_github.svg');}
+            
+        }
+    }
+    .phonenumber,
+    .primaryemail,
+    .secondaryemail,
+    .address{
+        line-height:1;
+        font-size:1.2em;
+        display: block;
+        width:100%;
+        color: #2284a1;
+    }
+    .phonenumber{
+        margin-bottom: 0;
+    }
+    .uk_time{
+        margin-bottom: 3em;
+        color: #777;
+        font-size: 0.8em;
+        padding-top: 0.5em;
+        
+        strong{
+            color: #555;
+        }
+    }
+}
+.contact_form-message{
+    min-height: 14em;
+}
+.ms_header{
+    .contact_form{
+        a,
+        .phonenumber,
+        .primaryemail,
+        .secondaryemail{
+            color: #fff;
+        }
+    }
+    
+}
