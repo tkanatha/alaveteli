@@ -1,21 +1,3 @@
-<script type="text/javascript">
-    $(document).ready(function(){
-        // Avoid triggering too often (on each keystroke) by using the debounce jQuery plugin:
-        // http://benalman.com/projects/jquery-throttle-debounce-plugin/
-        $("#typeahead_search").keypress($.debounce( 300, function() {
-            $("#typeahead_response").load("<%=search_ahead_url%>?q="+encodeURI(this.value), function() {
-                // When following links in typeahead results, open new tab/window
-                $("#typeahead_response a").attr("target","_blank");
-
-                // Update the public body site search link
-                $("#body-site-search-link").attr("href", "http://www.google.com/#q="+encodeURI($("#typeahead_search").val())+
-                                                "+site:<%= @info_request.public_body.calculated_home_page %>");
-            });
-        }));
-
-    });
-</script>
-
 <% @title = _("Make an {{law_used_short}} request to '{{public_body_name}}'",:law_used_short=>h(@info_request.law_used_short),:public_body_name=>h(@info_request.public_body.name))  %>
 
     <h1><%= _('2. Ask for Information') %></h1>
