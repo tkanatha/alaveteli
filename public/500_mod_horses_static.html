@@ -114,11 +114,105 @@
                     </p>
                     <h1 class="request-title">500 MOD Horses</h1>
 
-                    <ul class="request_interactions">
-                        <li> <a href="#TODO-SetUpdateLink">Get Updates</a> </li>
+                    <ul class="request-interactions">
+                        <li> <a class="request-interactions-getupdates" href="#TODO-SetUpdateLink">Get Updates</a> </li>
                         <li> <a href="#TODO-SetShareLink">Share</a> </li>
                     </ul>
                 </header>
+
+                <form accept-charset="UTF-8" action="https://jed.whatdotheyknow.dev.mysociety.org/request/131/describe" class="incoming_message_edit" id="describe_form_1" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" value="✓" type="hidden"><input name="_method" value="put" type="hidden"><input name="authenticity_token" value="mEpN+bq6luELmb6aSw8JIKZyFHqFOPzHO27A0F+M65U=" type="hidden"></div>
+                        <h2>What best describes the status of this request now?</h2>
+
+                        <ul class="update_status_options">
+                            <li class="successful">
+                                <div>
+                                    <input id="partially_successful1" name="incoming_message[described_state]" value="partially_successful" type="radio">
+                                    <label for="partially_successful1">
+                                        I've received <strong>some of the information</strong>
+                                    </label>
+                                </div>
+
+                                <div>
+                                    <input id="successful1" name="incoming_message[described_state]" value="successful" type="radio">
+                                    <label for="successful1">
+                                        I've received <strong>all the information</strong>
+                                    </label>
+                                </div>
+                            </li>
+
+                            <li class="pending">
+                                <div>
+                                    <input id="waiting_response1" name="incoming_message[described_state]" value="waiting_response" type="radio">
+                                    <label for="waiting_response1">
+                                        I'm still <strong>waiting</strong> for my information
+                                        <small>(maybe you got an acknowledgement)</small>
+                                    </label>
+                                </div>
+
+                                <div>
+                                    <input id="waiting_clarification1" name="incoming_message[described_state]" value="waiting_clarification" type="radio">
+                                    <label for="waiting_clarification1">
+                                        I've been asked to <strong>clarify</strong> my request
+                                    </label>
+                                </div>
+
+                                <div>
+                                    <input id="gone_postal1" name="incoming_message[described_state]" value="gone_postal" type="radio">
+                                    <label for="gone_postal1">
+                                        They are going to reply <strong>by post</strong>
+                                    </label>
+                                </div>
+
+                                <div>
+                                    <input id="internal_review1" name="incoming_message[described_state]" value="internal_review" type="radio">
+                                    <label for="internal_review1">I'm waiting for an <strong>internal review</strong> response</label>
+                                </div>
+
+                                <div>
+                                    <input id="requires_admin1" name="incoming_message[described_state]" value="requires_admin" type="radio">
+                                    <label for="error_message1">
+                                        This request <strong>requires administrator attention</strong>
+                                    </label>
+                                </div>
+                            </li>
+
+                            <li class="unsuccessful">
+                                <div>
+                                    <input id="not_held1" name="incoming_message[described_state]" value="not_held" type="radio">
+                                    <label for="not_held1">
+                                        They do <strong>not have</strong> the information <small>(maybe they say who does)</small>
+                                    </label>
+                                </div>
+
+                                <div>
+                                    <input id="rejected1" name="incoming_message[described_state]" value="rejected" type="radio">
+                                    <label for="rejected1">
+                                        My request has been <strong>refused</strong>
+                                    </label>
+                                </div>
+
+                                <div>
+                                    <input id="error_message1" name="incoming_message[described_state]" value="error_message" type="radio">
+                                    <label for="error_message1">
+                                        I've received an <strong>error message</strong>
+                                    </label>
+                                </div>
+
+                                <div>
+                                    <input id="user_withdrawn1" name="incoming_message[described_state]" value="user_withdrawn" type="radio">
+                                    <label for="user_withdrawn1">
+                                        I would like to <strong>withdraw this request</strong>
+                                    </label>
+                                </div>
+                            </li>
+                        </ul>
+
+
+                        <p>
+                            <input id="last_info_request_event_id1" name="last_info_request_event_id" value="958" type="hidden">
+                            <input name="commit" value="Submit status" type="submit"> (and we'll suggest <strong>what to do next</strong>)
+                        </p>
+                </form>
 
                 <ul class="request-actions">
                     <li class="request-actions_status"><a href="#">Partially Successful</a></li>
@@ -132,7 +226,7 @@
                 <ol class="request-thread">
 
                     <li class="outgoing correspondence" id="outgoing-21">
-                        <h2 class="meta">
+                        <h2 class="correspondence-meta">
                             <a class="request-correspondence-static" href="/request/500_mod_horses#outgoing-21">Static Link</a>
                             <strong>Joe Admin</strong>
                             <date>7 August 2013</date>
@@ -144,7 +238,7 @@
                     </li>
 
                     <li class="incoming correspondence normal" id="incoming-11">
-                        <h2 class="meta">
+                        <h2 class="correspondence-meta">
                             <a class="request-correspondence-static" href="/request/500_mod_horses#incoming-11">Static Link</a>
                             <strong>Abi Broom</strong>
                             <date>7 August 2013</date>
@@ -171,7 +265,7 @@
                 </ol>
                 <div class="request-user_actions">
                     <!-- Not Logged In -->
-                    <a href="#GetUpdatesLink">
+                    <a class="request-interactions-getupdates" href="#GetUpdatesLink">
                         Want to know what happens next?
                         <strong>Sign up to recieve copies of new messages as they arrive.</strong>
                     </a>
@@ -179,7 +273,7 @@
 
 
                     <!-- Logged In - Not Owner
-                    <a href="#GetUpdatesLink">
+                    <a class="request-interactions-getupdates" href="#GetUpdatesLink">
                         Want to know what happens next?
                         <strong>Get copies of new messages as they arrive.</strong>
                     </a>
@@ -187,7 +281,7 @@
 
 
                     <!-- Logged In - Not Owner - Subscribed
-                    <a href="#GetUpdatesLink">
+                    <a class="request-interactions-getupdates" href="#GetUpdatesLink">
                         You currently receive copies of new messages as they arrive.
                         <strong>Change your notification settings</strong>
                     </a>
@@ -207,7 +301,7 @@
 
 
                     <!-- Logged In - Authority
-                    <a href="#GetUpdatesLink">
+                    <a class="request-interactions-getupdates" href="#GetUpdatesLink">
                         You currently receive copies of new messages as they arrive.
                         <strong>Change your notification settings</strong>
                     </a>
@@ -233,7 +327,7 @@
             <li><a href="https://twitter.com/whatdotheyknow">Follow us on twitter</a></li>
             <li><a href="/help/privacy">Privacy and cookies</a></li>
             <li><a href="/help/credits#helpus">Run by Volunteers</a> and powered by <a href="/help/alaveteli">Alaveteli</a></li>
-            <li>Dedicated to <a href="http://mk.ucant.org/archives/000129.html">Chris Lightfoot</a></li>
+            <li>Dedicated to <a href="http://mk.ucant.org/archives/000129.html">Chris&nbsp;Lightfoot</a></li>
         </ul>
     </div>
 
