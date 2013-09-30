@@ -1,0 +1,268 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>
+            View and search requests - WhatDoTheyKnow
+        </title>
+
+        <link rel="shortcut icon" href="/favicon.ico">
+
+
+          <link href="/assets/application.css?body=1" media="screen" rel="stylesheet" type="text/css" />
+<link href="/assets/theme.css?body=1" media="screen" rel="stylesheet" type="text/css" />
+
+
+        <script src="/assets/jquery.js?body=1" type="text/javascript"></script>
+<script src="/assets/jquery-ui.min.js?body=1" type="text/javascript"></script>
+<script src="/assets/jquery.cookie.js?body=1" type="text/javascript"></script>
+<script src="/assets/general.js?body=1" type="text/javascript"></script>
+<script src="/assets/foundation/foundation.js?body=1" type="text/javascript"></script>
+<script src="/assets/foundation/foundation.dropdown.js?body=1" type="text/javascript"></script>
+<script src="/assets/foundation/index.js?body=1" type="text/javascript"></script>
+<script src="/assets/application.js?body=1" type="text/javascript"></script>
+
+                <link rel="alternate" type="application/atom+xml" title="Requests or responses matching your saved search" href="https://jed.whatdotheyknow.dev.mysociety.org/feed/search/horse%20..%20(latest_status:successful%20OR%20latest_status:partially_successful)">
+                    <link rel="alternate" type="application/json" title="JSON version of Requests or responses matching your saved search" href="https://jed.whatdotheyknow.dev.mysociety.org/feed/search/horse%20..%20(latest_status:successful%20OR%20latest_status:partially_successful).json">
+
+
+        <meta name="viewport" content="width=device-width" />
+
+    </head>
+    <body class="">
+
+
+<div class="entirebody">
+
+<header class="page_header">
+
+    <div class="ms_header">
+        <div class="ms_header_nav">
+            <nav>
+                <ul class="menu">
+                      <li id="lang_switcher">
+      <a href="#" data-dropdown="droplang" class="ms_header_nav-lang">
+        <img alt="English" src="/assets/lang/en.png" />
+      </a>
+
+      <ul id="droplang" data-dropdown-content class="lang-dropdown">
+          <li>
+            <a lang="en" href="/list/successful?commit=Search&amp;query=horse&amp;request_date_after=&amp;request_date_before=&amp;utf8=%E2%9C%93">
+              <img alt="English" src="/assets/lang/en.png" />English
+            </a>
+          </li>
+          <li>
+            <a lang="cy" href="/cy/list/successful?commit=Search&amp;query=horse&amp;request_date_after=&amp;request_date_before=&amp;utf8=%E2%9C%93">
+              <img alt="Cymraeg" src="/assets/lang/cy.png" />Cymraeg
+            </a>
+          </li>
+      </ul>
+  </li>
+
+                    <li id="ms_logo"><a class="ms_header_nav-logo" href="http://mysociety.org">mySociety</a></li>
+
+                    <li><a class="ms_header_nav-about" href="/help/about">About</a></li>
+                    <li><a class="ms_header_nav-blog" href="/blog">Blog</a></li>
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="logo">
+        <a href="/"> <img alt="" src="/assets/logo.png" /></a>
+    </div>
+    <div class="login-block">
+
+      <a href="/profile/sign_in?r=%2Flist%2Fsuccessful%3Futf8%3D%25E2%259C%2593%26query%3Dhorse%26request_date_after%3D%26request_date_before%3D%26commit%3DSearch">Login</a>
+    </div>
+    <div class="main_menu">
+        ul>
+            <li class="menu-newrequest ">
+              <a href="/select_authority">
+                Make Request
+              </a>
+            </li>
+            <li class="menu-viewrequests  active">
+              <a href="/list/successful">
+                View Requests
+              </a>
+            </li>
+            <li class="menu-viewauthorities ">
+              <a href="/body/list/all">
+                View Authorities
+              </a>
+              </li>
+            <li class="menu-emailalerts">
+              <a href="#">
+                Email Alerts
+              </a>
+            </li>
+            <li class="menu-help ">
+              <a href="/help/about">
+                Help
+              </a>
+            </li>
+            <li class="menu-search">
+              <form method="post" action="/search/all">
+                  <label for="search"><img alt="Search:" src="/assets/search.png" /></label>
+                  <input id="navigation_search_button" name="query" type="text" value="horse" />
+               </form>
+            </li>
+        </ul>
+    </div>
+
+
+</header>
+
+    <div id="wrapper">
+        <div id="content">
+
+            <div id="request_list" class="request_list controller_request">
+
+<div id="header_left">
+  <h1>View and search requests</h1>
+  <script type="text/javascript">
+  $(function() {
+     $(".use-datepicker").datepicker(
+            {closeText: 'Done',
+             prevText: 'Prev',
+             nextText: 'Next',
+             currentText: 'Today',
+             monthNames: ["January","February","March","April","May","June","July","August","September","October","November","December"],
+             monthNamesShort: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+             dayNames: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+             dayNamesShort: ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
+             dayNamesMin: ["S","M","T","W","T","F","S"],
+             weekHeader: 'Wk',
+             dateFormat: 'yy/mm/dd'}
+  );
+  });
+</script>
+
+
+
+<div id="list-filter">
+  <form accept-charset="UTF-8" action="/list/successful" id="filter_requests_form" method="get"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div>
+ <div class="list-filter-item">
+  <label class="form_label title" for="query">Keywords</label>
+  <input id="query" name="query" type="text" value="horse" />
+ </div>
+ <div class="list-filter-item">
+   <label class="form_label title" for="query">Made between</label>
+   <input class="use-datepicker" id="request_date_after" name="request_date_after" size="10" type="text" value="" />&nbsp;&nbsp;
+   <label class="form_label" for="query">and</label>
+   <input class="use-datepicker" id="request_date_before" name="request_date_before" size="10" type="text" value="" />
+ </div>
+ <div class="list-filter-item">
+   <h3 class="title">Showing</h3>
+     <div class="filter-request-types">
+          <a href="/list/all?utf8=%E2%9C%93&amp;query=horse&amp;request_date_after=&amp;request_date_before=&amp;commit=Search#results">all requests</a>
+      |
+        successful requests
+      |
+          <a href="/list/unsuccessful?utf8=%E2%9C%93&amp;query=horse&amp;request_date_after=&amp;request_date_before=&amp;commit=Search#results">unsuccessful requests</a>
+      |
+          <a href="/list/awaiting?utf8=%E2%9C%93&amp;query=horse&amp;request_date_after=&amp;request_date_before=&amp;commit=Search#results">unresolved requests</a>
+
+    </div>
+ </div>
+
+ <div class="list-filter-item">
+  <input name="commit" type="submit" value="Search" />
+ </div>
+</form></div>
+
+</div>
+
+<div id="header_right">
+  <h2>Follow these requests</h2>
+
+    <div class="feed_link feed_link_main">
+        <a href="/track/search/horse%20..%20(latest_status:successful%20OR%20latest_status:partially_successful)" class="link_button_green">Follow</a>
+    </div>
+
+    <div class="feed_link feed_link_main">
+        <a href="/feed/search/horse%20..%20(latest_status:successful%20OR%20latest_status:partially_successful)"><img alt="RSS icon" src="/assets/feed-16.png" /></a>
+        <a href="/feed/search/horse%20..%20(latest_status:successful%20OR%20latest_status:partially_successful)">RSS feed</a>
+    </div>
+
+
+
+
+</div>
+
+<div style="clear:both"></div>
+
+<div class="results_section">
+        <h2 class="foi_results">1 FOI requests found</h2>
+        <div class="results_block">
+
+<div class="request_listing">
+  <div class="request_left">
+      <span class="head">
+            <a href="/request/500_mod_horses#incoming-11">500 MOD Horses</a>
+      </span>
+      <div class="requester">
+            Partially successful.
+            by <a href="https://jed.whatdotheyknow.dev.mysociety.org/body/mod">Ministry of Defence</a> to <a href="https://jed.whatdotheyknow.dev.mysociety.org/user/joe_admin">Joe Admin</a> on  7 August 2013.
+      </div>
+      <span class="bottomline icon_partially_successful">
+        <strong>
+        Partially successful.
+        </strong><br>
+      </span>
+  </div>
+  <div class="request_right">
+    <span class="desc">
+        Please find our response attached.
+
+ Army Secretariat, Army HQ, Second Floor, Zone 1, IDL 24, Blenheim
+ Building, Marlborough Lines, Andover, Hampshir...
+    </span>
+  </div>
+</div>
+
+
+        </div>
+
+
+</div>
+
+            </div>
+            <div style="clear:both"></div>
+        </div>
+    </div>
+
+    <div class="footer" id="footer">
+    <ul class="footer-nav">
+        <li><a href="/help/contact">Contact WhatDoTheyKnow</a></li>
+        <li><a href="https://twitter.com/whatdotheyknow">Follow us on twitter</a></li>
+        <li><a href="/help/privacy">Privacy and cookies</a></li>
+         <li><a href="/help/credits#helpus">Run by Volunteers</a> and powered by <a href="/help/alaveteli">Alaveteli</a></li>
+  <li>Dedicated to <a href="http://mk.ucant.org/archives/000129.html">Chris Lightfoot</a></li>
+
+    </ul>
+</div>
+
+
+</div>
+<div id="other-country-notice"></div>
+<div id="link_box"><span class="close-button">X</span>
+Paste this link into emails, tweets, and anywhere else:
+<br />
+<input type="text">
+</div>
+        <script type="text/javascript">
+          var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+          document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
+          var pageTracker = _gat._getTracker("UA-24614779-1");
+          pageTracker._trackPageview();
+        </script>
+
+
+
+    </body>
+</html>
