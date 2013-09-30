@@ -1,0 +1,266 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>
+            Make an FOI request to 'Ministry of Defence' - WhatDoTheyKnow
+        </title>
+
+        <link rel="shortcut icon" href="/favicon.ico">
+
+
+          <link href="/assets/application.css?body=1" media="screen" rel="stylesheet" type="text/css" />
+<link href="/assets/theme.css?body=1" media="screen" rel="stylesheet" type="text/css" />
+
+
+        <script src="/assets/jquery.js?body=1" type="text/javascript"></script>
+<script src="/assets/jquery-ui.min.js?body=1" type="text/javascript"></script>
+<script src="/assets/jquery.cookie.js?body=1" type="text/javascript"></script>
+<script src="/assets/general.js?body=1" type="text/javascript"></script>
+<script src="/assets/ba-throttle-debounce.js?body=1" type="text/javascript"></script>
+<script src="/assets/foundation/foundation.js?body=1" type="text/javascript"></script>
+<script src="/assets/foundation/foundation.dropdown.js?body=1" type="text/javascript"></script>
+<script src="/assets/foundation/index.js?body=1" type="text/javascript"></script>
+<script src="/assets/application.js?body=1" type="text/javascript"></script>
+
+
+
+        <meta name="viewport" content="width=device-width" />
+
+    </head>
+    <body class="">
+
+
+<div class="entirebody">
+
+<header class="page_header">
+
+    <div class="ms_header">
+        <div class="ms_header_nav">
+            <nav>
+                <ul class="menu">
+                      <li id="lang_switcher">
+      <a href="#" data-dropdown="droplang" class="ms_header_nav-lang">
+        <img alt="English" src="/assets/lang/en.png" />
+      </a>
+
+      <ul id="droplang" data-dropdown-content class="lang-dropdown">
+          <li>
+            <a lang="en" href="/new?info_request%5Bpublic_body%5D=5&amp;outgoing_message%5Binfo_request%5D=&amp;url_name=mod">
+              <img alt="English" src="/assets/lang/en.png" />English
+            </a>
+          </li>
+          <li>
+            <a lang="cy" href="/cy/new?info_request%5Bpublic_body%5D=5&amp;outgoing_message%5Binfo_request%5D=&amp;url_name=mod">
+              <img alt="Cymraeg" src="/assets/lang/cy.png" />Cymraeg
+            </a>
+          </li>
+      </ul>
+  </li>
+
+                    <li id="ms_logo"><a class="ms_header_nav-logo" href="http://mysociety.org">mySociety</a></li>
+
+                    <li><a class="ms_header_nav-about" href="/help/about">About</a></li>
+                    <li><a class="ms_header_nav-blog" href="/blog">Blog</a></li>
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="logo">
+        <a href="/"> <img alt="" src="/assets/logo.png" /></a>
+    </div>
+    <div class="login-block">
+
+      <a href="/profile/sign_in?r=%2Fnew%2Fmod">Login</a>
+    </div>
+    <div class="main_menu">
+        <ul>
+            <li class="menu-newrequest active">
+              <a href="/select_authority">
+                Make Request
+              </a>
+            </li>
+            <li class="menu-viewrequests  ">
+              <a href="/list/successful">
+                View Requests
+              </a>
+            </li>
+            <li class="menu-viewauthorities ">
+              <a href="/body/list/all">
+                View Authorities
+              </a>
+              </li>
+            <li class="menu-emailalerts">
+              <a href="#">
+                Email Alerts
+              </a>
+            </li>
+            <li class="menu-help ">
+              <a href="/help/about">
+                Help
+              </a>
+            </li>
+            <li class="menu-search">
+              <form method="post" action="/search/all">
+                  <label for="search"><img alt="Search:" src="/assets/search.png" /></label>
+                  <input id="navigation_search_button" name="query" type="text" />
+               </form>
+            </li>
+        </ul>
+    </div>
+
+
+</header>
+
+    <div id="wrapper">
+        <div id="content">
+
+            <div id="request_new" class="controller_request">
+            <script type="text/javascript">
+    $(document).ready(function(){
+        // Avoid triggering too often (on each keystroke) by using the debounce jQuery plugin:
+        // http://benalman.com/projects/jquery-throttle-debounce-plugin/
+        $("#typeahead_search").keypress($.debounce( 300, function() {
+            $("#typeahead_response").load("https://jed.whatdotheyknow.dev.mysociety.org/request/search_ahead?q="+encodeURI(this.value), function() {
+                // When following links in typeahead results, open new tab/window
+                $("#typeahead_response a").attr("target","_blank");
+
+                // Update the public body site search link
+                $("#body-site-search-link").attr("href", "http://www.google.com/#q="+encodeURI($("#typeahead_search").val())+
+                                                "+site:http://www.localhost");
+            });
+        }));
+
+    });
+</script>
+
+
+    <h1>2. Ask for Information</h1>
+
+
+
+
+    <form accept-charset="UTF-8" action="/new" class="new_info_request" id="write_form" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="1BtP2OtKwL9aoPTAvH+1d3SlRviMc/nLgbB/ljgC/YM=" /></div>
+
+    <div id="request_header">
+        <div id="request_header_body">
+            <label class="form_label">To:</label>
+            <span id="to_public_body">Ministry of Defence</span>
+            <div class="form_item_note">
+                    Browse <a href='/body/mod'>other requests</a> to 'Ministry of Defence' for examples of how to word your request.
+            </div>
+
+              <div id="request_header_text">
+                <h3>Special note for this authority!</h3>
+                <p>The Ministry of Defence (MOD) is the UK government department responsible for implementation of government defence policy and for the British Armed Forces. The MoD manages the day to day running of the armed forces, contingency planning and defence procurement. The military professional structure is embodied in the three single Services (the Royal Navy, Army, and the Royal Air Force).</p>
+              </div>
+
+        </div>
+
+        <div id="request_header_subject">
+            <p>
+                <label class="form_label" for="typeahead_search">Summary:</label>
+                <input id="typeahead_search" name="info_request[title]" size="50" type="text" />
+            </p>
+            <div class="form_item_note">
+                (a one line summary of the information you are requesting,
+            e.g.
+                      'Crime statistics by ward level for Wales'
+)
+            </div>
+        </div>
+
+        <div id="typeahead_response">
+        </div>
+    </div>
+
+    <div id="request_advice">
+        <ul>
+        <li>Write your request in <strong>simple, precise language</strong>.</li>
+        <li>Ask for <strong>specific</strong> documents or information, this site is not suitable for general enquiries.</li>
+        <li>Keep it <strong>focused</strong>, you'll be more likely to get what you want (<a href="/help/requesting#focused">why?</a>).</li>
+        </ul>
+    </div>
+
+    <div id="request_form">
+
+        <p>
+            <label class="form_label" for="outgoing_message_body">Your request:</label>
+            <textarea cols="60" id="outgoing_message_body" name="outgoing_message[body]" rows="20">Dear Ministry of Defence,
+
+
+
+Yours faithfully,
+
+</textarea>
+        </p>
+
+            <p class="form_note">
+
+                Everything that you enter on this page, including <strong>your name</strong>,
+                will be <strong>displayed publicly</strong> on
+                this website forever (<a href="/help/privacy#public_request">why?</a>).
+                If you are thinking of using a pseudonym,
+                please <a href="/help/privacy#real_name">read this first</a>.
+            </p>
+
+        <p class="form_note">
+            <strong> Can I request information about myself?</strong>
+            <a href="/help/requesting#data_protection">No! (Click here for details)</a>
+        </p>
+
+        <div class="form_button">
+            <input id="info_request_public_body_id" name="info_request[public_body_id]" type="hidden" value="5" />
+            <input id="submitted_new_request" name="submitted_new_request" type="hidden" value="1" />
+            <input id="preview" name="preview" type="hidden" value="1" />
+            <input name="commit" type="submit" value="Preview your public request" />
+        </div>
+
+
+        </div>
+</form>
+
+
+            </div>
+            <div style="clear:both"></div>
+        </div>
+    </div>
+
+    <div id="footer">
+    <a href="/help/contact">Contact WhatDoTheyKnow</a>
+| <img src="/images/twitter-16.png" alt="twitter icon" class="twitter-icon"> <a href="https://twitter.com/whatdotheyknow">Follow us on twitter</a>
+|
+        <a href="/help/privacy">Privacy and cookies</a>
+        |
+
+        Built by <a href="http://www.mysociety.org/">mySociety</a>, powered by <a href="/help/alaveteli">Alaveteli</a> ...
+        <a href="/help/credits#helpus">and you</a>
+        |
+        Dedicated to <a href="http://mk.ucant.org/archives/000129.html">Chris Lightfoot</a>
+
+</div>
+<div class="after-footer">&nbsp;</div>
+
+
+</div>
+<div id="other-country-notice"></div>
+<div id="link_box"><span class="close-button">X</span>
+Paste this link into emails, tweets, and anywhere else:
+<br />
+<input type="text">
+</div>
+        <script type="text/javascript">
+          var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+          document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
+          var pageTracker = _gat._getTracker("UA-24614779-1");
+          pageTracker._trackPageview();
+        </script>
+
+
+
+    </body>
+</html>
