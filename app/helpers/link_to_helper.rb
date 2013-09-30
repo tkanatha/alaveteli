@@ -191,6 +191,18 @@ module LinkToHelper
         do_track_url(track_thing, feed, :only_path => true)
     end
 
+    def track_unsubscribe_url(track, request, options={})
+        url_for(options.merge(:controller => 'track',
+                              :action => 'update',
+                              :track_id => track.id,
+                              :track_medium => "delete",
+                              :r => request.fullpath))
+    end
+
+    def track_unsubscribe_path(track, request)
+        track_unsubscribe_url(track, request, :only_path => true)
+    end
+
     # General pages.
     def search_url(query, params = nil)
         if query.kind_of?(Array)
