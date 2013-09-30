@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>
+            Select the authority to write to - WhatDoTheyKnow
+        </title>
+
+        <link rel="shortcut icon" href="/favicon.ico">
+
+
+          <link href="/assets/application.css?body=1" media="screen" rel="stylesheet" type="text/css" />
+<link href="/assets/theme.css?body=1" media="screen" rel="stylesheet" type="text/css" />
+
+
+        <script src="/assets/jquery.js?body=1" type="text/javascript"></script>
+<script src="/assets/jquery-ui.min.js?body=1" type="text/javascript"></script>
+<script src="/assets/jquery.cookie.js?body=1" type="text/javascript"></script>
+<script src="/assets/general.js?body=1" type="text/javascript"></script>
+<script src="/assets/ba-throttle-debounce.js?body=1" type="text/javascript"></script>
+<script src="/assets/foundation/foundation.js?body=1" type="text/javascript"></script>
+<script src="/assets/foundation/foundation.dropdown.js?body=1" type="text/javascript"></script>
+<script src="/assets/foundation/index.js?body=1" type="text/javascript"></script>
+<script src="/assets/application.js?body=1" type="text/javascript"></script>
+
+
+
+        <meta name="viewport" content="width=device-width" />
+
+    </head>
+    <body class="">
+
+
+<div class="entirebody">
+
+<header class="page_header">
+
+    <div class="ms_header">
+        <div class="ms_header_nav">
+            <nav>
+                <ul class="menu">
+                      <li id="lang_switcher">
+      <a href="#" data-dropdown="droplang" class="ms_header_nav-lang">
+        <img alt="English" src="/assets/lang/en.png" />
+      </a>
+
+      <ul id="droplang" data-dropdown-content class="lang-dropdown">
+          <li>
+            <a lang="en" href="/select_authority">
+              <img alt="English" src="/assets/lang/en.png" />English
+            </a>
+          </li>
+          <li>
+            <a lang="cy" href="/cy/select_authority">
+              <img alt="Cymraeg" src="/assets/lang/cy.png" />Cymraeg
+            </a>
+          </li>
+      </ul>
+  </li>
+
+                    <li id="ms_logo"><a class="ms_header_nav-logo" href="http://mysociety.org">mySociety</a></li>
+
+                    <li><a class="ms_header_nav-about" href="/help/about">About</a></li>
+                    <li><a class="ms_header_nav-blog" href="/blog">Blog</a></li>
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="logo">
+        <a href="/"> <img alt="" src="/assets/logo.png" /></a>
+    </div>
+    <div class="login-block">
+
+      <a href="/profile/sign_in?r=%2Fselect_authority">Login</a>
+    </div>
+    <div class="main_menu">
+        <ul>
+            <li class="menu-newrequest active">
+              <a href="/select_authority">
+                Make Request
+              </a>
+            </li>
+            <li class="menu-viewrequests  ">
+              <a href="/list/successful">
+                View Requests
+              </a>
+            </li>
+            <li class="menu-viewauthorities ">
+              <a href="/body/list/all">
+                View Authorities
+              </a>
+              </li>
+            <li class="menu-emailalerts">
+              <a href="#">
+                Email Alerts
+              </a>
+            </li>
+            <li class="menu-help ">
+              <a href="/help/about">
+                Help
+              </a>
+            </li>
+            <li class="menu-search">
+              <form method="post" action="/search/all">
+                  <label for="search"><img alt="Search:" src="/assets/search.png" /></label>
+                  <input id="navigation_search_button" name="query" type="text" />
+               </form>
+            </li>
+        </ul>
+    </div>
+
+
+</header>
+
+    <div id="wrapper">
+        <div id="content">
+
+            <div id="request_select_authority" class="request_select_authority controller_request">
+            <script type="text/javascript">
+    $(document).ready(function(){
+        $("#authority_preview").hide();
+
+        // Avoid triggering too often (on each keystroke) by using the debounce jQuery plugin:
+        // http://benalman.com/projects/jquery-throttle-debounce-plugin/
+        $("#query").keypress($.debounce( 300, function() {
+            // Do a type ahead search and display results
+            $("#typeahead_response").load("https://jed.whatdotheyknow.dev.mysociety.org/body/search_ahead?query="+encodeURI(this.value), function() {
+              $("#authority_preview").hide();   // Hide the preview, since results have changed
+
+            });
+        }));
+        // We're using the existing body list: we intercept the clicks on the titles to
+        // display a preview on the right hand side of the screen
+        $("#typeahead_response .head a").live('click', function() {
+            $("#authority_preview").load(this.href+" #public_body_show", function() {
+                $("#authority_preview").show();
+    $(window).scrollTop($("#banner").height());
+                $("#authority_preview #header_right").hide();
+            });
+            return false;
+        });
+    });
+</script>
+
+
+  <h1 style="clear: left">1. Select an authority</h1>
+
+  <div id="authority_selection">
+    <form accept-charset="UTF-8" action="/select_authority" id="search_form" method="get"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div>
+       <div>
+           <p>
+           First, type in the <strong>name of the UK public authority</strong> you'd
+           like information from. <strong>By law, they have to respond</strong>
+           (<a href="/help/about#whybother_them">why?</a>).
+           </p>
+           <input id="query" name="query" size="30" title="type your search term here" type="text" />
+           <input id="bodies" name="bodies" type="hidden" value="1" />
+           <input name="commit" type="submit" value="Search" />
+       </div>
+</form>
+    <div id="typeahead_response">
+
+
+
+
+
+    </div>
+  </div>
+
+  <div id="authority_preview">
+  </div>
+
+
+            </div>
+            <div style="clear:both"></div>
+        </div>
+    </div>
+
+    <div class="footer" id="footer">
+    <ul class="footer-nav">
+        <li><a href="/help/contact">Contact WhatDoTheyKnow</a></li>
+        <li><a href="https://twitter.com/whatdotheyknow">Follow us on twitter</a></li>
+        <li><a href="/help/privacy">Privacy and cookies</a></li>
+         <li><a href="/help/credits#helpus">Run by Volunteers</a> and powered by <a href="/help/alaveteli">Alaveteli</a></li>
+  <li>Dedicated to <a href="http://mk.ucant.org/archives/000129.html">Chris Lightfoot</a></li>
+
+    </ul>
+</div>
+
+
+</div>
+<div id="other-country-notice"></div>
+<div id="link_box"><span class="close-button">X</span>
+Paste this link into emails, tweets, and anywhere else:
+<br />
+<input type="text">
+</div>
+        <script type="text/javascript">
+          var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+          document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
+          var pageTracker = _gat._getTracker("UA-24614779-1");
+          pageTracker._trackPageview();
+        </script>
+
+
+
+    </body>
+</html>

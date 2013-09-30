@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>
+            Select the authority to write to - WhatDoTheyKnow
+        </title>
+
+        <link rel="shortcut icon" href="/favicon.ico">
+
+
+          <link href="/assets/application.css?body=1" media="screen" rel="stylesheet" type="text/css" />
+<link href="/assets/theme.css?body=1" media="screen" rel="stylesheet" type="text/css" />
+
+
+        <script src="/assets/jquery.js?body=1" type="text/javascript"></script>
+<script src="/assets/jquery-ui.min.js?body=1" type="text/javascript"></script>
+<script src="/assets/jquery.cookie.js?body=1" type="text/javascript"></script>
+<script src="/assets/general.js?body=1" type="text/javascript"></script>
+<script src="/assets/ba-throttle-debounce.js?body=1" type="text/javascript"></script>
+<script src="/assets/foundation/foundation.js?body=1" type="text/javascript"></script>
+<script src="/assets/foundation/foundation.dropdown.js?body=1" type="text/javascript"></script>
+<script src="/assets/foundation/index.js?body=1" type="text/javascript"></script>
+<script src="/assets/application.js?body=1" type="text/javascript"></script>
+
+
+
+        <meta name="viewport" content="width=device-width" />
+
+    </head>
+    <body class="">
+
+
+<div class="entirebody">
+
+<header class="page_header">
+
+    <div class="ms_header">
+        <div class="ms_header_nav">
+            <nav>
+                <ul class="menu">
+                      <li id="lang_switcher">
+      <a href="#" data-dropdown="droplang" class="ms_header_nav-lang">
+        <img alt="English" src="/assets/lang/en.png" />
+      </a>
+
+      <ul id="droplang" data-dropdown-content class="lang-dropdown">
+          <li>
+            <a lang="en" href="/select_authority">
+              <img alt="English" src="/assets/lang/en.png" />English
+            </a>
+          </li>
+          <li>
+            <a lang="cy" href="/cy/select_authority">
+              <img alt="Cymraeg" src="/assets/lang/cy.png" />Cymraeg
+            </a>
+          </li>
+      </ul>
+  </li>
+
+                    <li id="ms_logo"><a class="ms_header_nav-logo" href="http://mysociety.org">mySociety</a></li>
+
+                    <li><a class="ms_header_nav-about" href="/help/about">About</a></li>
+                    <li><a class="ms_header_nav-blog" href="/blog">Blog</a></li>
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="logo">
+        <a href="/"> <img alt="" src="/assets/logo.png" /></a>
+    </div>
+    <div class="login-block">
+
+      <a href="/profile/sign_in?r=%2Fselect_authority">Login</a>
+    </div>
+    <div class="main_menu">
+        <ul>
+            <li class="menu-newrequest active">
+              <a href="/select_authority">
+                Make Request
+              </a>
+            </li>
+            <li class="menu-viewrequests  ">
+              <a href="/list/successful">
+                View Requests
+              </a>
+            </li>
+            <li class="menu-viewauthorities ">
+              <a href="/body/list/all">
+                View Authorities
+              </a>
+              </li>
+            <li class="menu-emailalerts">
+              <a href="#">
+                Email Alerts
+              </a>
+            </li>
+            <li class="menu-help ">
+              <a href="/help/about">
+                Help
+              </a>
+            </li>
+            <li class="menu-search">
+              <form method="post" action="/search/all">
+                  <label for="search"><img alt="Search:" src="/assets/search.png" /></label>
+                  <input id="navigation_search_button" name="query" type="text" />
+               </form>
+            </li>
+        </ul>
+    </div>
+
+
+</header>
+
+    <div id="wrapper">
+        <div id="content">
+
+            <div id="request_select_authority" class="request_select_authority controller_request">
+                <h1>Which part of the government are you requesting information from?</h1>
+
+                <div id="authority_selection">
+                    <form accept-charset="UTF-8" action="/select_authority" id="search_form" method="get">
+                        <input name="utf8" type="hidden" value="&#x2713;" />
+                        <div>
+                            <input id="query" name="query" placeholder="e.g Ministry of Finance" type="search" />
+                            <input id="bodies" name="bodies" type="hidden" value="1" />
+                            <input name="commit" type="submit" value="Search" />
+                        </div>
+                    </form>
+                    <div class="request_select_authority_results">
+                        <!-- Show the help link before a search and replace with results once they've successfully searched -->
+                        <a href="#ADD-help-with-request-link">Need help?</a>
+
+                        <ul>
+                            <li>
+                                <div class="authority-details">
+                                    <h3>Department for Education</h3>
+                                    <p>The Department for Education was formed on 12 May 2010 and is responsible for education and children's services. It replaces the Department for Children, Schools and Families (DCSF).</p>
+                                </div>
+                                <div class="authority-request_count">
+                                    <strong>889</strong> requests
+                                </div>
+                                <div class="authority-make_request">
+                                    <a href="#ADD-make-request-link">Make a request to this authority</a>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="authority-details">
+                                    <h3>Department for Education</h3>
+                                    <p>The Department for Education was formed on 12 May 2010 and is responsible for education and children's services. It replaces the Department for Children, Schools and Families (DCSF).</p>
+                                </div>
+                                <div class="authority-request_count">
+                                    <strong>889</strong> requests
+                                </div>
+                                <div class="authority-make_request">
+                                    <a href="#ADD-make-request-link">Make a request to this authority</a>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="authority-details">
+                                    <h3>Department for Education</h3>
+                                    <p>The Department for Education was formed on 12 May 2010 and is responsible for education and children's services. It replaces the Department for Children, Schools and Families (DCSF).</p>
+                                </div>
+                                <div class="authority-request_count">
+                                    <strong>889</strong> requests
+                                </div>
+                                <div class="authority-make_request">
+                                    <a href="#ADD-make-request-link">Make a request to this authority</a>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="authority-details">
+                                    <h3>Department for Education</h3>
+                                    <p>The Department for Education was formed on 12 May 2010 and is responsible for education and children's services. It replaces the Department for Children, Schools and Families (DCSF).</p>
+                                </div>
+                                <div class="authority-request_count">
+                                    <strong>889</strong> requests
+                                </div>
+                                <div class="authority-make_request">
+                                    <a href="#ADD-make-request-link">Make a request to this authority</a>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <ul class="pagination">
+                            <li class="arrow unavailable"><a href="">&laquo;</a></li>
+
+                            <li class="current"><a href="">1</a></li>
+                            <li><a href="">2</a></li>
+                            <li><a href="">3</a></li>
+                            <li><a href="">4</a></li>
+                            <li class="unavailable"><a href="">&hellip;</a></li>
+                            <li><a href="">12</a></li>
+                            <li><a href="">13</a></li>
+
+                            <li class="arrow"><a href="">&raquo;</a></li>
+                        </ul>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="footer" id="footer">
+    <ul class="footer-nav">
+        <li><a href="/help/contact">Contact WhatDoTheyKnow</a></li>
+        <li><a href="https://twitter.com/whatdotheyknow">Follow us on twitter</a></li>
+        <li><a href="/help/privacy">Privacy and cookies</a></li>
+         <li><a href="/help/credits#helpus">Run by Volunteers</a> and powered by <a href="/help/alaveteli">Alaveteli</a></li>
+  <li>Dedicated to <a href="http://mk.ucant.org/archives/000129.html">Chris Lightfoot</a></li>
+
+    </ul>
+</div>
+
+
+</div>
+<div id="other-country-notice"></div>
+<div id="link_box"><span class="close-button">X</span>
+Paste this link into emails, tweets, and anywhere else:
+<br />
+<input type="text">
+</div>
+        <script type="text/javascript">
+          var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+          document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
+          var pageTracker = _gat._getTracker("UA-24614779-1");
+          pageTracker._trackPageview();
+        </script>
+
+
+
+    </body>
+</html>
