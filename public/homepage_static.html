@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>
+            WhatDoTheyKnow - Make and browse Freedom of Information (FOI) requests
+        </title>
+
+        <link rel="shortcut icon" href="/favicon.ico">
+
+
+          <link href="/assets/application.css?body=1" media="screen" rel="stylesheet" type="text/css" />
+<link href="/assets/theme.css?body=1" media="screen" rel="stylesheet" type="text/css" />
+
+
+        <script src="/assets/jquery.js?body=1" type="text/javascript"></script>
+<script src="/assets/jquery-ui.min.js?body=1" type="text/javascript"></script>
+<script src="/assets/jquery.cookie.js?body=1" type="text/javascript"></script>
+<script src="/assets/general.js?body=1" type="text/javascript"></script>
+<script src="/assets/foundation/foundation.js?body=1" type="text/javascript"></script>
+<script src="/assets/foundation/foundation.dropdown.js?body=1" type="text/javascript"></script>
+<script src="/assets/foundation/index.js?body=1" type="text/javascript"></script>
+<script src="/assets/application.js?body=1" type="text/javascript"></script>
+
+
+
+        <meta name="viewport" content="width=device-width" />
+
+    </head>
+    <body class="front">
+
+
+<div class="entirebody">
+
+<header class="page_header">
+
+    <div class="ms_header">
+        <div class="ms_header_nav">
+            <nav>
+                <ul class="menu">
+                      <li id="lang_switcher">
+      <a href="#" data-dropdown="droplang" class="ms_header_nav-lang">
+        <img alt="English" src="/assets/lang/en.png" />
+      </a>
+
+      <ul id="droplang" data-dropdown-content class="lang-dropdown">
+          <li>
+            <a lang="en" href="/">
+              <img alt="English" src="/assets/lang/en.png" />English
+            </a>
+          </li>
+          <li>
+            <a lang="cy" href="/cy">
+              <img alt="Cymraeg" src="/assets/lang/cy.png" />Cymraeg
+            </a>
+          </li>
+      </ul>
+  </li>
+
+                    <li id="ms_logo"><a class="ms_header_nav-logo" href="http://mysociety.org">mySociety</a></li>
+
+                    <li><a class="ms_header_nav-about" href="/help/about">About</a></li>
+                    <li><a class="ms_header_nav-blog" href="/blog">Blog</a></li>
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="logo">
+        <a href="/"> <img alt="" src="/assets/logo.png" /></a>
+    </div>
+    <div class="login-block">
+
+      <a href="/profile/sign_in?r=%2F">Login</a>
+    </div>
+    <div class="main_menu">
+        <ul>
+            <li class="menu-newrequest ">
+              <a href="/select_authority">
+                Make Request
+              </a>
+            </li>
+            <li class="menu-viewrequests  ">
+              <a href="/list/successful">
+                View Requests
+              </a>
+            </li>
+            <li class="menu-viewauthorities ">
+              <a href="/body/list/all">
+                View Authorities
+              </a>
+              </li>
+            <li class="menu-emailalerts">
+              <a href="#">
+                Email Alerts
+              </a>
+            </li>
+            <li class="menu-help ">
+              <a href="/help/about">
+                Help
+              </a>
+            </li>
+            <li class="menu-search">
+              <form method="post" action="/search/all">
+                  <label for="search"><img alt="Search:" src="/assets/search.png" /></label>
+                  <input id="navigation_search_button" name="query" type="text" />
+               </form>
+            </li>
+        </ul>
+    </div>
+
+
+</header>
+
+    <div id="wrapper">
+        <div id="content">
+
+            <div id="general_frontpage" class="general_frontpage controller_general">
+                <header id="frontpage_splash">
+                    <h1>
+                        You have a right to ask the government for information and get answers.
+                        <a href="#">Learn more…</a>
+                    </h1>
+                </header>
+            </div>
+
+            <div class="frontpage_actions">
+                <div class="frontpage_make_request" id="frontpage_right_to_know">
+                    <a class="make_request_button" href="/select_authority">
+                        Make a request <!-- Remove the small if problematic, which I think it is -->
+                        <small>56% of requests are successful</small>
+                    </a>
+                </div>
+
+                <div class="frontpage_search_requests" id="frontpage_search_box">
+                    <h2>Search <strong>17</strong> requests and responses</h2>
+
+                    <form id="search_form" method="post" action="/search/all">
+                        <div>
+                            <input id="query" type="text" name="query" placeholder="e.g development budget" >
+                            <input class="submit_button" type="submit" value="Search">
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div id="frontpage_examples">
+                    <ol class="request-thread">
+
+                        <li class="outgoing correspondence" id="outgoing-21">
+                            <a href="#request_url">
+                                <div class="correspondence-meta">
+                                    <strong>Joe Admin</strong>
+                                    <date>7 August 2013</date>
+                                </div>
+
+                                <div class="correspondence_text excerpt">
+                                    <p>Dear Ministry of Defence, It has recently been reported that the MOD has more than 500 horses. Please provide the most recent annual&hellip;</p>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="outgoing correspondence" id="outgoing-22">
+                            <a href="#request_url">
+                                <div class="correspondence-meta">
+                                    <strong>Joe Admin</strong>
+                                    <date>7 August 2013</date>
+                                </div>
+
+                                <div class="correspondence_text excerpt">
+                                    <p>Dear Ministry of Defence, It has recently been reported that the MOD has more than 500 horses. Please provide the most recent annual&hellip;</p>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="outgoing correspondence" id="outgoing-23">
+                            <a href="#request_url">
+                                <div class="correspondence-meta">
+                                    <strong>Joe Admin</strong>
+                                    <date>7 August 2013</date>
+                                </div>
+
+                                <div class="correspondence_text excerpt">
+                                    <p>Dear Ministry of Defence, It has recently been reported that the MOD has more than 500 horses. Please provide the most recent annual&hellip;</p>
+                                </div>
+                            </a>
+                        </li>
+
+                    <p>
+                        <a href="/list/all">More requests...</a>
+                    </p>
+
+              </div>
+
+        </div>
+
+
+            </div>
+
+    <div class="footer" id="footer">
+    <ul class="footer-nav">
+        <li><a href="/help/contact">Contact WhatDoTheyKnow</a></li>
+        <li><a href="https://twitter.com/whatdotheyknow">Follow us on twitter</a></li>
+        <li><a href="/help/privacy">Privacy and cookies</a></li>
+         <li><a href="/help/credits#helpus">Run by Volunteers</a> and powered by <a href="/help/alaveteli">Alaveteli</a></li>
+  <li>Dedicated to <a href="http://mk.ucant.org/archives/000129.html">Chris Lightfoot</a></li>
+
+    </ul>
+</div>
+
+
+</div>
+<div id="other-country-notice"></div>
+<div id="link_box"><span class="close-button">X</span>
+Paste this link into emails, tweets, and anywhere else:
+<br />
+<input type="text">
+</div>
+        <script type="text/javascript">
+          var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+          document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
+          var pageTracker = _gat._getTracker("UA-24614779-1");
+          pageTracker._trackPageview();
+        </script>
+
+
+
+    </body>
+</html>

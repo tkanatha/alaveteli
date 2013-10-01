@@ -1,0 +1,274 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>
+            WhatDoTheyKnow - Make and browse Freedom of Information (FOI) requests
+        </title>
+
+        <link rel="shortcut icon" href="/favicon.ico">
+
+
+          <link href="/assets/application.css?body=1" media="screen" rel="stylesheet" type="text/css" />
+<link href="/assets/theme.css?body=1" media="screen" rel="stylesheet" type="text/css" />
+
+
+        <script src="/assets/jquery.js?body=1" type="text/javascript"></script>
+<script src="/assets/jquery-ui.min.js?body=1" type="text/javascript"></script>
+<script src="/assets/jquery.cookie.js?body=1" type="text/javascript"></script>
+<script src="/assets/general.js?body=1" type="text/javascript"></script>
+<script src="/assets/foundation/foundation.js?body=1" type="text/javascript"></script>
+<script src="/assets/foundation/foundation.dropdown.js?body=1" type="text/javascript"></script>
+<script src="/assets/foundation/index.js?body=1" type="text/javascript"></script>
+<script src="/assets/application.js?body=1" type="text/javascript"></script>
+
+
+
+        <meta name="viewport" content="width=device-width" />
+
+    </head>
+    <body class="front">
+
+
+<div class="entirebody">
+
+<header class="page_header">
+
+    <div class="ms_header">
+        <div class="ms_header_nav">
+            <nav>
+                <ul class="menu">
+                      <li id="lang_switcher">
+      <a href="#" data-dropdown="droplang" class="ms_header_nav-lang">
+        <img alt="English" src="/assets/lang/en.png" />
+      </a>
+
+      <ul id="droplang" data-dropdown-content class="lang-dropdown">
+          <li>
+            <a lang="en" href="/">
+              <img alt="English" src="/assets/lang/en.png" />English
+            </a>
+          </li>
+          <li>
+            <a lang="cy" href="/cy">
+              <img alt="Cymraeg" src="/assets/lang/cy.png" />Cymraeg
+            </a>
+          </li>
+      </ul>
+  </li>
+
+                    <li id="ms_logo"><a class="ms_header_nav-logo" href="http://mysociety.org">mySociety</a></li>
+
+                    <li><a class="ms_header_nav-about" href="/help/about">About</a></li>
+                    <li><a class="ms_header_nav-blog" href="/blog">Blog</a></li>
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="logo">
+        <a href="/"> <img alt="" src="/assets/logo.png" /></a>
+    </div>
+    <div class="login-block">
+
+      <a href="/profile/sign_in?r=%2F">Login</a>
+    </div>
+    <div class="main_menu">
+        <ul>
+            <li class="menu-newrequest ">
+              <a href="/select_authority">
+                Make Request
+              </a>
+            </li>
+            <li class="menu-viewrequests  ">
+              <a href="/list/successful">
+                View Requests
+              </a>
+            </li>
+            <li class="menu-viewauthorities ">
+              <a href="/body/list/all">
+                View Authorities
+              </a>
+              </li>
+            <li class="menu-emailalerts">
+              <a href="#">
+                Email Alerts
+              </a>
+            </li>
+            <li class="menu-help ">
+              <a href="/help/about">
+                Help
+              </a>
+            </li>
+            <li class="menu-search">
+              <form method="post" action="/search/all">
+                  <label for="search"><img alt="Search:" src="/assets/search.png" /></label>
+                  <input id="navigation_search_button" name="query" type="text" />
+               </form>
+            </li>
+        </ul>
+    </div>
+
+
+</header>
+
+    <div id="wrapper">
+        <div id="content">
+
+            <div id="general_frontpage" class="general_frontpage controller_general">
+              <div id="frontpage_splash">
+    <div id="left_column">
+      <h1>
+  Make a new<br/>
+  <strong>Freedom <span>of</span><br/>
+  Information<br/>
+  request</strong>
+</h1>
+<a class="link_button_green_large" href="/select_authority">Start now &raquo;</a>
+
+    </div>
+    <div id="right_column">
+      <div id="frontpage_search_box">
+        <h2>
+  Search over<br/>
+  <strong>17 requests</strong> <span>and</span><br/>
+  <strong>7 authorities</strong>
+</h2>
+<form id="search_form" method="post" action="/search/all">
+  <div>
+    <input id="query" type="text" size="30" name="query" title="type your search term here" >
+    <input type="submit" value="Search">
+  </div>
+</form>
+
+      </div>
+      <div id="frontpage_right_to_know">
+        First, type in the <strong>name of the UK public authority</strong> you'd
+like information from. <strong>By law, they have to respond</strong>
+(<a href="https://jed.whatdotheyknow.dev.mysociety.org/help/about">why?</a>).
+
+      </div>
+    </div>
+    <div style="clear:both"></div>
+  </div>
+  <div id="frontpage_examples">
+        <div id="examples_0">
+    <h3>Who can I request information from?</h3>
+    WhatDoTheyKnow covers requests to 7 authorities, including:
+    <ul>
+            <li><a href="/body/mod">Ministry of Defence</a>
+             4 requests
+            </li>
+    </ul>
+    <p><strong>
+        <a href="/body/list/all">Browse all authorities...</a>
+    </strong></p>
+  </div>
+
+      <div id="examples_1">
+  <h3>
+      What information has been requested?
+  </h3>
+   WhatDoTheyKnow users have made 17 requests, including:
+    <ul>
+        <li>
+            <a href="/body/mod">Ministry of Defence</a> was sent a request about
+
+           <a href="/request/things">Things</a>
+           12 days ago
+           <p class="excerpt" onclick="document.location.href='/request/things'">What are the things.
+
+Yours faithfully,
+Jed</p>
+        </li>
+        <li>
+            <a href="/body/moj">Ministry of Justice</a> was sent a request about
+
+           <a href="/request/annual_biscuit_budget">Annual Biscuit Budget</a>
+           29 days ago
+           <p class="excerpt" onclick="document.location.href='/request/annual_biscuit_budget'">Please detail your annual biscuit budget for the last 5 years. For the purposes of this request please include Jaffa Cakes.
+
+Yours faithfully,
+
+CM</p>
+        </li>
+        <li>
+            <a href="/body/mod">Ministry of Defence</a> was sent a request about
+
+           <a href="/request/500_mod_horses">500 MOD Horses</a>
+           about 1 month ago
+           <p class="excerpt" onclick="document.location.href='/request/500_mod_horses'">Please find our response attached.
+
+ Army Secretariat, Army HQ, Second Floor, Zone 1, IDL 24, Blenheim
+ Building, Marlborough Lines, Andover, Hampshire, SP11 8HJ
+
+Army Headquarters Secretariat IDL 24...</p>
+        </li>
+        <li>
+            <a href="/body/dfe">Department for Education</a> was sent a request about
+
+           <a href="/request/use_of_benefits_management_metho">Use of Benefits Management Methodologies</a>
+           about 1 month ago
+           <p class="excerpt" onclick="document.location.href='/request/use_of_benefits_management_metho'">Dear Mr Crutchley,
+ Freedom of Information request 2013/0006256 - Use of Benefits Management
+ Methodologies
+ Thank you for your Freedom of Information (FOI) requests to the Department
+ for Education a...</p>
+        </li>
+        <li>
+            <a href="/body/dfe">Department for Education</a> was sent a request about
+
+           <a href="/request/nursery_visits">Nursery visits</a>
+           about 1 month ago
+           <p class="excerpt" onclick="document.location.href='/request/nursery_visits'">Dear Joe Admin
+
+ You requested: ‘Please provide me with a list of nurseries or childcare
+ setting visited by Liz Truss MP in a Ministerial capacity since her
+ appointment, including in other countri...</p>
+        </li>
+    </ul>
+    <p><strong>
+        <a href="/list/all">More requests...</a>
+    </strong></p>
+</div>
+
+  </div>
+
+            </div>
+            <div style="clear:both"></div>
+        </div>
+    </div>
+
+    <div class="footer" id="footer">
+    <ul class="footer-nav">
+        <li><a href="/help/contact">Contact WhatDoTheyKnow</a></li>
+        <li><a href="https://twitter.com/whatdotheyknow">Follow us on twitter</a></li>
+        <li><a href="/help/privacy">Privacy and cookies</a></li>
+         <li><a href="/help/credits#helpus">Run by Volunteers</a> and powered by <a href="/help/alaveteli">Alaveteli</a></li>
+  <li>Dedicated to <a href="http://mk.ucant.org/archives/000129.html">Chris Lightfoot</a></li>
+
+    </ul>
+</div>
+
+
+</div>
+<div id="other-country-notice"></div>
+<div id="link_box"><span class="close-button">X</span>
+Paste this link into emails, tweets, and anywhere else:
+<br />
+<input type="text">
+</div>
+        <script type="text/javascript">
+          var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+          document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
+          var pageTracker = _gat._getTracker("UA-24614779-1");
+          pageTracker._trackPageview();
+        </script>
+
+
+
+    </body>
+</html>
