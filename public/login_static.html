@@ -1,0 +1,248 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>
+            Sign in or make a new account - WhatDoTheyKnow
+        </title>
+
+        <link rel="shortcut icon" href="/favicon.ico">
+
+
+          <link href="/assets/application.css?body=1" media="screen" rel="stylesheet" type="text/css" />
+<link href="/assets/theme.css?body=1" media="screen" rel="stylesheet" type="text/css" />
+
+
+        <script src="/assets/jquery.js?body=1" type="text/javascript"></script>
+<script src="/assets/jquery-ui.min.js?body=1" type="text/javascript"></script>
+<script src="/assets/jquery.cookie.js?body=1" type="text/javascript"></script>
+<script src="/assets/general.js?body=1" type="text/javascript"></script>
+<script src="/assets/foundation/foundation.js?body=1" type="text/javascript"></script>
+<script src="/assets/foundation/foundation.dropdown.js?body=1" type="text/javascript"></script>
+<script src="/assets/foundation/index.js?body=1" type="text/javascript"></script>
+<script src="/assets/application.js?body=1" type="text/javascript"></script>
+
+
+
+        <meta name="viewport" content="width=device-width" />
+
+    </head>
+    <body class="">
+
+
+<div class="entirebody">
+
+<header class="page_header">
+
+    <div class="ms_header">
+        <div class="ms_header_nav">
+            <nav>
+                <ul class="menu">
+                      <li id="lang_switcher">
+      <a href="#" data-dropdown="droplang" class="ms_header_nav-lang">
+        <img alt="English" src="/assets/lang/en.png" />
+      </a>
+
+      <ul id="droplang" data-dropdown-content class="lang-dropdown">
+          <li>
+            <a lang="en" href="/profile/sign_in?r=%2Frequest%2F500_mod_horses&amp;token=dmj40av8yoqczvff3wh">
+              <img alt="English" src="/assets/lang/en.png" />English
+            </a>
+          </li>
+          <li>
+            <a lang="cy" href="/cy/profile/sign_in?r=%2Frequest%2F500_mod_horses&amp;token=dmj40av8yoqczvff3wh">
+              <img alt="Cymraeg" src="/assets/lang/cy.png" />Cymraeg
+            </a>
+          </li>
+      </ul>
+  </li>
+
+                    <li id="ms_logo"><a class="ms_header_nav-logo" href="http://mysociety.org">mySociety</a></li>
+
+                    <li><a class="ms_header_nav-about" href="/help/about">About</a></li>
+                    <li><a class="ms_header_nav-blog" href="/blog">Blog</a></li>
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="logo">
+        <a href="/"> <img alt="" src="/assets/logo.png" /></a>
+    </div>
+    <div class="login-block">
+
+      <a href="/profile/sign_in?r=%2Fprofile%2Fsign_in%3Fr%3D%252Frequest%252F500_mod_horses">Login</a>
+    </div>
+    <div class="main_menu">
+        <ul>
+            <li class="menu-newrequest ">
+              <a href="/select_authority">
+                Make Request
+              </a>
+            </li>
+            <li class="menu-viewrequests  ">
+              <a href="/list/successful">
+                View Requests
+              </a>
+            </li>
+            <li class="menu-viewauthorities ">
+              <a href="/body/list/all">
+                View Authorities
+              </a>
+              </li>
+            <li class="menu-emailalerts">
+              <a href="#">
+                Email Alerts
+              </a>
+            </li>
+            <li class="menu-help ">
+              <a href="/help/about">
+                Help
+              </a>
+            </li>
+            <li class="menu-search">
+              <form method="post" action="/search/all">
+                  <label for="search"><img alt="Search:" src="/assets/search.png" /></label>
+                  <input id="navigation_search_button" name="query" type="text" />
+               </form>
+            </li>
+        </ul>
+    </div>
+
+
+</header>
+
+    <div id="wrapper">
+        <div id="content">
+
+            <div id="user_signin" class="user_signin controller_user">
+
+
+    <div id="sign_together">
+        <h1 id="sign_in_reason">
+            To <!-- Do Thing X --> send you updates about that request <!-- /x --> we need your name, email address and a password to keep them safe.
+        </h1>
+        <div class="sign_in_options">
+<!-- All that's really changed is the contents of left and right have been swapped and they are both contained in another div .sign_in_options and a few wording changes-->
+            <div id="left_half">
+                <h2>New Account</h2>
+                <div id="signup">
+                    <form accept-charset="UTF-8" action="/profile/sign_up" id="signup_form" method="post">
+                        <input name="utf8" type="hidden" value="&#x2713;" />
+                        <input name="authenticity_token" type="hidden" value="4PrmEHtufd3RPDPguexI2iYsdcic7T+zy2OUttDyxFc=" />
+
+                        <p>
+                            <label class="form_label" for="user_signup_name"> Your name:</label>
+                            <input autocomplete="off" id="user_signup_name" name="user_signup[name]" size="20" tabindex="70" type="text" />
+                        </p>
+                        <div class="form_item_note">
+                             Your <strong>name will appear publicly</strong>
+                            (<a href="/help/privacy#public_request">why?</a>)
+                            on this website and in search engines. If you
+                            are thinking of using a pseudonym, please
+                            <a href="/help/privacy#real_name">read this first</a>.
+                        </div>
+
+                        <p>
+                            <label class="form_label" for="user_signup_email">Your e-mail:</label>
+                            <input id="user_signup_email" name="user_signup[email]" size="20" tabindex="60" type="text" />
+                        </p>
+                        <div class="form_item_note">
+                            We will not reveal your email address to anybody unless you or the law tell us to (<a href="/help/privacy">details</a>).
+                        </div>
+
+                        <p>
+                            <label class="form_label" for="user_signup_password"> Password:</label>
+                            <input autocomplete="off" id="user_signup_password" name="user_signup[password]" size="15" tabindex="80" type="password" />
+                        </p>
+
+                        <p>
+                            <label class="form_label" for="user_signup_password_confirmation"> Password: (again)</label>
+                            <input autocomplete="off" id="user_signup_password_confirmation" name="user_signup[password_confirmation]" size="15" tabindex="90" type="password" />
+                        </p>
+
+
+                        <div class="form_button">
+                            <input id="signup_token" name="token" type="hidden" value="dmj40av8yoqczvff3wh" />
+                            <input id="signup_modal" name="modal" type="hidden" />
+                            <input name="commit" tabindex="100" type="submit" value="Create account" />
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+            <div id="right_half">
+                <h2>If you have an account Login</h2>
+                <div id="signin">
+
+                    <form accept-charset="UTF-8" action="/profile/sign_in" id="signin_form" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="4PrmEHtufd3RPDPguexI2iYsdcic7T+zy2OUttDyxFc=" /></div>
+
+                        <p>
+                            <label class="form_label" for="user_signin_email">Your e-mail:</label>
+                            <input id="user_signin_email" name="user_signin[email]" size="20" tabindex="10" type="text" />
+                        </p>
+
+                        <p>
+                            <label class="form_label" for="user_signin_password">Password:</label>
+                            <input id="user_signin_password" name="user_signin[password]" size="15" tabindex="20" type="password" />
+                        </p>
+
+                        <p class="form_note">
+                            <a href="/profile/change_password?pretoken=dmj40av8yoqczvff3wh" tabindex="30">Forgotten your password?</a>
+                        </p>
+
+                        <p class="form_checkbox">
+                            <input id="remember_me" name="remember_me" tabindex="40" type="checkbox" value="1" />
+                            <label for="remember_me">Remember me</label> (keeps you signed in longer; do not use on a public computer)
+                        </p>
+
+                        <div class="form_button">
+                            <input id="signin_token" name="token" type="hidden" value="dmj40av8yoqczvff3wh" />
+                            <input id="signin_modal" name="modal" type="hidden" />
+                            <input name="commit" tabindex="50" type="submit" value="Login" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        </div>
+    </div>
+
+    <div class="footer" id="footer">
+    <ul class="footer-nav">
+        <li><a href="/help/contact">Contact WhatDoTheyKnow</a></li>
+        <li><a href="https://twitter.com/whatdotheyknow">Follow us on twitter</a></li>
+        <li><a href="/help/privacy">Privacy and cookies</a></li>
+         <li><a href="/help/credits#helpus">Run by Volunteers</a> and powered by <a href="/help/alaveteli">Alaveteli</a></li>
+  <li>Dedicated to <a href="http://mk.ucant.org/archives/000129.html">Chris Lightfoot</a></li>
+
+    </ul>
+</div>
+
+
+</div>
+<div id="other-country-notice"></div>
+<div id="link_box"><span class="close-button">X</span>
+Paste this link into emails, tweets, and anywhere else:
+<br />
+<input type="text">
+</div>
+        <script type="text/javascript">
+          var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+          document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
+          var pageTracker = _gat._getTracker("UA-24614779-1");
+          pageTracker._trackPageview();
+        </script>
+
+
+
+    </body>
+</html>
