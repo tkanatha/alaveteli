@@ -54,7 +54,9 @@ describe TrackThing, "when tracking changes" do
         tests = { 'bob variety:user' => "users matching text 'bob'",
                   'bob (variety:sent OR variety:followup_sent OR variety:response OR variety:comment) (latest_status:successful OR latest_status:partially_successful OR latest_status:rejected OR latest_status:not_held)' => "comments or requests which are successful or unsuccessful matching text 'bob'",
                   '(latest_status:waiting_response OR latest_status:waiting_clarification OR waiting_classification:true)' => 'requests which are awaiting a response',
-                  ' (variety:sent OR variety:followup_sent OR variety:response OR variety:comment)' => 'all requests or comments' }
+                  ' (variety:sent OR variety:followup_sent OR variety:response OR variety:comment)' => 'all requests or comments',
+                  '(latest_status:waiting_response OR latest_status:waiting_clarification OR waiting_classification:true)' => 'requests which are awaiting a response',
+                  'bob (variety:sent OR variety:followup_sent OR variety:response OR variety:comment) (latest_status:successful OR latest_status:partially_successful OR latest_status:rejected OR latest_status:not_held) requested_from:msw' => "comments or requests which are successful or unsuccessful made to Ministry of Silly Walks matching text 'bob'"}
         tests.each do |query, description|
             track_thing = TrackThing.create_track_for_search_query(query)
             track_thing.track_query_description.should == description
