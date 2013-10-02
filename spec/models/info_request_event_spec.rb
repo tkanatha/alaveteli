@@ -203,5 +203,55 @@ describe InfoRequestEvent do
 
     end
 
+    describe 'when asked for a name suitable for a letterhead' do
+
+        before do
+            @comment = mock_model(Comment)
+            @incoming_message = mock_model(IncomingMessage)
+            @outgoing_message = mock_model(OutgoingMessage)
+            @info_request = mock_model(InfoRequest)
+            @public_body = mock_model(PublicBody)
+            @public_body.stub!(:name).and_return "The Ministry of Silly Walks"
+            @info_request.stub!(:public_body).and_return @public_body
+        end
+
+        it 'should return nothing if there is not incoming or outgoing message' do
+            event = InfoRequestEvent.new
+            event.letterhead_from.should == ''
+            comment_event = InfoRequestEvent.new(:event_type => 'comment',
+                                                 :comment => @comment,
+                                                 :info_request => @info_request)
+            comment_event.letterhead_from.should == ''
+        end
+
+        it 'should return the name of the request creator for an outgoing message' do
+            @info_request.stub!(:user_name).and_return "Bob"
+            event = InfoRequestEvent.new(:event_type => 'sent',
+                                         :outgoing_message => @outgoing_message,
+                                         :info_request => @info_request)
+            event.letterhead_from.should == 'Bob'
+
+        end
+
+        it 'should return the name of the person for an incoming message, if available' do
+            @incoming_message.stub!(:specific_from_name?).and_return true
+            @incoming_message.stub!(:safe_mail_from).and_return "Sir Humphrey Appleby"
+            event = InfoRequestEvent.new(:event_type => 'response',
+                                         :incoming_message => @incoming_message,
+                                         :info_request => @info_request)
+            event.letterhead_from.should == "Sir Humphrey Appleby"
+        end
+
+        it 'should return the public body name for an incoming message, if no specific name is available' do
+            @incoming_message.stub!(:specific_from_name?).and_return false
+            @incoming_message.stub!(:from_public_body?).and_return true
+            event = InfoRequestEvent.new(:event_type => 'response',
+                                         :incoming_message => @incoming_message,
+                                         :info_request => @info_request)
+            event.letterhead_from.should == "The Ministry of Silly Walks"
+        end
+
+    end
+
 end
 
