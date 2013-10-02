@@ -1,0 +1,265 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>
+            Public authorities - WhatDoTheyKnow
+        </title>
+
+        <link rel="shortcut icon" href="/favicon.ico">
+
+
+          <link href="/assets/application.css?body=1" media="screen" rel="stylesheet" type="text/css" />
+<link href="/assets/theme.css?body=1" media="screen" rel="stylesheet" type="text/css" />
+
+
+        <script src="/assets/jquery.js?body=1" type="text/javascript"></script>
+<script src="/assets/jquery-ui.min.js?body=1" type="text/javascript"></script>
+<script src="/assets/jquery.cookie.js?body=1" type="text/javascript"></script>
+<script src="/assets/general.js?body=1" type="text/javascript"></script>
+<script src="/assets/foundation/foundation.js?body=1" type="text/javascript"></script>
+<script src="/assets/foundation/foundation.dropdown.js?body=1" type="text/javascript"></script>
+<script src="/assets/foundation/index.js?body=1" type="text/javascript"></script>
+<script src="/assets/application.js?body=1" type="text/javascript"></script>
+
+
+
+        <meta name="viewport" content="width=device-width" />
+
+    </head>
+    <body class="">
+
+
+<div class="entirebody">
+
+<header class="page_header">
+
+    <div class="ms_header">
+        <div class="ms_header_nav">
+            <nav>
+                <ul class="menu">
+                      <li id="lang_switcher">
+      <a href="#" data-dropdown="droplang" class="ms_header_nav-lang">
+        <img alt="English" src="/assets/lang/en.png" />
+      </a>
+
+      <ul id="droplang" data-dropdown-content class="lang-dropdown">
+          <li>
+            <a lang="en" href="/body">
+              <img alt="English" src="/assets/lang/en.png" />English
+            </a>
+          </li>
+          <li>
+            <a lang="cy" href="/cy/body">
+              <img alt="Cymraeg" src="/assets/lang/cy.png" />Cymraeg
+            </a>
+          </li>
+      </ul>
+  </li>
+
+                    <li id="ms_logo"><a class="ms_header_nav-logo" href="http://mysociety.org">mySociety</a></li>
+
+                    <li><a class="ms_header_nav-about" href="/help/about">About</a></li>
+                    <li><a class="ms_header_nav-blog" href="/blog">Blog</a></li>
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="logo">
+        <a href="/"> <img alt="" src="/assets/logo.png" /></a>
+    </div>
+    <div class="login-block">
+
+      <a href="/profile/sign_in?r=%2Fbody%2Flist%2Fall">Login</a>
+    </div>
+    <div class="main_menu">
+        <ul>
+            <li class="menu-newrequest ">
+              <a href="/select_authority">
+                Make Request
+              </a>
+            </li>
+            <li class="menu-viewrequests  ">
+              <a href="/list/successful">
+                View Requests
+              </a>
+            </li>
+            <li class="menu-viewauthorities active">
+              <a href="/body/list/all">
+                View Authorities
+              </a>
+              </li>
+            <li class="menu-emailalerts">
+              <a href="#">
+                Email Alerts
+              </a>
+            </li>
+            <li class="menu-help ">
+              <a href="/help/about">
+                Help
+              </a>
+            </li>
+            <li class="menu-search">
+              <form method="post" action="/search/all">
+                  <label for="search"><img alt="Search:" src="/assets/search.png" /></label>
+                  <input id="navigation_search_button" name="query" type="text" />
+               </form>
+            </li>
+        </ul>
+    </div>
+
+
+</header>
+
+    <div id="wrapper">
+        <div id="content">
+
+            <div id="public_body_list" class="public_body_list controller_public_body">
+
+            <header>
+                <h1>There are 7 Public Authorities:</h1>
+            </header>
+
+            <div class="authority_filters">
+                <form accept-charset="UTF-8" action="https://jed.whatdotheyknow.dev.mysociety.org/body/list/all" id="search_form" method="get">
+                    <input name="utf8" type="hidden" value="✓">
+                    <div class="list-filter-item query">
+                        <label for="public_body_query">Search Authorities:</label>
+                        <input id="public_body_query" name="public_body_query" placeholder="eg. ‘BBC’ or ‘Work & Pensions’" title="type your search term here" type="text">
+                    </div>
+
+                    <!-- I think we will have to take the category dropdowns out -->
+                    <div class="list-filter-item category">
+                        <select name="public_body_category" id="public_body_category">
+                            <option value=""></option>
+                            <option>Miscellaneous</option>
+                            <option>Central government</option>
+                            <option>Local and regional</option>
+                            <option>Education</option>
+                            <option>Environment and agriculture</option>
+                            <option selected>Health</option>
+                            <option>Media and culture</option>
+                            <option>Military and security services</option>
+                            <option>Emergency services</option>
+                            <option>Law making bodies, the courts and the legal system</option>
+                            <option>Transport</option>
+                            <option>Groups of public authorities</option>
+                            <option>Other</option>
+                            <option>Defunct bodies</option>
+                        </select>
+                    </div>
+                    <div class="list-filter-item subcategory">
+                        <select name="public_body_subcategory" id="public_body_subcategory">
+                            <option value="/body/list/">All subcategories</option>
+                            <option value="/body/list/nhs">NHS bodies</option>
+                            <option selected value="/body/list/nhstrust">NHS trusts</option>
+                            <option value="/body/list/pct">Primary care trusts</option>
+                            <option value="/body/list/nhswales">NHS in Wales</option>
+                            <option value="/body/list/chc">Community Health Councils (Wales)</option>
+                            <option value="/body/list/nhsni">NHS in Northern Ireland</option>
+                            <option value="/body/list/commissioning_consortium">GP commissioning consortia</option>
+                            <option value="/body/list/hscr">Health / social care</option>
+                            <option value="/body/list/his">Health Informatic Services</option>
+                            <option value="/body/list/optician">Opticians</option>
+                            <option value="/body/list/pharmacy">Pharmacies</option>
+                            <option value="/body/list/pha">Port health authorities</option>
+                            <option value="/body/list/pho">Public health observatories</option>
+                            <option value="/body/list/sha">Strategic health authorities</option>
+                            <option value="/body/list/specialha">Special health authorities</option>
+                        </select>
+                    </div>
+                    <div class="list-filter-item submit">
+                        <input name="commit" type="submit" value="Search">
+                    </div>
+                </form>
+            </div><!-- / div.authority_filters  -->
+
+            <div class="authority_list">
+
+                <ol class="results_block">
+                    <li class="body_listing">
+                        <a href="/body/attorney_generals_office">
+                            <div class="body_name">
+                                Attorney General's Office
+                            </div>
+                            <div class="body_requests_total">
+                                1 request
+                            </div>
+                            <div class="body_desc">
+                                The Department for Education was formed on 12 May 2010 and is responsible for education and children's services. It replaces the Department for Children, Schools and Families (DCSF).
+                            </div>
+                        </a>
+                    </li>
+                    <li class="body_listing">
+                        <a href="/body/attorney_generals_office">
+                            <div class="body_name">
+                                Attorney General's Office
+                            </div>
+                            <div class="body_requests_total">
+                                1 request
+                            </div>
+                            <div class="body_desc">
+                                The Department for Education was formed on 12 May 2010 and is responsible for education and children's services. It replaces the Department for Children, Schools and Families (DCSF).
+                            </div>
+                        </a>
+                    </li>
+                    <li class="body_listing">
+                        <a href="/body/attorney_generals_office">
+                            <div class="body_name">
+                                Attorney General's Office
+                            </div>
+                            <div class="body_requests_total">
+                                1 request
+                            </div>
+                            <div class="body_desc">
+                                The Department for Education was formed on 12 May 2010 and is responsible for education and children's services. It replaces the Department for Children, Schools and Families (DCSF).
+                            </div>
+                        </a>
+                    </li>
+                </ol>
+                <ul class="pagination">
+                    <li class="arrow unavailable"><a href="">&laquo;</a></li>
+                    <li class="current"><a href="">1</a></li>
+                    <li><a href="">2</a></li>
+                    <li><a href="">3</a></li>
+                    <li><a href="">4</a></li>
+                    <li class="unavailable"><a href="">&hellip;</a></li>
+                    <li><a href="">12</a></li>
+                    <li><a href="">13</a></li>
+                    <li class="arrow"><a href="">&raquo;</a></li>
+                </ul>
+                <p><a href="/help/requesting#missing_body">Can't find the one you want?</a></p>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="footer" id="footer">
+    <ul class="footer-nav">
+        <li><a href="/help/contact">Contact WhatDoTheyKnow</a></li>
+        <li><a href="https://twitter.com/whatdotheyknow">Follow us on twitter</a></li>
+        <li><a href="/help/privacy">Privacy and cookies</a></li>
+        <li><a href="/help/credits#helpus">Run by Volunteers</a> and powered by <a href="/help/alaveteli">Alaveteli</a></li>
+        <li>Dedicated to <a href="http://mk.ucant.org/archives/000129.html">Chris Lightfoot</a></li>
+    </ul>
+</div>
+
+<div id="other-country-notice"></div>
+
+        <script type="text/javascript">
+          var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+          document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
+          var pageTracker = _gat._getTracker("UA-24614779-1");
+          pageTracker._trackPageview();
+        </script>
+
+
+
+    </body>
+</html>
