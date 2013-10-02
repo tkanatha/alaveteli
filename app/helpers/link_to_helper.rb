@@ -203,6 +203,16 @@ module LinkToHelper
         track_unsubscribe_url(track, request, :only_path => true)
     end
 
+    def track_link(user, track_thing, subscribe_text, unsubscribe_text, request, options={})
+        if track_thing
+            if existing_track = TrackThing.find_by_existing_track(user, track_thing)
+                link_to(unsubscribe_text, track_unsubscribe_path(existing_track, request), options)
+            else
+                link_to(subscribe_text, do_track_path(track_thing), options)
+            end
+        end
+    end
+
     # General pages.
     def search_url(query, params = nil)
         if query.kind_of?(Array)
