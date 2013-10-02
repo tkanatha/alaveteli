@@ -1,0 +1,14 @@
+$c-notice-border: #bbb !default;
+$c-notice-background: #ddd !default;
+
+$c-notice-success-border: $c-success !default;
+$c-notice-success-background: mix($c-success, $body-bg, 20%) !default;
+
+$c-notice-pending-border: $c-pending !default;
+$c-notice-pending-background: mix($c-pending, $body-bg, 20%) !default;
+
+$c-notice-failure-border: $c-failure !default;
+$c-notice-failure-background: mix($c-failure, $body-bg, 20%) !default;
+
+$c-notice-contrast-border: mix($body-font-color, $body-bg, 90%) !default;
+$c-notice-contrast-background: $body-font-color !default;

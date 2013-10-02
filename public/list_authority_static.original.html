@@ -1,0 +1,737 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>
+            Public authorities - WhatDoTheyKnow
+        </title>
+
+        <link rel="shortcut icon" href="/favicon.ico">
+
+
+          <link href="/assets/application.css?body=1" media="screen" rel="stylesheet" type="text/css" />
+<link href="/assets/theme.css?body=1" media="screen" rel="stylesheet" type="text/css" />
+
+
+        <script src="/assets/jquery.js?body=1" type="text/javascript"></script>
+<script src="/assets/jquery-ui.min.js?body=1" type="text/javascript"></script>
+<script src="/assets/jquery.cookie.js?body=1" type="text/javascript"></script>
+<script src="/assets/general.js?body=1" type="text/javascript"></script>
+<script src="/assets/foundation/foundation.js?body=1" type="text/javascript"></script>
+<script src="/assets/foundation/foundation.dropdown.js?body=1" type="text/javascript"></script>
+<script src="/assets/foundation/index.js?body=1" type="text/javascript"></script>
+<script src="/assets/application.js?body=1" type="text/javascript"></script>
+
+
+
+        <meta name="viewport" content="width=device-width" />
+
+    </head>
+    <body class="">
+
+
+<div class="entirebody">
+
+<header class="page_header">
+
+    <div class="ms_header">
+        <div class="ms_header_nav">
+            <nav>
+                <ul class="menu">
+                      <li id="lang_switcher">
+      <a href="#" data-dropdown="droplang" class="ms_header_nav-lang">
+        <img alt="English" src="/assets/lang/en.png" />
+      </a>
+
+      <ul id="droplang" data-dropdown-content class="lang-dropdown">
+          <li>
+            <a lang="en" href="/body">
+              <img alt="English" src="/assets/lang/en.png" />English
+            </a>
+          </li>
+          <li>
+            <a lang="cy" href="/cy/body">
+              <img alt="Cymraeg" src="/assets/lang/cy.png" />Cymraeg
+            </a>
+          </li>
+      </ul>
+  </li>
+
+                    <li id="ms_logo"><a class="ms_header_nav-logo" href="http://mysociety.org">mySociety</a></li>
+
+                    <li><a class="ms_header_nav-about" href="/help/about">About</a></li>
+                    <li><a class="ms_header_nav-blog" href="/blog">Blog</a></li>
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="logo">
+        <a href="/"> <img alt="" src="/assets/logo.png" /></a>
+    </div>
+    <div class="login-block">
+
+      <a href="/profile/sign_in?r=%2Fbody%2Flist%2Fall">Login</a>
+    </div>
+    <div class="main_menu">
+        <ul>
+            <li class="menu-newrequest ">
+              <a href="/select_authority">
+                Make Request
+              </a>
+            </li>
+            <li class="menu-viewrequests  ">
+              <a href="/list/successful">
+                View Requests
+              </a>
+            </li>
+            <li class="menu-viewauthorities active">
+              <a href="/body/list/all">
+                View Authorities
+              </a>
+              </li>
+            <li class="menu-emailalerts">
+              <a href="#">
+                Email Alerts
+              </a>
+            </li>
+            <li class="menu-help ">
+              <a href="/help/about">
+                Help
+              </a>
+            </li>
+            <li class="menu-search">
+              <form method="post" action="/search/all">
+                  <label for="search"><img alt="Search:" src="/assets/search.png" /></label>
+                  <input id="navigation_search_button" name="query" type="text" />
+               </form>
+            </li>
+        </ul>
+    </div>
+
+
+</header>
+
+    <div id="wrapper">
+        <div id="content">
+
+            <div id="public_body_list" class="public_body_list controller_public_body">
+            <div id="right_column_flip">
+    <h2>Show only...</h2>
+
+    <h3>Beginning with</h3>
+    <ul><li>
+            <a href="/body/list/a">A</a>
+    <a href="/body/list/b">B</a>
+    <a href="/body/list/c">C</a>
+    <a href="/body/list/d">D</a>
+    <a href="/body/list/e">E</a>
+    <a href="/body/list/f">F</a>
+    <a href="/body/list/g">G</a>
+    <a href="/body/list/h">H</a>
+    <a href="/body/list/i">I</a>
+    <a href="/body/list/j">J</a>
+    <a href="/body/list/k">K</a>
+    <a href="/body/list/l">L</a>
+    <a href="/body/list/m">M</a>
+    <a href="/body/list/n">N</a>
+    <a href="/body/list/o">O</a>
+    <a href="/body/list/p">P</a>
+    <a href="/body/list/q">Q</a>
+    <a href="/body/list/r">R</a>
+    <a href="/body/list/s">S</a>
+    <a href="/body/list/t">T</a>
+    <a href="/body/list/u">U</a>
+    <a href="/body/list/v">V</a>
+    <a href="/body/list/w">W</a>
+    <a href="/body/list/x">X</a>
+    <a href="/body/list/y">Y</a>
+    <a href="/body/list/z">Z</a>
+
+    </li>
+    </ul>
+            <h3>Miscellaneous</h3>
+            <ul>
+            <li>
+            <a href="/body/list/other">Miscellaneous</a>
+            </li>
+                </ul>
+            <h3>Central government</h3>
+            <ul>
+            <li>
+            <a href="/body/list/department">Ministerial departments</a>
+            </li>
+            <li>
+            <a href="/body/list/non_ministerial_department">Non-ministerial departments</a>
+            </li>
+            <li>
+            <a href="/body/list/executive_agency">Executive agencies</a>
+            </li>
+            <li>
+            <a href="/body/list/advisory_committee">Advisory bodies</a>
+            </li>
+            <li>
+            <a href="/body/list/endpb">Executive non-departmental public bodies</a>
+            </li>
+            <li>
+            <a href="/body/list/other_cg">Other central government bodies</a>
+            </li>
+            <li>
+            <a href="/body/list/inspectorate">Inspectorates</a>
+            </li>
+            <li>
+            <a href="/body/list/regulator">Regulators</a>
+            </li>
+            <li>
+            <a href="/body/list/public_corporation">Public corporations</a>
+            </li>
+                </ul>
+            <h3>Local and regional</h3>
+            <ul>
+            <li>
+            <a href="/body/list/local_council">Local councils</a>
+            </li>
+            <li>
+            <a href="/body/list/parish_council">Town and Parish councils</a>
+            </li>
+            <li>
+            <a href="/body/list/almo">Housing ALMOs</a>
+            </li>
+            <li>
+            <a href="/body/list/assessor">Assessors for Valuation joint boards (Scotland)</a>
+            </li>
+            <li>
+            <a href="/body/list/housing_association">Housing associations</a>
+            </li>
+            <li>
+            <a href="/body/list/joint_committee">Joint Committees</a>
+            </li>
+            <li>
+            <a href="/body/list/licensing_board">Licensing boards (Scotland)</a>
+            </li>
+            <li>
+            <a href="/body/list/lscb">Local safeguarding children boards</a>
+            </li>
+            <li>
+            <a href="/body/list/municipal_bank">Municipal banks</a>
+            </li>
+            <li>
+            <a href="/body/list/newdeal">New Deal for Communities partnership</a>
+            </li>
+            <li>
+            <a href="/body/list/nsbody">North/south bodies</a>
+            </li>
+            <li>
+            <a href="/body/list/udc">Urban Development Company</a>
+            </li>
+            <li>
+            <a href="/body/list/vjb">Valuation joint boards (Scotland)</a>
+            </li>
+            <li>
+            <a href="/body/list/companies_owned_by_local_gov">Companies owned by local government</a>
+            </li>
+                /ul>
+            <h3>Education</h3>
+            <ul>
+            <li>
+            <a href="/body/list/university">Universities</a>
+            </li>
+            <li>
+            <a href="/body/list/university_college">University colleges</a>
+            </li>
+            <li>
+            <a href="/body/list/cambridge_college">Cambridge colleges</a>
+            </li>
+            <li>
+            <a href="/body/list/durham_college">Durham colleges</a>
+            </li>
+            <li>
+            <a href="/body/list/oxford_college">Oxford colleges</a>
+            </li>
+            <li>
+            <a href="/body/list/group_of_universities">Groups of universities</a>
+            </li>
+            <li>
+            <a href="/body/list/university_owned_company">University owned companies</a>
+            </li>
+            <li>
+            <a href="/body/list/hei">Higher education institutions</a>
+            </li>
+            <li>
+            <a href="/body/list/fei">Further education institutions</a>
+            </li>
+            <li>
+            <a href="/body/list/academies">Academies</a>
+            </li>
+            <li>
+            <a href="/body/list/school">Schools</a>
+            </li>
+            <li>
+            <a href="/body/list/exam_board">Exam boards</a>
+            </li>
+            <li>
+            <a href="/body/list/research_council">Research councils</a>
+            </li>
+            <li>
+            <a href="/body/list/lib_board">Education and library boards</a>
+            </li>
+            <li>
+            <a href="/body/list/rbc">Regional Broadband Consortia</a>
+            </li>
+            <li>
+            <a href="/body/list/school_inspectorate">School inspectorates</a>
+            </li>
+                </ul>
+            <h3>Environment and agriculture</h3>
+            <ul>
+            <li>
+            <a href="/body/list/adhac">Agricultural dwelling house advisory committees</a>
+            </li>
+            <li>
+            <a href="/body/list/awc">Agricultural wages committees</a>
+            </li>
+            <li>
+            <a href="/body/list/ifca">Inshore fisheries and conservation authorities</a>
+            </li>
+            <li>
+            <a href="/body/list/idb">Internal drainage boards</a>
+            </li>
+            <li>
+            <a href="/body/list/mcz">Marine conservation zones</a>
+            </li>
+            <li>
+            <a href="/body/list/npa">National park authorities</a>
+            </li>
+            <li>
+            <a href="/body/list/rpa">Regional park authorities</a>
+            </li>
+            <li>
+            <a href="/body/list/sea_fishery_committee">Sea fisheries committees</a>
+            </li>
+            <li>
+            <a href="/body/list/wda">Waste disposal authorities</a>
+            </li>
+            <li>
+            <a href="/body/list/wma">Waste management authorities (Northern Ireland)</a>
+            </li>
+            <li>
+            <a href="/body/list/watercompanies">Water companies</a>
+            </li>
+            <li>
+            <a href="/body/list/zoo">Zoos</a>
+            </li>
+                </ul>
+            <h3>Health</h3>
+            <ul>
+            <li>
+            <a href="/body/list/nhs">NHS bodies</a>
+            </li>
+            <li>
+            <a href="/body/list/nhstrust">NHS trusts</a>
+            </li>
+            <li>
+            <a href="/body/list/pct">Primary care trusts</a>
+            </li>
+            <li>
+            <a href="/body/list/nhswales">NHS in Wales</a>
+            </li>
+            <li>
+            <a href="/body/list/chc">Community Health Councils (Wales)</a>
+            </li>
+            <li>
+            <a href="/body/list/nhsni">NHS in Northern Ireland</a>
+            </li>
+            <li>
+            <a href="/body/list/commissioning_consortium">GP commissioning consortia</a>
+            </li>
+            <li>
+            <a href="/body/list/hscr">Health / social care</a>
+            </li>
+            <li>
+            <a href="/body/list/his">Health Informatic Services</a>
+            </li>
+            <li>
+            <a href="/body/list/optician">Opticians</a>
+            </li>
+            <li>
+            <a href="/body/list/pharmacy">Pharmacies</a>
+            </li>
+            <li>
+            <a href="/body/list/pha">Port health authorities</a>
+            </li>
+            <li>
+            <a href="/body/list/pho">Public health observatories</a>
+            </li>
+            <li>
+            <a href="/body/list/sha">Strategic health authorities</a>
+            </li>
+            <li>
+            <a href="/body/list/specialha">Special health authorities</a>
+            </li>
+                </ul>
+            <h3>Media and culture</h3>
+            <ul>
+            <li>
+            <a href="/body/list/media">Media</a>
+            </li>
+            <li>
+            <a href="/body/list/museum">Museums and galleries</a>
+            </li>
+                </ul>
+            <h3>Military and security services</h3>
+            <ul>
+            <li>
+            <a href="/body/list/armed_forces">Armed Forces</a>
+            </li>
+            <li>
+            <a href="/body/list/military_college">Military colleges</a>
+            </li>
+            <li>
+            <a href="/body/list/security_services">Security services</a>
+            </li>
+                </ul>
+            <h3>Emergency services</h3>
+            <ul>
+            <li>
+            <a href="/body/list/police">Policing bodies</a>
+            </li>
+            <li>
+            <a href="/body/list/police_force">Police forces</a>
+            </li>
+            <li>
+            <a href="/body/list/police_crime_commissioner">Police and Crime Commissioners</a>
+            </li>
+            <li>
+            <a href="/body/list/police_crime_panel">Police and Crime Panels</a>
+            </li>
+            <li>
+            <a href="/body/list/dpp">District policing partnerships</a>
+            </li>
+            <li>
+            <a href="/body/list/fire_service">Fire and rescue services</a>
+            </li>
+                </ul>
+            <h3>Law making bodies, the courts and the legal system</h3>
+            <ul>
+            <li>
+            <a href="/body/list/ukparliament">UK Parliament</a>
+            </li>
+            <li>
+            <a href="/body/list/national_parliament_or_assembly">National Parliaments and Assemblies</a>
+            </li>
+            <li>
+            <a href="/body/list/court">Courts</a>
+            </li>
+            <li>
+            <a href="/body/list/coroners_office">Coroners&#x27; offices</a>
+            </li>
+            <li>
+            <a href="/body/list/tribunal">Tribunals</a>
+            </li>
+            <li>
+            <a href="/body/list/approved_regulator">Approved regulators of legal services</a>
+            </li>
+            <li>
+            <a href="/body/list/cja">Community justice authorities</a>
+            </li>
+            <li>
+            <a href="/body/list/imb">Independent monitoring boards (for prisons)</a>
+            </li>
+            <li>
+            <a href="/body/list/prob_board">Probation boards</a>
+            </li>
+            <li>
+            <a href="/body/list/probation_trust">Probation trusts</a>
+            </li>
+            <li>
+            <a href="/body/list/rules_committee">Rules committees</a>
+            </li>
+                </ul>
+            <h3>Transport</h3>
+            <ul>
+            <li>
+            <a href="/body/list/airport">Airport companies</a>
+            </li>
+            <li>
+            <a href="/body/list/bus_company">Bus companies</a>
+            </li>
+            <li>
+            <a href="/body/list/navigation_authority">Navigation authorities</a>
+            </li>
+            <li>
+            <a href="/body/list/npte">Passenger transport executives</a>
+            </li>
+            <li>
+            <a href="/body/list/port_authority">Port authorities</a>
+            </li>
+            <li>
+            <a href="/body/list/srp">Safer Roads Partnership</a>
+            </li>
+            <li>
+            <a href="/body/list/toll_company">Toll companies</a>
+            </li>
+            <li>
+            <a href="/body/list/trunk_road_agency">Trunk road agencies (Wales)</a>
+            </li>
+                </ul>
+            <h3>Groups of public authorities</h3>
+            <ul>
+            <li>
+            <a href="/body/list/association">Associations of public authorities</a>
+            </li>
+            <li>
+            <a href="/body/list/group_of_universities">Groups of universities</a>
+            </li>
+            <li>
+            <a href="/body/list/pbo">Professional buying organisations</a>
+            </li>
+                </ul>
+            <h3>Other</h3>
+            <ul>
+            <li>
+            <a href="/body/list/charter_trustees">Charter trustees</a>
+            </li>
+            <li>
+            <a href="/body/list/public_infrastructure">Companies controlling national infrastructure</a>
+            </li>
+            <li>
+            <a href="/body/list/inns_of_court">Inns of court</a>
+            </li>
+            <li>
+            <a href="/body/list/ombudsman">Ombudsmen</a>
+            </li>
+            <li>
+            <a href="/body/list/professional_body">Professional bodies</a>
+            </li>
+            <li>
+            <a href="/body/list/publicly_funded_charities">Publicly funded charities</a>
+            </li>
+            <li>
+            <a href="/body/list/duchy">Royal duchies</a>
+            </li>
+                </ul>
+            <h3>Defunct bodies</h3>
+            <ul>
+            <li>
+            <a href="/body/list/defunct">Defunct bodies</a>
+            </li>
+            <li>
+            <a href="/body/list/rcc">Cultural consortia</a>
+            </li>
+            <li>
+            <a href="/body/list/government_office">Government offices for the regions</a>
+            </li>
+            <li>
+            <a href="/body/list/police_authority">Police authorities</a>
+            </li>
+            <li>
+            <a href="/body/list/regional_assembly">Regional assemblies</a>
+            </li>
+            <li>
+            <a href="/body/list/rda">Regional development agencies</a>
+            </li>
+            <li>
+            <a href="/body/list/rfdc">Regional flood defence committees</a>
+            </li>
+      </ul>
+    <p>
+  <a href="/help/requesting#missing_body">Are we missing a public authority?</a>
+</p>
+<p>
+  <a href="/body/all-authorities.csv">List of all authorities (CSV)</a>
+</p>
+
+</div>
+
+<div id="left_column_flip">
+<h1>Public authorities</h1>
+
+<form accept-charset="UTF-8" action="https://jed.whatdotheyknow.dev.mysociety.org/body/list/all" id="search_form" method="get"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div>
+ <div>
+  <input id="public_body_query" name="public_body_query" title="type your search term here" type="text" />
+  <input name="commit" type="submit" value="Search" />
+ </div>
+</form>
+<h2 class="publicbody_results">
+  Found 7 public authorities
+</h2>
+
+<div class="body_listing">
+    <span class="head">
+    <a href="/body/attorney_generals_office">Attorney General&#x27;s Office</a>
+    </span>
+    <span class="desc">
+            The office of the Attorney General
+        <br>
+    </span>
+    <span class="bottomline">
+        1 request made.
+        <br>
+        <span class="date_added">
+            Added on 25 October 2008.
+        </span>
+    </span>
+</div>
+
+
+
+<div class="body_listing">
+    <span class="head">
+    <a href="/body/bis">Department for Business, Innovation and Skills</a>
+    </span>
+    <span class="desc">
+            Also called BIS.
+            On the 5th of June 2009 the Government created a new Department for Business, Innovation and Skills. The Department was created by merging BERR and DI...
+        <br>
+    </span>
+    <span class="bottomline">
+        2 requests made.
+        <br>
+        <span class="date_added">
+            Added on 25 October 2007.
+        </span>
+    </span>
+</div>
+
+
+
+<div class="body_listing">
+    <span class="head">
+    <a href="/body/dfe">Department for Education</a>
+    </span>
+    <span class="desc">
+            Also called DfE.
+            The Department for Education was formed on 12 May 2010 and is responsible for education and children&#x27;s services.
+        <br>
+    </span>
+    <span class="bottomline">
+        3 requests made.
+        <br>
+        <span class="date_added">
+            Added on 26 January 2011.
+        </span>
+    </span>
+</div>
+
+
+
+<div class="body_listing">
+    <span class="head">
+    <a href="/body/government_equalities_office">Government Equalities Office</a>
+    </span>
+    <span class="desc">
+    </span>
+    <span class="bottomline">
+        4 requests made.
+        <br>
+        <span class="date_added">
+            Added on 24 October 2007.
+        </span>
+    </span>
+</div>
+
+
+
+<div class="body_listing">
+    <span class="head">
+    <a href="/body/inspector">Her Majesty&#x27;s Inspector of Education</a>
+    </span>
+    <span class="desc">
+            Also called inspector.
+            Also called HM Inspector of Education.
+        <br>
+    </span>
+    <span class="bottomline">
+        1 request made.
+        <br>
+        <span class="date_added">
+            Added on 25 July 2013.
+        </span>
+    </span>
+</div>
+
+
+
+<div class="body_listing">
+    <span class="head">
+    <a href="/body/mod">Ministry of Defence</a>
+    </span>
+    <span class="desc">
+            Also called MoD.
+            The Ministry of Defence (MOD) is the UK government department responsible for implementation of government defence policy and for the British Armed Fo...
+        <br>
+    </span>
+    <span class="bottomline">
+        4 requests made.
+        <br>
+        <span class="date_added">
+            Added on 25 October 2007.
+        </span>
+    </span>
+</div>
+
+
+
+<div class="body_listing">
+    <span class="head">
+    <a href="/body/moj">Ministry of Justice</a>
+    </span>
+    <span class="desc">
+            Also called MoJ.
+            The Ministry of Justice is one of the largest government departments, employing over 70,000 people.
+        <br>
+    </span>
+    <span class="bottomline">
+        3 requests made.
+        <br>
+        <span class="date_added">
+            Added on 25 October 2008.
+        </span>
+    </span>
+</div>
+
+
+
+
+  <br/>
+  <a href="/help/requesting#missing_body">Can't find the one you want?</a>
+</div>
+
+            </div>
+            <div style="clear:both"></div>
+        </div>
+    </div>
+
+    <div class="footer" id="footer">
+    <ul class="footer-nav">
+        <li><a href="/help/contact">Contact WhatDoTheyKnow</a></li>
+        <li><a href="https://twitter.com/whatdotheyknow">Follow us on twitter</a></li>
+        <li><a href="/help/privacy">Privacy and cookies</a></li>
+         <li><a href="/help/credits#helpus">Run by Volunteers</a> and powered by <a href="/help/alaveteli">Alaveteli</a></li>
+  <li>Dedicated to <a href="http://mk.ucant.org/archives/000129.html">Chris Lightfoot</a></li>
+
+    </ul>
+</div>
+
+
+</div>
+<div id="other-country-notice"></div>
+<div id="link_box"><span class="close-button">X</span>
+Paste this link into emails, tweets, and anywhere else:
+<br />
+<input type="text">
+</div>
+        <script type="text/javascript">
+          var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+          document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
+          var pageTracker = _gat._getTracker("UA-24614779-1");
+          pageTracker._trackPageview();
+        </script>
+
+
+
+    </body>
+</html>
