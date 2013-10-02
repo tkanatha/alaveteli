@@ -1,0 +1,52 @@
+.update_status_form{
+    background-color: #eee;
+    text-align: center;
+    padding:2em;
+    margin-left:-2em;
+    margin-right:-2em;
+    margin-bottom: 2em;
+    clear:both;
+
+    h2{
+    }
+
+    .submit_status_update{
+        @include button($button-med, $primary-color, false, false, false, true);
+        display:block;
+        margin: auto;
+    }
+}
+
+.update_status_options{
+    @include block-grid(3);
+    text-align: left;
+    margin:0;
+    padding:0.625em;
+    li{
+        padding: 1em;
+        border-top: 0.5em solid #777;
+        background-color: #ddd;
+        width: 32%;
+        margin:0;
+        &.successful{
+            border-color: $c-success;
+            background-color: mix($c-success, #eee, 10%);
+        }
+        &.pending{
+            border-color: $c-pending;
+            background-color: mix($c-pending, #eee, 10%);
+            margin: 0 2%;
+        }
+        &.unsuccessful{
+            border-color: $c-failure;
+            background-color: mix($c-failure, #eee, 10%);
+        }
+
+        label{
+            font-size: 0.85em;
+        }
+        small{
+            display:inline-block;
+        }
+    }
+}

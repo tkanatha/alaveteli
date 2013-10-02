@@ -1,0 +1,42 @@
+.request_filters{
+    form{
+        @include grid-row;
+    }
+    .list-filter-item{
+        @include grid-column(3);
+
+        &.submit{
+            @include grid-column(1);
+            padding-top: 1em;
+        }
+
+        &.date-range{
+            input{
+                background-image: url(/assets/form_icons/date.png);
+                padding-left: 2em
+            }
+        }
+
+        &.search-query{
+            @include grid-column(5);
+            input{
+                background-image: url(/assets/form_icons/search.png);
+                padding-left: 2em
+            }
+        }
+
+        &.status_filters{
+            @include grid-column(12);
+        }
+        label{
+            display:block;
+        }
+        input{
+            width:100%;
+            padding: 0.5em;
+            background-position: 0.5em center;
+            background-repeat: no-repeat;
+            background-size: 1em auto;
+        }
+    }
+}

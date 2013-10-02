@@ -1,0 +1,48 @@
+@import "notice_banner-settings";
+
+.notice_banner{
+    &.successful{
+        background-color: $c-notice-success-background;
+        border-color: $c-notice-success-border;
+    }
+    &.pending{
+        background-color: $c-notice-pending-background;
+        border-color: $c-notice-pending-border;
+    }
+    &.unsuccessful{
+        background-color: $c-notice-failure-background;
+        border-color: $c-notice-failure-border;
+    }
+    &.contrast{
+        background-color: $c-notice-contrast-background;
+        border-color: $c-notice-contrast-border;
+        h3,p{ color: #eee; }
+    }
+    background-color: $c-notice-background;
+    padding:1em 2em;
+    border-top: 10px solid $c-notice-border;
+    font-size: 1.2em;
+    margin-bottom:2em;
+
+    // Set icons for notices
+    &.icon-email{
+        @extend .notice_icon;
+        background-image:url(/assets/notice_icons/email.png);
+    }
+    &.icon-success{
+        @extend .notice_icon;
+        background-image:url(/assets/notice_icons/trophy.png);
+    }
+    &.icon-warning{
+        @extend .notice_icon;
+        background-image:url(/assets/notice_icons/warning.png);
+    }
+}
+
+
+.notice_icon{
+    padding-left: 25%;
+    background-position: 5% 2em;
+    background-repeat: no-repeat;
+    background-size: 15% auto;
+}
