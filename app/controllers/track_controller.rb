@@ -18,7 +18,7 @@ class TrackController < ApplicationController
 
         return atom_feed_internal if params[:feed] == 'feed'
 
-        if self.track_set
+        if track_set
             redirect_to request_url(@info_request)
         end
     end
@@ -37,7 +37,7 @@ class TrackController < ApplicationController
 
         return atom_feed_internal if params[:feed] == 'feed'
 
-        if self.track_set
+        if track_set
             redirect_to request_list_url(:view => @view)
         end
     end
@@ -60,7 +60,7 @@ class TrackController < ApplicationController
 
         return atom_feed_internal if params[:feed] == 'feed'
 
-        if self.track_set
+        if track_set
             redirect_to public_body_url(@public_body)
         end
     end
@@ -73,7 +73,7 @@ class TrackController < ApplicationController
 
         return atom_feed_internal if params[:feed] == 'feed'
 
-        if self.track_set
+        if track_set
             redirect_to user_url(@track_user)
         end
     end
@@ -92,7 +92,7 @@ class TrackController < ApplicationController
 
         return atom_feed_internal if params[:feed] == 'feed'
 
-        if self.track_set
+        if track_set
             if @query.scan("variety").length == 1
                 # we're making a track for a simple filter, for which
                 # there's an expression in the UI (rather than relying
@@ -113,30 +113,6 @@ class TrackController < ApplicationController
         end
     end
 
-    # Generic request tracker - set @track_thing before calling
-    def track_set
-        if @user
-            @existing_track = TrackThing.find_by_existing_track(@user, @track_thing)
-            if @existing_track
-                flash[:notice] = _("You are already following updates about {{track_description}}", :track_description => @track_thing.params[:list_description])
-                return true
-            end
-        end
-
-        if not authenticated?(@track_thing.params)
-            return false
-        end
-
-        @track_thing.track_medium = 'email_daily'
-        @track_thing.tracking_user_id = @user.id
-        @track_thing.save!
-        if @user.receive_email_alerts
-            flash[:notice] = _('You will now be emailed updates about {{track_description}}. <a href="{{change_email_alerts_url}}">Prefer not to receive emails?</a>', :track_description =>  @track_thing.params[:list_description], :change_email_alerts_url => url_for(:controller => "user", :action => "wall", :url_name => @user.url_name))
-        else
-            flash[:notice] = _('You are now <a href="{{wall_url_user}}">following</a> updates about {{track_description}}', :track_description => @track_thing.params[:list_description], :wall_url_user => url_for(:controller => "user", :action => "wall", :url_name => @user.url_name))
-        end
-        return true
-    end
 
     # Old-Style atom track. We're phasing this out, so for now issue a
     # 301 Redirect. Most aggregators should honour this, but we should
