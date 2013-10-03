@@ -373,6 +373,27 @@ class InfoRequestEvent < ActiveRecord::Base
         return MailHandler.address_from_string(prev_addr) == MailHandler.address_from_string(curr_addr)
     end
 
+    # If this event is associated with an incoming or outgoing
+    # message, this method returns a reasonable name to use in the top
+    # right of a letterhead.
+    def letterhead_from
+        im = self.incoming_message
+        om = self.outgoing_message
+        if om
+            self.info_request.user_name
+        elsif im
+            if im.specific_from_name?
+                im.safe_mail_from
+            elsif im.from_public_body?
+                self.info_request.public_body.name
+            else
+                ''
+            end
+        else
+            ''
+        end
+    end
+
     def json_for_api(deep, snippet_highlight_proc = nil)
         ret = {
             :id => self.id,

@@ -75,6 +75,7 @@ class TrackThing < ActiveRecord::Base
         filters = parsed_text.scan /\b\S+:\S+\b/
         varieties = Set.new
         date = ""
+        authority_name = ""
         statuses = Set.new
         for filter in filters
             parsed_text = parsed_text.sub(filter, "")
@@ -92,6 +93,12 @@ class TrackThing < ActiveRecord::Base
             end
             if filter =~ /[0-9\/]+\.\.[0-9\/]+/
                 date = _("between two dates")
+            end
+            if filter =~ /requested_from:(\S+)/
+                authority = PublicBody.find_by_url_name($1)
+                if authority
+                    authority_name = authority.name
+                end
             end
             if filter =~ /(rejected|not_held)/
                 statuses << _("unsuccessful")
@@ -122,6 +129,9 @@ class TrackThing < ActiveRecord::Base
         descriptions += Array(varieties)
         parsed_text = parsed_text.strip
         descriptions = descriptions.sort.join(_(" or "))
+        if !authority_name.empty?
+            descriptions += _("{{list_of_things}} made to {{authority}}", :list_of_things => "", :authority => authority_name)
+        end
         if !parsed_text.empty?
             descriptions += _("{{list_of_things}} matching text '{{search_query}}'", :list_of_things => "", :search_query => parsed_text)
         end

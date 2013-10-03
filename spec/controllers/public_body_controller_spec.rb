@@ -70,6 +70,59 @@ describe PublicBodyController, "when showing a body" do
         get :show, :url_name => "dFh", :view => 'all'
         response.should redirect_to(:controller => 'public_body', :action => 'show', :url_name => "dfh")
     end
+
+    context 'if "track_keywords" is passed as a param' do
+
+        before do
+            @public_body = FactoryGirl.create(:public_body)
+        end
+
+        context 'if there is a logged in user' do
+
+            before do
+                @user = FactoryGirl.create(:user)
+            end
+
+            it 'should create a track for the current query params' do
+                get :show, {:url_name => @public_body.url_name,
+                            :query => 'chicken',
+                            :track_keywords => '1',
+                            :view => 'all'},
+                           {:user_id => @user.id}
+                @user.track_things.count.should == 1
+                expected_description = "all requests or comments made to Example Public Body 1 matching text 'chicken'"
+                @user.track_things.first.track_query_description.should == expected_description
+            end
+
+            it 'should redirect to the current params without the "track_keywords" param' do
+                get :show, {:url_name => @public_body.url_name,
+                            :query => 'chicken',
+                            :track_keywords => '1',
+                            :view => 'all'},
+                           {:user_id => @user.id}
+                response.should redirect_to(:url_name => @public_body.url_name,
+                                            :query => 'chicken',
+                                            :view => 'all')
+            end
+
+        end
+
+        context 'if there is no logged in user' do
+
+            it 'should redirect to signin with an appropriate message' do
+                get :show, :url_name => @public_body.url_name,
+                           :query => 'chicken',
+                           :track_keywords => '1',
+                           :view => 'all'
+                post_redirect = PostRedirect.get_last_post_redirect
+                response.should redirect_to(:controller => 'user',
+                                            :action => 'signin',
+                                            :token => post_redirect.token)
+            end
+        end
+
+    end
+
 end
 
 describe PublicBodyController, "when listing bodies" do

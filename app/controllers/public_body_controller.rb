@@ -41,6 +41,20 @@ class PublicBodyController < ApplicationController
             @view = params[:view]
             query = make_query_from_params(params.merge(:latest_status => @view))
             query += " requested_from:#{@public_body.url_name}"
+            @query_track_thing = TrackThing.create_track_for_search_query(query)
+
+            if params[:track_keywords]
+                @track_thing = @query_track_thing
+                if track_set
+                    params.delete(:track_keywords)
+                    params.delete(:post_redirect)
+                    redirect_to params and return
+                else
+                    # redirected by authenticated? in track_set
+                    return
+                end
+            end
+
             # Use search query for this so can collapse and paginate easily
             # XXX really should just use SQL query here rather than Xapian.
             sortby = "described"
