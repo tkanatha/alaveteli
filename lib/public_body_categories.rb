@@ -30,7 +30,7 @@ class PublicBodyCategories
                 @headings << row
                 @by_heading[row] = []
             else
-                @by_heading[heading] << row[0]
+                @by_heading[heading] << [row[0], row[1]]
             end
         end
     end
