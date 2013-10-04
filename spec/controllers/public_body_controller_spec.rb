@@ -277,6 +277,12 @@ describe PublicBodyController, "when listing bodies" do
             public_bodies(:geraldine_public_body),
             public_bodies(:sensible_walks_public_body),
             public_bodies(:silly_walks_public_body) ]
+
+        get :list, :public_body_heading => "Local and regional"
+        response.should render_template('list')
+        assigns[:heading].should == "Local and regional"
+        assigns[:public_bodies].should == [ public_bodies(:humpadink_public_body) ]
+        assigns[:description].should == "in the category ‘Local and regional’"
     end
 
     it "should list a machine tagged thing, should get it in both ways" do

@@ -106,6 +106,12 @@ class PublicBodyController < ApplicationController
         like_query = "%#{like_query}%"
 
         @tag = params[:tag]
+        @headings = PublicBodyCategories::get().headings()
+        heading = params[:public_body_heading]
+        if heading && @headings.include?(heading)
+            @heading = heading
+            @tags = PublicBodyCategories::get().by_heading()[@heading].map{ |tag, description| tag }
+        end
 
         @locale = self.locale_from_params
         underscore_locale = @locale.gsub '-', '_'
@@ -122,7 +128,11 @@ class PublicBodyController < ApplicationController
 
         # Restrict the public bodies shown according to the tag
         # parameter supplied in the URL:
-        if @tag.nil? or @tag == "all"
+        if @tag.blank? or @tag == "all"
+            if @heading
+                where_condition += base_tag_condition + " AND has_tag_string_tags.name in (?)) > 0"
+                where_parameters << @tags
+            end
             @tag = "all"
         elsif @tag == 'other'
             where_condition += base_tag_condition + " AND has_tag_string_tags.name in (?)) = 0"
@@ -142,7 +152,11 @@ class PublicBodyController < ApplicationController
         end
 
         if @tag == "all"
-            @description = ""
+            if @heading
+                @description = _("in the category ‘{{category_name}}’", :category_name=>@heading)
+            else
+                @description = ""
+            end
         elsif @tag.size == 1
             @description = _("beginning with ‘{{first_letter}}’", :first_letter=>@tag)
         else
