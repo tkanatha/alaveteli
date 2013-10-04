@@ -90,7 +90,7 @@ describe PublicBodyController, "when showing a body" do
                             :view => 'all'},
                            {:user_id => @user.id}
                 @user.track_things.count.should == 1
-                expected_description = "all requests or comments made to Example Public Body 1 matching text 'chicken'"
+                expected_description = "all requests or comments made to #{@public_body.name} matching text 'chicken'"
                 @user.track_things.first.track_query_description.should == expected_description
             end
 
