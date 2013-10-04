@@ -125,8 +125,8 @@ class PublicBodyController < ApplicationController
         if @tag.nil? or @tag == "all"
             @tag = "all"
         elsif @tag == 'other'
-            category_list = PublicBodyCategories::get().tags().map{|c| "'"+c+"'"}.join(",")
-            where_condition += base_tag_condition + " AND has_tag_string_tags.name in (#{category_list})) = 0"
+            where_condition += base_tag_condition + " AND has_tag_string_tags.name in (?)) = 0"
+            where_parameters << PublicBodyCategories::get().tags()
         elsif @tag.size == 1
             @tag.upcase!
             # The first letter queries have to be done on
