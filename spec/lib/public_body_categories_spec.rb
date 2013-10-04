@@ -33,8 +33,8 @@ describe PublicBodyCategories do
     describe 'when asked for tags by headings' do
 
         it 'should return a hash of tags keyed by heading' do
-            PublicBodyCategories::get().by_heading().should == {'Local and regional' => ['local_council'],
-                                                                'Miscellaneous' => ['other']}
+            PublicBodyCategories::get().by_heading().should == {'Local and regional' => [['local_council', 'Local councils']],
+                                                                'Miscellaneous' => [['other', 'Miscellaneous']]}
         end
 
     end
