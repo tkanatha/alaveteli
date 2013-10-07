@@ -12,12 +12,14 @@ class PublicBodyCategories
                 :by_tag,
                 :singular_by_tag,
                 :by_heading,
-                :headings
+                :headings,
+                :alphabetical
 
     def initialize(categories)
         @with_headings = categories
         # Arranged in different ways for different sorts of displaying
         @with_description = @with_headings.select() { |a| a.instance_of?(Array) }
+        @alphabetical = with_description.sort_by{ |a| a[1] }
         @tags = @with_description.map() { |a| a[0] }
         @by_tag = Hash[*@with_description.map() { |a| a[0..1] }.flatten]
         @singular_by_tag = Hash[*@with_description.map() { |a| [a[0],a[2]] }.flatten]
