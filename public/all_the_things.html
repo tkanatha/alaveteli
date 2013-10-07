@@ -39,30 +39,20 @@
         <div class="ms_header_nav">
             <nav>
                 <ul class="menu">
-                      <li id="lang_switcher">
-      <a href="#" data-dropdown="droplang" class="ms_header_nav-lang">
-        <img alt="English" src="/assets/lang/en.png" />
-      </a>
-
-      <ul id="droplang" data-dropdown-content class="lang-dropdown">
-          <li>
-            <a lang="en" href="/">
-              <img alt="English" src="/assets/lang/en.png" />English
-            </a>
-          </li>
-          <li>
-            <a lang="cy" href="/cy">
-              <img alt="Cymraeg" src="/assets/lang/cy.png" />Cymraeg
-            </a>
-          </li>
-      </ul>
-  </li>
+                    <li id="lang_switcher">
+                        <a href="#" data-dropdown="droplang" class="ms_header_nav-lang">
+                            Language
+                        </a>
+                        <ul id="droplang" data-dropdown-content class="lang-dropdown">
+                            <li><a lang="en" href="/"><img alt="English" src="/assets/lang/en.png" />English</a></li>
+                            <li><a lang="cy" href="/cy"><img alt="Cymraeg" src="/assets/lang/cy.png" />Cymraeg</a></li>
+                        </ul>
+                    </li>
 
                     <li id="ms_logo"><a class="ms_header_nav-logo" href="http://mysociety.org">mySociety</a></li>
 
                     <li><a class="ms_header_nav-about" href="/help/about">About</a></li>
                     <li><a class="ms_header_nav-blog" href="/blog">Blog</a></li>
-
                 </ul>
             </nav>
         </div>
@@ -70,9 +60,15 @@
     <div class="logo">
         <a href="/"> <img alt="" src="/assets/logo.png" /></a>
     </div>
+    <!-- <div class="login-block">
+        Been here before? <a href="/profile/sign_in?r=%2F">Log in</a>
+    </div> -->
     <div class="login-block">
-
-      <a href="/profile/sign_in?r=%2F">Login</a>
+        <p>Hello, Bob Smith!</p>
+        <a href="/user/bob_smith/profile">My profile</a>
+        <a href="/user/bob_smith/requests">My requests</a>
+        <a href="/user/bob_smith/wall">Recent Activity</a>
+        <a href="/profile/sign_out?r=%2F">Log out</a>
     </div>
     <div class="main_menu">
         <ul>

@@ -10,6 +10,11 @@ This is the header that runs across the very top of each mySociety page
 
 .ms_header_nav{
 
+    display:none;
+    @media( min-width: $main_menu-mobile_menu_cutoff ){
+        display:block;
+    }
+
     @include grid-row;
     nav{
         @include grid-column(12);
@@ -18,7 +23,7 @@ This is the header that runs across the very top of each mySociety page
         }
     }
     .menu{
-        @include block-grid(5, $block-grid-default-spacing, true);
+        @include block-grid(4, $block-grid-default-spacing, true);
         //@include inline-list;
     }
     li{
