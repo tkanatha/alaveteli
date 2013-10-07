@@ -90,7 +90,7 @@ describe PublicBodyController, "when showing a body" do
                             :view => 'all'},
                            {:user_id => @user.id}
                 @user.track_things.count.should == 1
-                expected_description = "all requests or comments made to Example Public Body 1 matching text 'chicken'"
+                expected_description = "all requests or comments made to #{@public_body.name} matching text 'chicken'"
                 @user.track_things.first.track_query_description.should == expected_description
             end
 
@@ -277,6 +277,12 @@ describe PublicBodyController, "when listing bodies" do
             public_bodies(:geraldine_public_body),
             public_bodies(:sensible_walks_public_body),
             public_bodies(:silly_walks_public_body) ]
+
+        get :list, :public_body_heading => "Local and regional"
+        response.should render_template('list')
+        assigns[:heading].should == "Local and regional"
+        assigns[:public_bodies].should == [ public_bodies(:humpadink_public_body) ]
+        assigns[:description].should == "in the category ‘Local and regional’"
     end
 
     it "should list a machine tagged thing, should get it in both ways" do

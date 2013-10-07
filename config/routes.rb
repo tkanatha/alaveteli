@@ -92,7 +92,7 @@ Alaveteli::Application.routes.draw do
 
     #### PublicBody controller
     match '/body/search_ahead' => 'public_body#search_typeahead', :as => :search_ahead_bodies
-    match '/body' => 'public_body#list', :as => :list_public_bodies
+    match '/body' => 'public_body#list', :as => :all_public_bodies
     match '/body/list/all' => 'public_body#list', :as => :list_public_bodies_default
     match '/body/list/:tag' => 'public_body#list', :as => :list_public_bodies
     match '/local/:tag' => 'public_body#list_redirect', :as => :list_public_bodies_redirect
