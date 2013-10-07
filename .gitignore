@@ -21,5 +21,9 @@ TAGS
 .bundle
 bin/
 config/aliases
+config/httpd.conf
 .sass-cache
 alaveteli.sublime*
+webrat.log
+/.rbenv-version
+/db/development_structure.sql

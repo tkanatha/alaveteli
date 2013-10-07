@@ -1,6 +1,21 @@
+# == Schema Information
+#
+# Table name: foi_attachments
+#
+#  id                    :integer          not null, primary key
+#  content_type          :text
+#  filename              :text
+#  charset               :text
+#  display_size          :text
+#  url_part_number       :integer
+#  within_rfc822_subject :text
+#  incoming_message_id   :integer
+#  hexdigest             :string(32)
+#
+
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe FoiAttachment, " when calculating due date" do
+describe FoiAttachment do
 
     before(:each) do
         load_raw_emails_data

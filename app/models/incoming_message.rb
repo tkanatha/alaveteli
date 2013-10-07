@@ -1,15 +1,13 @@
 # coding: utf-8
-
 # == Schema Information
-# Schema version: 114
 #
 # Table name: incoming_messages
 #
-#  id                             :integer         not null, primary key
-#  info_request_id                :integer         not null
-#  created_at                     :datetime        not null
-#  updated_at                     :datetime        not null
-#  raw_email_id                   :integer         not null
+#  id                             :integer          not null, primary key
+#  info_request_id                :integer          not null
+#  created_at                     :datetime         not null
+#  updated_at                     :datetime         not null
+#  raw_email_id                   :integer          not null
 #  cached_attachment_text_clipped :text
 #  cached_main_body_text_folded   :text
 #  cached_main_body_text_unfolded :text
@@ -19,27 +17,28 @@
 #  last_parsed                    :datetime
 #  mail_from                      :text
 #  sent_at                        :datetime
+#  prominence                     :string(255)      default("normal"), not null
+#  prominence_reason              :text
+#
 
 # models/incoming_message.rb:
 # An (email) message from really anybody to be logged with a request. e.g. A
 # response from the public body.
 #
 # Copyright (c) 2007 UK Citizens Online Democracy. All rights reserved.
-# Email: francis@mysociety.org; WWW: http://www.mysociety.org/
+# Email: hello@mysociety.org; WWW: http://www.mysociety.org/
 
 # TODO
 # Move some of the (e.g. quoting) functions here into rblib, as they feel
 # general not specific to IncomingMessage.
 
-require 'alaveteli_file_types'
 require 'htmlentities'
 require 'rexml/document'
 require 'zip/zip'
-require 'mapi/msg'
-require 'mapi/convert'
-
+require 'iconv' unless RUBY_VERSION >= '1.9'
 
 class IncomingMessage < ActiveRecord::Base
+    extend MessageProminence
     belongs_to :info_request
     validates_presence_of :info_request
 
@@ -51,6 +50,8 @@ class IncomingMessage < ActiveRecord::Base
 
     belongs_to :raw_email
 
+    has_prominence
+
     # See binary_mask_stuff function below. It just test for inclusion
     # in this hash, not the value of the right hand side.
     DoNotBinaryMask = {
@@ -61,6 +62,12 @@ class IncomingMessage < ActiveRecord::Base
         'image/bmp' => 1,
         'application/zip' => 1,
     }
+
+    # Given that there are in theory many info request events, a convenience method for
+    # getting the response event
+    def response_event
+        self.info_request_events.detect{ |e| e.event_type == 'response' }
+    end
 
     # Return a cached structured mail object
     def mail(force = nil)
@@ -132,6 +139,7 @@ class IncomingMessage < ActiveRecord::Base
                 end
                 self.valid_to_reply_to = self._calculate_valid_to_reply_to
                 self.last_parsed = Time.now
+                self.foi_attachments reload=true
                 self.save!
             end
         end
@@ -153,14 +161,17 @@ class IncomingMessage < ActiveRecord::Base
         parse_raw_email!
         super
     end
+
     def subject
         parse_raw_email!
         super
     end
+
     def mail_from
         parse_raw_email!
         super
     end
+
     def safe_mail_from
         if !self.mail_from.nil?
             mail_from = self.mail_from.dup
@@ -168,20 +179,43 @@ class IncomingMessage < ActiveRecord::Base
             return mail_from
         end
     end
+
+    def specific_from_name?
+        !safe_mail_from.nil? && safe_mail_from.strip != info_request.public_body.name.strip
+    end
+
+    def from_public_body?
+        safe_mail_from.nil? || (mail_from_domain == info_request.public_body.request_email_domain)
+    end
+
     def mail_from_domain
         parse_raw_email!
         super
     end
 
-    # And look up by URL part number to get an attachment
+    # And look up by URL part number and display filename to get an attachment
     # XXX relies on extract_attachments calling MailHandler.ensure_parts_counted
-    def self.get_attachment_by_url_part_number(attachments, found_url_part_number)
-        attachments.each do |a|
-            if a.url_part_number == found_url_part_number
-                return a
+    # The filename here is passed from the URL parameter, so it's the
+    # display_filename rather than the real filename.
+    def self.get_attachment_by_url_part_number_and_filename(attachments, found_url_part_number, display_filename)
+        attachment_by_part_number = attachments.detect { |a| a.url_part_number == found_url_part_number }
+        if attachment_by_part_number && attachment_by_part_number.display_filename == display_filename
+            # Then the filename matches, which is fine:
+            attachment_by_part_number
+        else
+            # Otherwise if the URL part number and filename don't
+            # match - this is probably due to a reparsing of the
+            # email.  In that case, try to find a unique matching
+            # filename from any attachment.
+            attachments_by_filename = attachments.select { |a|
+                a.display_filename == display_filename
+            }
+            if attachments_by_filename.length == 1
+                attachments_by_filename[0]
+            else
+                nil
             end
         end
-        return nil
     end
 
     # Converts email addresses we know about into textual descriptions of them
@@ -193,7 +227,7 @@ class IncomingMessage < ActiveRecord::Base
             text.gsub!(self.info_request.public_body.request_email, _("[{{public_body}} request email]", :public_body => self.info_request.public_body.short_or_long_name))
         end
         text.gsub!(self.info_request.incoming_email, _('[FOI #{{request}} email]', :request => self.info_request.id.to_s) )
-        text.gsub!(Configuration::contact_email, _("[{{site_name}} contact email]", :site_name => Configuration::site_name) )
+        text.gsub!(AlaveteliConfiguration::contact_email, _("[{{site_name}} contact email]", :site_name => AlaveteliConfiguration::site_name) )
     end
 
     # Replaces all email addresses in (possibly binary data) with equal length alternative ones.
@@ -219,7 +253,7 @@ class IncomingMessage < ActiveRecord::Base
                 if censored_uncompressed_text != uncompressed_text
                     # then use the altered file (recompressed)
                     recompressed_text = nil
-                    if Configuration::use_ghostscript_compression == true
+                    if AlaveteliConfiguration::use_ghostscript_compression == true
                         command = ["gs", "-sDEVICE=pdfwrite", "-dCompatibilityLevel=1.4", "-dPDFSETTINGS=/screen", "-dNOPAUSE", "-dQUIET", "-dBATCH", "-sOutputFile=-", "-"]
                     else
                         command = ["pdftk", "-", "output", "-", "compress"]
@@ -246,7 +280,7 @@ class IncomingMessage < ActiveRecord::Base
     # Used by binary_mask_stuff - replace text in place
     def _binary_mask_stuff_internal!(text)
         # Keep original size, so can check haven't resized it
-        orig_size = text.size
+        orig_size = text.mb_chars.size
 
         # Replace ASCII email addresses...
         text.gsub!(MySociety::Validate.email_find_regexp) do |email|
@@ -258,11 +292,21 @@ class IncomingMessage < ActiveRecord::Base
         # equivalents to the UCS-2
         ascii_chars = text.gsub(/\0/, "")
         emails = ascii_chars.scan(MySociety::Validate.email_find_regexp)
+
         # Convert back to UCS-2, making a mask at the same time
-        emails.map! {|email| [
-                Iconv.conv('ucs-2le', 'ascii', email[0]),
-                Iconv.conv('ucs-2le', 'ascii', email[0].gsub(/[^@.]/, 'x'))
-        ] }
+        if RUBY_VERSION >= '1.9'
+            emails.map! do |email|
+                # We want the ASCII representation of UCS-2
+                [email[0].encode('UTF-16LE').force_encoding('US-ASCII'),
+                 email[0].gsub(/[^@.]/, 'x').encode('UTF-16LE').force_encoding('US-ASCII')]
+            end
+        else
+            emails.map! {|email| [
+                    Iconv.conv('ucs-2le', 'ascii', email[0]),
+                    Iconv.conv('ucs-2le', 'ascii', email[0].gsub(/[^@.]/, 'x'))
+            ] }
+        end
+
         # Now search and replace the UCS-2 email with the UCS-2 mask
         for email, mask in emails
             text.gsub!(email, mask)
@@ -271,7 +315,7 @@ class IncomingMessage < ActiveRecord::Base
         # Replace censor items
         self.info_request.apply_censor_rules_to_binary!(text)
 
-        raise "internal error in binary_mask_stuff" if text.size != orig_size
+        raise "internal error in binary_mask_stuff" if text.mb_chars.size != orig_size
         return text
     end
 
@@ -316,7 +360,7 @@ class IncomingMessage < ActiveRecord::Base
         text.gsub!(/(Mobile|Mob)([\s\/]*(Fax|Tel))*\s*:?[\s\d]*\d/, "[mobile number]")
 
         # Remove WhatDoTheyKnow signup links
-        text.gsub!(/http:\/\/#{Configuration::domain}\/c\/[^\s]+/, "[WDTK login link]")
+        text.gsub!(/http:\/\/#{AlaveteliConfiguration::domain}\/c\/[^\s]+/, "[WDTK login link]")
 
         # Remove things from censor rules
         self.info_request.apply_censor_rules_to_text!(text)
@@ -534,7 +578,7 @@ class IncomingMessage < ActiveRecord::Base
                     source_charset = 'utf-8' if source_charset.nil?
                     text = Iconv.conv('utf-8//IGNORE', source_charset, text) +
                         _("\n\n[ {{site_name}} note: The above text was badly encoded, and has had strange characters removed. ]",
-                          :site_name => Configuration::site_name)
+                          :site_name => AlaveteliConfiguration::site_name)
                 rescue Iconv::InvalidEncoding, Iconv::IllegalSequence, Iconv::InvalidCharacter
                     if source_charset != "utf-8"
                         source_charset = "utf-8"
@@ -546,9 +590,11 @@ class IncomingMessage < ActiveRecord::Base
         text
     end
 
-    # Returns part which contains main body text, or nil if there isn't one
-    def get_main_body_text_part
-        leaves = self.foi_attachments
+    # Returns part which contains main body text, or nil if there isn't one,
+    # from a set of foi_attachments. If the leaves parameter is empty or not
+    # supplied, uses its own foi_attachments.
+    def get_main_body_text_part(leaves=[])
+        leaves = self.foi_attachments if leaves.empty?
 
         # Find first part which is text/plain or text/html
         # (We have to include HTML, as increasingly there are mail clients that
@@ -582,6 +628,7 @@ class IncomingMessage < ActiveRecord::Base
         # nil in this case)
         return p
     end
+
     # Returns attachments that are uuencoded in main body part
     def _uudecode_and_save_attachments(text)
         # Find any uudecoded things buried in it, yeuchly
@@ -605,7 +652,7 @@ class IncomingMessage < ActiveRecord::Base
                 content_type = 'application/octet-stream'
             end
             hexdigest = Digest::MD5.hexdigest(content)
-            attachment = self.foi_attachments.find_or_create_by_hexdigest(:hexdigest => hexdigest)
+            attachment = self.foi_attachments.find_or_create_by_hexdigest(hexdigest)
             attachment.update_attributes(:filename => filename,
                                          :content_type => content_type,
                                          :body => content,
@@ -632,15 +679,19 @@ class IncomingMessage < ActiveRecord::Base
         attachment_attributes = MailHandler.get_attachment_attributes(self.mail(force))
         attachments = []
         attachment_attributes.each do |attrs|
-            attachment = self.foi_attachments.find_or_create_by_hexdigest(:hexdigest => attrs[:hexdigest])
-            body = attrs.delete(:body)
+            attachment = self.foi_attachments.find_or_create_by_hexdigest(attrs[:hexdigest])
             attachment.update_attributes(attrs)
-            # Set the body separately as its handling can depend on the value of charset
-            attachment.body = body
             attachment.save!
-            attachments << attachment.id
+            attachments << attachment
         end
-        main_part = get_main_body_text_part
+
+        # Reload to refresh newly created foi_attachments
+        self.reload
+
+        # get the main body part from the set of attachments we just created,
+        # not from the self.foi_attachments association - some of the total set of
+        # self.foi_attachments may now be obsolete
+        main_part = get_main_body_text_part(attachments)
         # we don't use get_main_body_text_internal, as we want to avoid charset
         # conversions, since /usr/bin/uudecode needs to deal with those.
         # e.g. for https://secure.mysociety.org/admin/foi/request/show_raw_email/24550
@@ -651,12 +702,14 @@ class IncomingMessage < ActiveRecord::Base
                 c += 1
                 uudecode_attachment.url_part_number = c
                 uudecode_attachment.save!
-                attachments << uudecode_attachment.id
+                attachments << uudecode_attachment
             end
         end
 
+        attachment_ids = attachments.map{ |attachment| attachment.id }
         # now get rid of any attachments we no longer have
-        FoiAttachment.destroy_all("id NOT IN (#{attachments.join(',')}) AND incoming_message_id = #{self.id}")
+        FoiAttachment.destroy_all(["id NOT IN (?) AND incoming_message_id = ?",
+                                    attachment_ids, self.id])
    end
 
     # Returns body text as HTML with quotes flattened, and emails removed.
@@ -682,7 +735,7 @@ class IncomingMessage < ActiveRecord::Base
             text.strip!
             # if there is nothing but quoted stuff, then show the subject
             if text == "FOLDED_QUOTED_SECTION"
-                text = "[Subject only] " + CGI.escapeHTML(self.subject) + text
+                text = "[Subject only] " + CGI.escapeHTML(self.subject || '') + text
             end
             # and display link for quoted stuff
             text = text.gsub(/FOLDED_QUOTED_SECTION/, "\n\n" + '<span class="unfold_link"><a href="?unfold=1#incoming-'+self.id.to_s+'">'+_("show quoted sections")+'</a></span>' + "\n\n")
@@ -748,9 +801,15 @@ class IncomingMessage < ActiveRecord::Base
                                                              attachment.body,
                                                              attachment.charset)
         end
+
         # Remove any bad characters
-        text = Iconv.conv('utf-8//IGNORE', 'utf-8', text)
-        return text
+        if RUBY_VERSION >= '1.9'
+            text.encode("utf-8", :invalid => :replace,
+                                 :undef => :replace,
+                                 :replace => "")
+        else
+            Iconv.conv('utf-8//IGNORE', 'utf-8', text)
+        end
     end
 
 

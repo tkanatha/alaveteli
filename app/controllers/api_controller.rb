@@ -63,6 +63,8 @@ class ApiController < ApplicationController
             :smtp_message_id => nil
         )
 
+        request.set_described_state('waiting_response')
+
         # Return the URL and ID number.
         render :json => {
             'url' => make_url("request", request.url_title),
@@ -83,7 +85,7 @@ class ApiController < ApplicationController
 
         direction = json["direction"]
         body = json["body"]
-        sent_at_str = json["sent_at"]
+        sent_at = json["sent_at"]
 
         errors = []
 
@@ -105,12 +107,6 @@ class ApiController < ApplicationController
             errors << "The 'body' is missing"
         elsif body.empty?
             errors << "The 'body' is empty"
-        end
-
-        begin
-            sent_at = Time.iso8601(sent_at_str)
-        rescue ArgumentError
-            errors << "Failed to parse 'sent_at' field as ISO8601 time: #{sent_at_str}"
         end
 
         if direction == "request" && !attachments.nil?
@@ -155,7 +151,8 @@ class ApiController < ApplicationController
                 )
             end
 
-            mail = RequestMailer.create_external_response(request, body, sent_at, attachment_hashes)
+            mail = RequestMailer.external_response(request, body, sent_at, attachment_hashes)
+
             request.receive(mail, mail.encoded, true)
         end
         render :json => {
@@ -248,6 +245,6 @@ class ApiController < ApplicationController
 
     private
     def make_url(*args)
-        "http://" + Configuration::domain + "/" + args.join("/")
+        "http://" + AlaveteliConfiguration::domain + "/" + args.join("/")
     end
 end

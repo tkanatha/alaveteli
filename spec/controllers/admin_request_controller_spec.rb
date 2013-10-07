@@ -1,16 +1,11 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe AdminRequestController, "when administering requests" do
-    integrate_views
+    render_views
     before { basic_auth_login @request }
 
     before(:each) do
         load_raw_emails_data
-        @old_filters = ActionController::Routing::Routes.filters
-        ActionController::Routing::Routes.filters = RoutingFilter::Chain.new
-    end
-    after do
-        ActionController::Routing::Routes.filters = @old_filters
     end
 
     it "shows the index/list page" do
@@ -39,7 +34,7 @@ describe AdminRequestController, "when administering requests" do
                                            :awaiting_description => false,
                                            :allow_new_responses_from => 'anybody',
                                            :handle_rejected_responses => 'bounce' } }
-        response.flash[:notice].should include('successful')
+        request.flash[:notice].should include('successful')
         ir = InfoRequest.find(info_requests(:fancy_dog_request).id)
         ir.title.should == "Renamed"
     end
@@ -57,18 +52,6 @@ describe AdminRequestController, "when administering requests" do
 
     end
 
-    it "edits an outgoing message" do
-        get :edit_outgoing, :id => outgoing_messages(:useless_outgoing_message)
-    end
-
-    it "saves edits to an outgoing_message" do
-        outgoing_messages(:useless_outgoing_message).body.should include("fancy dog")
-        post :update_outgoing, { :id => outgoing_messages(:useless_outgoing_message), :outgoing_message => { :body => "Why do you have such a delicious cat?" } }
-        response.flash[:notice].should include('successful')
-        ir = OutgoingMessage.find(outgoing_messages(:useless_outgoing_message).id)
-        ir.body.should include("delicious cat")
-    end
-
     describe 'when fully destroying a request' do
 
         it 'expires the file cache for that request' do
@@ -82,15 +65,10 @@ describe AdminRequestController, "when administering requests" do
 end
 
 describe AdminRequestController, "when administering the holding pen" do
-    integrate_views
+    render_views
     before(:each) do
         basic_auth_login @request
         load_raw_emails_data
-        @old_filters = ActionController::Routing::Routes.filters
-        ActionController::Routing::Routes.filters = RoutingFilter::Chain.new
-    end
-    after do
-        ActionController::Routing::Routes.filters = @old_filters
     end
 
     it "shows a rejection reason for an incoming message from an invalid address" do
@@ -99,57 +77,8 @@ describe AdminRequestController, "when administering the holding pen" do
         ir.handle_rejected_responses = 'holding_pen'
         ir.save!
         receive_incoming_mail('incoming-request-plain.email', ir.incoming_email, "frob@nowhere.com")
-        get :show_raw_email, :id => InfoRequest.holding_pen_request.get_last_response.raw_email.id
-        response.should have_text(/Only the authority can reply to this request/)
-    end
-
-    it "allows redelivery even to a closed request" do
-        ir = info_requests(:fancy_dog_request)
-        ir.allow_new_responses_from = 'nobody'
-        ir.handle_rejected_responses = 'holding_pen'
-        ir.save!
-        InfoRequest.holding_pen_request.incoming_messages.length.should == 0
-        ir.incoming_messages.length.should == 1
-        receive_incoming_mail('incoming-request-plain.email', ir.incoming_email, "frob@nowhere.com")
-        InfoRequest.holding_pen_request.incoming_messages.length.should == 1
-        new_im = InfoRequest.holding_pen_request.incoming_messages[0]
-        ir.incoming_messages.length.should == 1
-        post :redeliver_incoming, :redeliver_incoming_message_id => new_im.id, :url_title => ir.url_title
-        ir = InfoRequest.find_by_url_title(ir.url_title)
-        ir.incoming_messages.length.should == 2
-        response.should redirect_to(:controller=>'admin_request', :action=>'show', :id=>101)
-        InfoRequest.holding_pen_request.incoming_messages.length.should == 0
-    end
-
-    it "allows redelivery to more than one request" do
-        ir1 = info_requests(:fancy_dog_request)
-        ir1.allow_new_responses_from = 'nobody'
-        ir1.handle_rejected_responses = 'holding_pen'
-        ir1.save!
-        ir1.incoming_messages.length.should == 1
-        ir2 = info_requests(:another_boring_request)
-        ir2.incoming_messages.length.should == 1
-
-        receive_incoming_mail('incoming-request-plain.email', ir1.incoming_email, "frob@nowhere.com")
-        InfoRequest.holding_pen_request.incoming_messages.length.should == 1
-
-        new_im = InfoRequest.holding_pen_request.incoming_messages[0]
-        post :redeliver_incoming, :redeliver_incoming_message_id => new_im.id, :url_title => "#{ir1.url_title},#{ir2.url_title}"
-        ir1.reload
-        ir1.incoming_messages.length.should == 2
-        ir2.reload
-        ir2.incoming_messages.length.should == 2
-        response.should redirect_to(:controller=>'admin_request', :action=>'show', :id=>ir2.id)
-        InfoRequest.holding_pen_request.incoming_messages.length.should == 0
-    end
-
-    it 'expires the file cache for the previous request' do
-        current_info_request = info_requests(:fancy_dog_request)
-        destination_info_request = info_requests(:naughty_chicken_request)
-        incoming_message = incoming_messages(:useless_incoming_message)
-        @controller.should_receive(:expire_for_request).with(current_info_request)
-        post :redeliver_incoming, :redeliver_incoming_message_id => incoming_message.id,
-                                  :url_title => destination_info_request.url_title
+        get :show_raw_email, :id => InfoRequest.holding_pen_request.get_last_public_response.raw_email.id
+        response.should contain "Only the authority can reply to this request"
     end
 
     it "guesses a misdirected request" do
@@ -159,41 +88,16 @@ describe AdminRequestController, "when administering the holding pen" do
         ir.save!
         mail_to = "request-#{ir.id}-asdfg@example.com"
         receive_incoming_mail('incoming-request-plain.email', mail_to)
-        interesting_email = InfoRequest.holding_pen_request.get_last_response.raw_email.id
+        interesting_email = InfoRequest.holding_pen_request.get_last_public_response.raw_email.id
         # now we add another message to the queue, which we're not interested in
         receive_incoming_mail('incoming-request-plain.email', ir.incoming_email, "")
         InfoRequest.holding_pen_request.incoming_messages.length.should == 2
         get :show_raw_email, :id => interesting_email
-        response.should have_text(/Could not identify the request/)
+        response.should contain "Could not identify the request"
         assigns[:info_requests][0].should == ir
     end
 
-    describe 'when destroying an incoming message' do
 
-        before do
-            @im = incoming_messages(:useless_incoming_message)
-            @controller.stub!(:expire_for_request)
-        end
-
-        it "destroys the raw email file" do
-            raw_email = @im.raw_email.filepath
-            assert_equal File.exists?(raw_email), true
-            post :destroy_incoming, :incoming_message_id => @im.id
-            assert_equal File.exists?(raw_email), false
-        end
-
-        it 'asks the incoming message to fully destroy itself' do
-            IncomingMessage.stub!(:find).and_return(@im)
-            @im.should_receive(:fully_destroy)
-            post :destroy_incoming, :incoming_message_id => @im.id
-        end
-
-        it 'expires the file cache for the associated info_request' do
-            @controller.should_receive(:expire_for_request).with(@im.info_request)
-            post :destroy_incoming, :incoming_message_id => @im.id
-        end
-
-    end
 
     it "shows a suitable default 'your email has been hidden' message" do
         ir = info_requests(:fancy_dog_request)
@@ -260,13 +164,13 @@ describe AdminRequestController, "when administering the holding pen" do
             end
 
             it 'should not send a notification email' do
-                ContactMailer.should_not_receive(:deliver_from_admin_message)
+                ContactMailer.should_not_receive(:from_admin_message)
                 make_request
             end
 
             it 'should add a notice to the flash saying that the request has been hidden' do
                 make_request
-                response.flash[:notice].should == "This external request has been hidden"
+                request.flash[:notice].should == "This external request has been hidden"
             end
 
             it 'should expire the file cache for the request' do

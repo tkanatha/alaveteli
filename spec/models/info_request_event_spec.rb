@@ -1,3 +1,21 @@
+# coding: utf-8
+# == Schema Information
+#
+# Table name: info_request_events
+#
+#  id                  :integer          not null, primary key
+#  info_request_id     :integer          not null
+#  event_type          :text             not null
+#  params_yaml         :text             not null
+#  created_at          :datetime         not null
+#  described_state     :string(255)
+#  calculated_state    :string(255)
+#  last_described_at   :datetime
+#  incoming_message_id :integer
+#  outgoing_message_id :integer
+#  comment_id          :integer
+#
+
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe InfoRequestEvent do
@@ -14,6 +32,64 @@ describe InfoRequestEvent do
 
     end
 
+    describe 'when deciding if it is indexed by search' do
+
+        before do
+            @comment = mock_model(Comment)
+            @incoming_message = mock_model(IncomingMessage)
+            @outgoing_message = mock_model(OutgoingMessage)
+            @info_request = mock_model(InfoRequest, :indexed_by_search? => true)
+        end
+
+        it 'should return false for a comment that is not visible' do
+            @comment.stub!(:visible).and_return(false)
+            @info_request_event = InfoRequestEvent.new(:event_type => 'comment',
+                                                       :comment => @comment,
+                                                       :info_request => @info_request)
+            @info_request_event.indexed_by_search?.should be_false
+        end
+
+        it 'should return true for a comment that is visible' do
+            @comment.stub!(:visible).and_return(true)
+            @info_request_event = InfoRequestEvent.new(:event_type => 'comment',
+                                                       :comment => @comment,
+                                                       :info_request => @info_request)
+            @info_request_event.indexed_by_search?.should be_true
+        end
+
+        it 'should return false for an incoming message that is not indexed by search' do
+            @incoming_message.stub!(:indexed_by_search?).and_return false
+            @info_request_event = InfoRequestEvent.new(:event_type => 'response',
+                                                       :incoming_message => @incoming_message,
+                                                       :info_request => @info_request)
+            @info_request_event.indexed_by_search?.should be_false
+        end
+
+        it 'should return true for an incoming message that is indexed by search' do
+            @incoming_message.stub!(:indexed_by_search?).and_return true
+            @info_request_event = InfoRequestEvent.new(:event_type => 'response',
+                                                       :incoming_message => @incoming_message,
+                                                       :info_request => @info_request)
+            @info_request_event.indexed_by_search?.should be_true
+        end
+
+        it 'should return false for an outgoing message that is not indexed by search' do
+            @outgoing_message.stub!(:indexed_by_search?).and_return false
+            @info_request_event = InfoRequestEvent.new(:event_type => 'followup_sent',
+                                                       :outgoing_message => @outgoing_message,
+                                                       :info_request => @info_request)
+            @info_request_event.indexed_by_search?.should be_false
+        end
+
+        it 'should return true for an outgoing message that is indexed by search' do
+            @outgoing_message.stub!(:indexed_by_search?).and_return true
+            @info_request_event = InfoRequestEvent.new(:event_type => 'followup_sent',
+                                                       :outgoing_message => @outgoing_message,
+                                                       :info_request => @info_request)
+            @info_request_event.indexed_by_search?.should be_true
+        end
+    end
+
     describe 'after saving' do
 
         it 'should mark the model for reindexing in xapian if there is no no_xapian_reindex flag on the object' do
@@ -21,7 +97,7 @@ describe InfoRequestEvent do
                                          :event_type => 'sent',
                                          :params => {})
             event.should_receive(:xapian_mark_needs_index)
-            event.run_callbacks(:after_save)
+            event.run_callbacks(:save)
         end
 
     end
@@ -115,6 +191,13 @@ describe InfoRequestEvent do
         it 'should return true if the addresses have different formats' do
             @info_request_event.stub!(:params).and_return(:email => 'A Test <test@example.com>')
             @info_request_event.stub_chain(:info_request, :get_previous_email_sent_to).and_return('test@example.com')
+            @info_request_event.same_email_as_previous_send?.should be_true
+        end
+
+        it 'should handle non-ascii characters in the name input' do
+            address = "\"Someone’s name\" <test@example.com>"
+            @info_request_event.stub!(:params).and_return(:email => address)
+            @info_request_event.stub_chain(:info_request, :get_previous_email_sent_to).and_return(address)
             @info_request_event.same_email_as_previous_send?.should be_true
         end
 

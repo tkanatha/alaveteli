@@ -1,18 +1,17 @@
 # == Schema Information
-# Schema version: 114
 #
 # Table name: outgoing_messages
 #
-#  id                           :integer         not null, primary key
-#  info_request_id              :integer         not null
-#  body                         :text            not null
-#  status                       :string(255)     not null
-#  message_type                 :string(255)     not null
-#  created_at                   :datetime        not null
-#  updated_at                   :datetime        not null
+#  id                           :integer          not null, primary key
+#  info_request_id              :integer          not null
+#  body                         :text             not null
+#  status                       :string(255)      not null
+#  message_type                 :string(255)      not null
+#  created_at                   :datetime         not null
+#  updated_at                   :datetime         not null
 #  last_sent_at                 :datetime
 #  incoming_message_followup_id :integer
-#  what_doing                   :string(255)     not null
+#  what_doing                   :string(255)      not null
 #
 
 # models/outgoing_message.rb:
@@ -20,10 +19,21 @@
 # else. e.g. An initial request for information, or a complaint.
 #
 # Copyright (c) 2007 UK Citizens Online Democracy. All rights reserved.
-# Email: francis@mysociety.org; WWW: http://www.mysociety.org/
+# Email: hello@mysociety.org; WWW: http://www.mysociety.org/
 
 class OutgoingMessage < ActiveRecord::Base
+    extend MessageProminence
+    include Rails.application.routes.url_helpers
+    include LinkToHelper
+    self.default_url_options[:host] = AlaveteliConfiguration::domain
+    # https links in emails if forcing SSL
+    if AlaveteliConfiguration::force_ssl
+      self.default_url_options[:protocol] = "https"
+    end
+
     strip_attributes!
+
+    has_prominence
 
     belongs_to :info_request
     validates_presence_of :info_request
@@ -50,6 +60,8 @@ class OutgoingMessage < ActiveRecord::Base
             end
         end
     end
+
+    after_initialize :set_default_letter
 
     # How the default letter starts and ends
     def get_salutation
@@ -78,15 +90,15 @@ class OutgoingMessage < ActiveRecord::Base
         end
 
         if self.what_doing == 'internal_review'
-            "Please pass this on to the person who conducts Freedom of Information reviews." +
+            _("Please pass this on to the person who conducts Freedom of Information reviews.") +
             "\n\n" +
-            "I am writing to request an internal review of " +
-            self.info_request.public_body.name +
-            "'s handling of my FOI request " +
-            "'" + self.info_request.title + "'." +
+            _("I am writing to request an internal review of {{public_body_name}}'s handling of my FOI request '{{info_request_title}}'.",
+              :public_body_name => self.info_request.public_body.name,
+              :info_request_title => self.info_request.title) +
             "\n\n\n\n [ " + self.get_internal_review_insert_here_note + " ] \n\n\n\n" +
-            "A full history of my FOI request and all correspondence is available on the Internet at this address:\n" +
-            "http://" + Configuration::domain + "/request/" + self.info_request.url_title
+            _("A full history of my FOI request and all correspondence is available on the Internet at this address: {{url}}",
+            :url => request_url(self.info_request)) +
+            "\n"
         else
             ""
         end
@@ -130,13 +142,6 @@ class OutgoingMessage < ActiveRecord::Base
         MySociety::Validate.contains_postcode?(self.body)
     end
 
-    # Set default letter
-    def after_initialize
-        if self.body.nil?
-            self.body = get_default_message
-        end
-    end
-
     # Deliver outgoing message
     # Note: You can test this from script/console with, say:
     # InfoRequest.find(1).outgoing_messages[0].send_message
@@ -147,7 +152,7 @@ class OutgoingMessage < ActiveRecord::Base
                 self.status = 'sent'
                 self.save!
 
-                mail_message = OutgoingMailer.deliver_initial_request(self.info_request, self)
+                mail_message = OutgoingMailer.initial_request(self.info_request, self).deliver
                 self.info_request.log_event(log_event_type, {
                     :email => mail_message.to_addrs.join(", "),
                     :outgoing_message_id => self.id,
@@ -159,7 +164,7 @@ class OutgoingMessage < ActiveRecord::Base
                 self.status = 'sent'
                 self.save!
 
-                mail_message = OutgoingMailer.deliver_followup(self.info_request, self, self.incoming_message_followup)
+                mail_message = OutgoingMailer.followup(self.info_request, self, self.incoming_message_followup).deliver
                 self.info_request.log_event('followup_' + log_event_type, {
                     :email => mail_message.to_addrs.join(", "),
                     :outgoing_message_id => self.id,
@@ -206,11 +211,11 @@ class OutgoingMessage < ActiveRecord::Base
     end
 
     # Returns text for indexing / text display
-    def get_text_for_indexing
+    def get_text_for_indexing(strip_salutation=true)
         text = self.body.strip
 
         # Remove salutation
-        text.sub!(/Dear .+,/, "")
+        text.sub!(/Dear .+,/, "") if strip_salutation
 
         # Remove email addresses from display/index etc.
         self.remove_privacy_sensitive_things!(text)
@@ -229,6 +234,12 @@ class OutgoingMessage < ActiveRecord::Base
         text = text.gsub(/\n/, '<br>')
         return text.html_safe
     end
+
+    # Return body for display as text
+    def get_body_for_text_display
+         get_text_for_indexing(strip_salutation=false)
+    end
+
 
     def fully_destroy
         ActiveRecord::Base.transaction do
@@ -253,8 +264,14 @@ class OutgoingMessage < ActiveRecord::Base
 
     private
 
+    def set_default_letter
+        if self.body.nil?
+            self.body = get_default_message
+        end
+    end
+
     def format_of_body
-        if self.body.empty? || self.body =~ /\A#{get_salutation}\s+#{get_signoff}/ || self.body =~ /#{get_internal_review_insert_here_note}/
+        if self.body.empty? || self.body =~ /\A#{Regexp.escape(get_salutation)}\s+#{Regexp.escape(get_signoff)}/ || self.body =~ /#{Regexp.escape(get_internal_review_insert_here_note)}/
             if self.message_type == 'followup'
                 if self.what_doing == 'internal_review'
                     errors.add(:body, _("Please give details explaining why you want a review"))

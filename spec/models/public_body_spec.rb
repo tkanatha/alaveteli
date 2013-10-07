@@ -1,3 +1,27 @@
+# encoding: UTF-8
+# == Schema Information
+#
+# Table name: public_bodies
+#
+#  id                  :integer          not null, primary key
+#  name                :text             not null
+#  short_name          :text             not null
+#  request_email       :text             not null
+#  version             :integer          not null
+#  last_edit_editor    :string(255)      not null
+#  last_edit_comment   :text             not null
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  url_name            :text             not null
+#  home_page           :text             default(""), not null
+#  notes               :text             default(""), not null
+#  first_letter        :string(255)      not null
+#  publication_scheme  :text             default(""), not null
+#  api_key             :string(255)      not null
+#  info_requests_count :integer          default(0), not null
+#  disclosure_log      :text             default(""), not null
+#
+
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe PublicBody, " using tags" do
@@ -135,40 +159,75 @@ describe PublicBody, " when saving" do
         @public_body = PublicBody.new
     end
 
+    def set_default_attributes(public_body)
+        public_body.name = "Testing Public Body"
+        public_body.short_name = "TPB"
+        public_body.request_email = "request@localhost"
+        public_body.last_edit_editor = "*test*"
+        public_body.last_edit_comment = "This is a test"
+    end
+
     it "should not be valid without setting some parameters" do
         @public_body.should_not be_valid
     end
 
     it "should not be valid with misformatted request email" do
-        @public_body.name = "Testing Public Body"
-        @public_body.short_name = "TPB"
+        set_default_attributes(@public_body)
         @public_body.request_email = "requestBOOlocalhost"
-        @public_body.last_edit_editor = "*test*"
-        @public_body.last_edit_comment = "This is a test"
         @public_body.should_not be_valid
         @public_body.should have(1).errors_on(:request_email)
     end
 
     it "should save" do
-        @public_body.name = "Testing Public Body"
-        @public_body.short_name = "TPB"
-        @public_body.request_email = "request@localhost"
-        @public_body.last_edit_editor = "*test*"
-        @public_body.last_edit_comment = "This is a test"
+        set_default_attributes(@public_body)
         @public_body.save!
     end
 
     it "should update first_letter" do
-        @public_body.name = "Testing Public Body"
-        @public_body.short_name = "TPB"
-        @public_body.request_email = "request@localhost"
-        @public_body.last_edit_editor = "*test*"
-        @public_body.last_edit_comment = "This is a test"
-
+        set_default_attributes(@public_body)
         @public_body.first_letter.should be_nil
         @public_body.save!
         @public_body.first_letter.should == 'T'
     end
+
+    it "should update first letter, even if it's a multibyte character" do
+        pb = PublicBody.new(:name => 'åccents, lower-case',
+                            :short_name => 'ALC',
+                            :request_email => 'foo@localhost',
+                            :last_edit_editor => 'test',
+                            :last_edit_comment => '')
+        pb.first_letter.should be_nil
+        pb.save!
+        pb.first_letter.should == 'Å'
+    end
+
+    it "should save the name when renaming an existing public body" do
+        public_body = public_bodies(:geraldine_public_body)
+        public_body.name = "Mark's Public Body"
+        public_body.save!
+
+        public_body.name.should == "Mark's Public Body"
+    end
+
+    it 'should not create a new version when nothing has changed' do
+        @public_body.versions.size.should == 0
+        set_default_attributes(@public_body)
+        @public_body.save!
+        @public_body.versions.size.should == 1
+        @public_body.save!
+        @public_body.versions.size.should == 1
+    end
+
+    it 'should create a new version if something has changed' do
+        @public_body.versions.size.should == 0
+        set_default_attributes(@public_body)
+        @public_body.save!
+        @public_body.versions.size.should == 1
+        @public_body.name = 'Test'
+        @public_body.save!
+        @public_body.versions.size.should == 2
+    end
+
 end
 
 describe PublicBody, "when searching" do
@@ -252,22 +311,23 @@ describe PublicBody, " when loading CSV files" do
         errors.should == []
         notes.size.should == 2
         notes[0].should == "line 1: creating new authority 'aBody' (locale: en):\n\t{\"name\":\"aBody\"}"
-        notes[1].should =~ /Notes: Some  bodies are in database, but not in CSV file:\n(    [A-Za-z ]+\n)*You may want to delete them manually.\n/
+        notes[1].should =~ /Notes: Some  bodies are in database, but not in CSV file:\n(    .+\n)*You may want to delete them manually.\n/
     end
 
     it "should do a dry run successfully" do
         original_count = PublicBody.count
 
-        csv_contents = load_file_fixture("fake-authority-type.csv")
+        csv_contents = normalize_string_to_utf8(load_file_fixture("fake-authority-type.csv"))
         errors, notes = PublicBody.import_csv(csv_contents, '', 'replace', true, 'someadmin') # true means dry run
         errors.should == []
-        notes.size.should == 4
-        notes[0..2].should == [
+        notes.size.should == 5
+        notes[0..3].should == [
             "line 1: creating new authority 'North West Fake Authority' (locale: en):\n\t\{\"name\":\"North West Fake Authority\",\"request_email\":\"north_west_foi@localhost\"\}",
             "line 2: creating new authority 'Scottish Fake Authority' (locale: en):\n\t\{\"name\":\"Scottish Fake Authority\",\"request_email\":\"scottish_foi@localhost\"\}",
             "line 3: creating new authority 'Fake Authority of Northern Ireland' (locale: en):\n\t\{\"name\":\"Fake Authority of Northern Ireland\",\"request_email\":\"ni_foi@localhost\"\}",
+            "line 4: creating new authority 'Gobierno de Aragón' (locale: en):\n\t\{\"name\":\"Gobierno de Arag\\u00f3n\",\"request_email\":\"spain_foi@localhost\"}",
         ]
-        notes[3].should =~ /Notes: Some  bodies are in database, but not in CSV file:\n(    [A-Za-z ]+\n)*You may want to delete them manually.\n/
+        notes[4].should =~ /Notes: Some  bodies are in database, but not in CSV file:\n(    .+\n)*You may want to delete them manually.\n/
 
         PublicBody.count.should == original_count
     end
@@ -275,34 +335,36 @@ describe PublicBody, " when loading CSV files" do
     it "should do full run successfully" do
         original_count = PublicBody.count
 
-        csv_contents = load_file_fixture("fake-authority-type.csv")
+        csv_contents = normalize_string_to_utf8(load_file_fixture("fake-authority-type.csv"))
         errors, notes = PublicBody.import_csv(csv_contents, '', 'replace', false, 'someadmin') # false means real run
         errors.should == []
-        notes.size.should == 4
-        notes[0..2].should == [
+        notes.size.should == 5
+        notes[0..3].should == [
             "line 1: creating new authority 'North West Fake Authority' (locale: en):\n\t\{\"name\":\"North West Fake Authority\",\"request_email\":\"north_west_foi@localhost\"\}",
             "line 2: creating new authority 'Scottish Fake Authority' (locale: en):\n\t\{\"name\":\"Scottish Fake Authority\",\"request_email\":\"scottish_foi@localhost\"\}",
             "line 3: creating new authority 'Fake Authority of Northern Ireland' (locale: en):\n\t\{\"name\":\"Fake Authority of Northern Ireland\",\"request_email\":\"ni_foi@localhost\"\}",
+            "line 4: creating new authority 'Gobierno de Aragón' (locale: en):\n\t\{\"name\":\"Gobierno de Arag\\u00f3n\",\"request_email\":\"spain_foi@localhost\"}",
         ]
-        notes[3].should =~ /Notes: Some  bodies are in database, but not in CSV file:\n(    [A-Za-z ]+\n)*You may want to delete them manually.\n/
+        notes[4].should =~ /Notes: Some  bodies are in database, but not in CSV file:\n(    .+\n)*You may want to delete them manually.\n/
 
-        PublicBody.count.should == original_count + 3
+        PublicBody.count.should == original_count + 4
     end
 
     it "should do imports without a tag successfully" do
         original_count = PublicBody.count
 
-        csv_contents = load_file_fixture("fake-authority-type.csv")
+        csv_contents = normalize_string_to_utf8(load_file_fixture("fake-authority-type.csv"))
         errors, notes = PublicBody.import_csv(csv_contents, '', 'replace', false, 'someadmin') # false means real run
         errors.should == []
-        notes.size.should == 4
-        notes[0..2].should == [
+        notes.size.should == 5
+        notes[0..3].should == [
             "line 1: creating new authority 'North West Fake Authority' (locale: en):\n\t\{\"name\":\"North West Fake Authority\",\"request_email\":\"north_west_foi@localhost\"\}",
             "line 2: creating new authority 'Scottish Fake Authority' (locale: en):\n\t\{\"name\":\"Scottish Fake Authority\",\"request_email\":\"scottish_foi@localhost\"\}",
             "line 3: creating new authority 'Fake Authority of Northern Ireland' (locale: en):\n\t\{\"name\":\"Fake Authority of Northern Ireland\",\"request_email\":\"ni_foi@localhost\"\}",
+            "line 4: creating new authority 'Gobierno de Aragón' (locale: en):\n\t\{\"name\":\"Gobierno de Arag\\u00f3n\",\"request_email\":\"spain_foi@localhost\"}",
         ]
-        notes[3].should =~ /Notes: Some  bodies are in database, but not in CSV file:\n(    [A-Za-z ]+\n)*You may want to delete them manually.\n/
-        PublicBody.count.should == original_count + 3
+        notes[4].should =~ /Notes: Some  bodies are in database, but not in CSV file:\n(    .+\n)*You may want to delete them manually.\n/
+        PublicBody.count.should == original_count + 4
     end
 
     it "should handle a field list and fields out of order" do
@@ -317,7 +379,7 @@ describe PublicBody, " when loading CSV files" do
             "line 3: creating new authority 'Scottish Fake Authority' (locale: en):\n\t\{\"name\":\"Scottish Fake Authority\",\"request_email\":\"scottish_foi@localhost\",\"home_page\":\"http://scottish.org\",\"tag_string\":\"scottish\"\}",
             "line 4: creating new authority 'Fake Authority of Northern Ireland' (locale: en):\n\t\{\"name\":\"Fake Authority of Northern Ireland\",\"request_email\":\"ni_foi@localhost\",\"tag_string\":\"fake aTag\"\}",
         ]
-        notes[3].should =~ /Notes: Some  bodies are in database, but not in CSV file:\n(    [A-Za-z ]+\n)*You may want to delete them manually.\n/
+        notes[3].should =~ /Notes: Some  bodies are in database, but not in CSV file:\n(    .+\n)*You may want to delete them manually.\n/
 
         PublicBody.count.should == original_count
     end
@@ -374,7 +436,7 @@ describe PublicBody, " when loading CSV files" do
             "line 4: creating new authority 'Fake Authority of Northern Ireland' (locale: en):\n\t{\"name\":\"Fake Authority of Northern Ireland\",\"request_email\":\"ni_foi@localhost\",\"tag_string\":\"fake aTag\"}",
             "line 4: creating new authority 'Fake Authority of Northern Ireland' (locale: es):\n\t{\"name\":\"Autoridad Irlandesa\"}",
         ]
-        notes[6].should =~ /Notes: Some  bodies are in database, but not in CSV file:\n(    [A-Za-z ]+\n)*You may want to delete them manually.\n/
+        notes[6].should =~ /Notes: Some  bodies are in database, but not in CSV file:\n(    .+\n)*You may want to delete them manually.\n/
 
         PublicBody.count.should == original_count + 3
 
@@ -400,7 +462,7 @@ describe PublicBody, " when loading CSV files" do
             "line 3: creating new authority 'Scottish Fake Authority' (locale: en):\n\t{\"name\":\"Scottish Fake Authority\",\"request_email\":\"scottish_foi@localhost\",\"home_page\":\"http://scottish.org\",\"tag_string\":\"scottish\"}",
             "line 4: creating new authority 'Fake Authority of Northern Ireland' (locale: en):\n\t{\"name\":\"Fake Authority of Northern Ireland\",\"request_email\":\"ni_foi@localhost\",\"tag_string\":\"fake aTag\"}",
         ]
-        notes[3].should =~ /Notes: Some  bodies are in database, but not in CSV file:\n(    [A-Za-z ]+\n)*You may want to delete them manually.\n/
+        notes[3].should =~ /Notes: Some  bodies are in database, but not in CSV file:\n(    .+\n)*You may want to delete them manually.\n/
 
         PublicBody.count.should == original_count
     end
@@ -456,7 +518,7 @@ end
 
 describe PublicBody, " when override all public body request emails set" do
     it "should return the overridden request email" do
-        MySociety::Config.should_receive(:get).with("OVERRIDE_ALL_PUBLIC_BODY_REQUEST_EMAILS", "").twice.and_return("catch_all_test_email@foo.com")
+        AlaveteliConfiguration.should_receive(:override_all_public_body_request_emails).twice.and_return("catch_all_test_email@foo.com")
         @geraldine = public_bodies(:geraldine_public_body)
         @geraldine.request_email.should == "catch_all_test_email@foo.com"
     end

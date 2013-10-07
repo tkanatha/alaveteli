@@ -3,7 +3,7 @@
 # -
 #
 # Copyright (c) 2007 UK Citizens Online Democracy. All rights reserved.
-# Email: francis@mysociety.org; WWW: http://www.mysociety.org/
+# Email: hello@mysociety.org; WWW: http://www.mysociety.org/
 
 module LinkToHelper
 
@@ -53,7 +53,7 @@ module LinkToHelper
 
     # Respond to request
     def respond_to_last_url(info_request, options = {})
-        last_response = info_request.get_last_response
+        last_response = info_request.get_last_public_response
         if last_response.nil?
             show_response_no_followup_url(options.merge(:id => info_request.id))
         else
@@ -238,7 +238,7 @@ module LinkToHelper
     # TODO: Remove in next release
     def main_url(relative_path, append = nil)
         warn "[DEPRECATION] main_url is deprecated. Please remove it from your theme."
-        url_prefix = "http://" + Configuration::domain
+        url_prefix = "http://" + AlaveteliConfiguration::domain
         url = url_prefix + relative_path
         if !append.nil?
             begin
@@ -282,5 +282,13 @@ module LinkToHelper
     def year_from_date(date)
         return date.strftime("%Y").strip
     end
+
+    #I18n locale switcher
+
+    def locale_switcher(locale, params)
+        params['locale'] = locale
+        return url_for(params)
+    end
+
 end
 

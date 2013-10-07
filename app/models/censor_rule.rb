@@ -1,18 +1,17 @@
 # == Schema Information
-# Schema version: 20120919140404
 #
 # Table name: censor_rules
 #
-#  id                :integer         not null, primary key
+#  id                :integer          not null, primary key
 #  info_request_id   :integer
 #  user_id           :integer
 #  public_body_id    :integer
-#  text              :text            not null
-#  replacement       :text            not null
-#  last_edit_editor  :string(255)     not null
-#  last_edit_comment :text            not null
-#  created_at        :datetime        not null
-#  updated_at        :datetime        not null
+#  text              :text             not null
+#  replacement       :text             not null
+#  last_edit_editor  :string(255)      not null
+#  last_edit_comment :text             not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
 #  regexp            :boolean
 #
 
@@ -20,7 +19,7 @@
 # Stores alterations to remove specific data from requests.
 #
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
-# Email: francis@mysociety.org; WWW: http://www.mysociety.org/
+# Email: hello@mysociety.org; WWW: http://www.mysociety.org/
 
 class CensorRule < ActiveRecord::Base
     belongs_to :info_request
@@ -33,13 +32,15 @@ class CensorRule < ActiveRecord::Base
     validate :require_valid_regexp, :if => proc{ |rule| rule.regexp? == true }
     validates_presence_of :text
 
-    named_scope :global, {:conditions => {:info_request_id => nil,
-                                          :user_id => nil,
-                                          :public_body_id => nil}}
+    scope :global, {:conditions => {:info_request_id => nil,
+                                    :user_id => nil,
+                                    :public_body_id => nil}}
 
     def require_user_request_or_public_body
         if self.info_request.nil? && self.user.nil? && self.public_body.nil?
-            errors.add("Censor must apply to an info request a user or a body; ")
+            [:info_request, :user, :public_body].each do |a|
+                errors.add(a, "Rule must apply to an info request, a user or a body")
+            end
         end
     end
 

@@ -1,20 +1,19 @@
 # == Schema Information
-# Schema version: 114
 #
 # Table name: purge_requests
 #
-#  id         :integer         not null, primary key
+#  id         :integer          not null, primary key
 #  url        :string(255)
-#  created_at :datetime        not null
-#  model      :string(255)     not null
-#  model_id   :integer         not null
+#  created_at :datetime         not null
+#  model      :string(255)      not null
+#  model_id   :integer          not null
 #
 
 # models/purge_request.rb:
 # A queue of URLs to purge
 #
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
-# Email: francis@mysociety.org; WWW: http://www.mysociety.org/
+# Email: hello@mysociety.org; WWW: http://www.mysociety.org/
 #
 
 class PurgeRequest < ActiveRecord::Base

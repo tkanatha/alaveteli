@@ -1,16 +1,15 @@
 # == Schema Information
-# Schema version: 114
 #
 # Table name: track_things
 #
-#  id               :integer         not null, primary key
-#  tracking_user_id :integer         not null
-#  track_query      :string(255)     not null
+#  id               :integer          not null, primary key
+#  tracking_user_id :integer          not null
+#  track_query      :string(255)      not null
 #  info_request_id  :integer
 #  tracked_user_id  :integer
 #  public_body_id   :integer
-#  track_medium     :string(255)     not null
-#  track_type       :string(255)     default("internal_error"), not null
+#  track_medium     :string(255)      not null
+#  track_type       :string(255)      default("internal_error"), not null
 #  created_at       :datetime
 #  updated_at       :datetime
 #
@@ -19,7 +18,7 @@
 # When somebody is getting alerts for something.
 #
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
-# Email: francis@mysociety.org; WWW: http://www.mysociety.org/
+# Email: hello@mysociety.org; WWW: http://www.mysociety.org/
 
 require 'set'
 
@@ -260,7 +259,7 @@ class TrackThing < ActiveRecord::Base
                     :title_in_email => self.public_body.law_only_short + " requests to '" + self.public_body.name + "'",
                     :title_in_rss => self.public_body.law_only_short + " requests to '" + self.public_body.name + "'",
                     # Authentication
-                    :web => _("To follow requests made using {{site_name}} to the public authority '{{public_body_name}}'", :site_name=>Configuration::site_name, :public_body_name=>CGI.escapeHTML(self.public_body.name)),
+                    :web => _("To follow requests made using {{site_name}} to the public authority '{{public_body_name}}'", :site_name=>AlaveteliConfiguration::site_name, :public_body_name=>CGI.escapeHTML(self.public_body.name)),
                     :email => _("Then you will be notified whenever someone requests something or gets a response from '{{public_body_name}}'.", :public_body_name=>CGI.escapeHTML(self.public_body.name)),
                     :email_subject => _("Confirm you want to follow requests to '{{public_body_name}}'", :public_body_name=>self.public_body.name),
                     # RSS sorting

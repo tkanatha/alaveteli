@@ -1,9 +1,8 @@
 # == Schema Information
-# Schema version: 114
 #
 # Table name: holidays
 #
-#  id          :integer         not null, primary key
+#  id          :integer          not null, primary key
 #  day         :date
 #  description :text
 #
@@ -19,7 +18,7 @@
 #    -- Freedom of Information Act 2000 section 10
 #
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
-# Email: francis@mysociety.org; WWW: http://www.mysociety.org/
+# Email: hello@mysociety.org; WWW: http://www.mysociety.org/
 
 class Holiday < ActiveRecord::Base
 
