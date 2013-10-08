@@ -1315,6 +1315,11 @@ describe RequestController, "when viewing an individual response for reply/follo
         response.body.should have_selector("div#other_recipients ul li", :content => "Frob")
     end
 
+    it 'should show default text for an internal review if the "internal_review" param is passed' do
+        make_request @default_params.merge(:internal_review => '1')
+        response.body.should match('I am writing to request an internal review')
+    end
+
     context 'when a request is hidden' do
 
         before do
