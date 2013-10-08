@@ -1282,33 +1282,36 @@ describe RequestController, "when viewing an individual response for reply/follo
 
     before(:each) do
         load_raw_emails_data
+        @default_params = {:id => info_requests(:fancy_dog_request).id,
+                           :incoming_message_id => incoming_messages(:useless_incoming_message)}
+        @default_session_params = {:user_id => users(:bob_smith_user).id}
+    end
+
+    def make_request(params=@default_params, session_params=@default_session_params)
+        get :show_response, params, session_params
     end
 
     it "should ask for login if you are logged in as wrong person" do
-        session[:user_id] = users(:silly_name_user).id
-        get :show_response, :id => info_requests(:fancy_dog_request).id, :incoming_message_id => incoming_messages(:useless_incoming_message)
+        make_request(@default_params, {:user_id => users(:silly_name_user).id})
         response.should render_template('user/wrong_user')
     end
 
     it "should show the response if you are logged in as right person" do
-        session[:user_id] = users(:bob_smith_user).id
-        get :show_response, :id => info_requests(:fancy_dog_request).id, :incoming_message_id => incoming_messages(:useless_incoming_message)
+        make_request
         response.should render_template('show_response')
     end
 
     it "should offer the opportunity to reply to the main address" do
-        session[:user_id] = users(:bob_smith_user).id
-        get :show_response, :id => info_requests(:fancy_dog_request).id, :incoming_message_id => incoming_messages(:useless_incoming_message)
+        make_request
         response.body.should have_selector("div#other_recipients ul li", :content => "the main FOI contact address for")
     end
 
     it "should offer an opportunity to reply to another address" do
-        session[:user_id] = users(:bob_smith_user).id
         ir = info_requests(:fancy_dog_request)
         ir.allow_new_responses_from = "anybody"
         ir.save!
         receive_incoming_mail('incoming-request-plain.email', ir.incoming_email, "Frob <frob@bonce.com>")
-        get :show_response, :id => ir.id, :incoming_message_id => incoming_messages(:useless_incoming_message)
+        make_request
         response.body.should have_selector("div#other_recipients ul li", :content => "Frob")
     end
 
@@ -1323,7 +1326,7 @@ describe RequestController, "when viewing an individual response for reply/follo
         end
 
         it "should not show individual responses, even if request owner" do
-            get :show_response, :id => info_requests(:fancy_dog_request).id, :incoming_message_id => incoming_messages(:useless_incoming_message)
+            make_request
             response.should render_template('request/hidden')
         end
 
