@@ -1326,7 +1326,6 @@ describe RequestController, "when viewing an individual response for reply/follo
             ir = info_requests(:fancy_dog_request)
             ir.prominence = 'hidden'
             ir.save!
-
             session[:user_id] = users(:bob_smith_user).id
         end
 
@@ -1336,10 +1335,8 @@ describe RequestController, "when viewing an individual response for reply/follo
         end
 
         it 'should respond to a json request for a hidden request with a 403 code and no body' do
-            get :show_response, :id => info_requests(:fancy_dog_request).id,
-                                :incoming_message_id => incoming_messages(:useless_incoming_message),
-                                :format => 'json'
-
+            make_request @default_params.merge(:format => 'json'), @default_session_params
+            response.body.should == ' '
             response.code.should == '403'
         end
 
