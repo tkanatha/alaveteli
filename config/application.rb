@@ -94,7 +94,8 @@ module Alaveteli
                                  'fonts.css',
                                  'main.css',
                                  'ie6.css',
-                                 'ie7.css']
+                                 'ie7.css',
+                                 'admin.css']
 
   end
 end
