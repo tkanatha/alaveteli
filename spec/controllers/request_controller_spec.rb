@@ -1277,7 +1277,7 @@ describe RequestController, "when making a new request" do
 
 end
 
-describe RequestController, "when viewing an individual response for reply/followup", :focus => true do
+describe RequestController, "when viewing an individual response for reply/followup" do
     render_views
 
     before(:each) do
@@ -1360,8 +1360,8 @@ describe RequestController, "when viewing an individual response for reply/follo
     describe "when sending a followup message" do
 
         before do
-            @default_params = {:outgoing_message => { :body => "What a useless response! You suck.",
-                                                      :what_doing => 'normal_sort' },
+            @default_params = {:outgoing_message => {:body => "What a useless response! You suck.",
+                                                     :what_doing => 'normal_sort'},
                                :id => info_requests(:fancy_dog_request).id,
                                :incoming_message_id => incoming_messages(:useless_incoming_message),
                                :submitted_followup => 1}
@@ -1395,6 +1395,19 @@ describe RequestController, "when viewing an individual response for reply/follo
         it "should show preview when input is good" do
             make_request(@default_params.merge(:preview => '1'))
             response.should render_template('followup_preview')
+        end
+
+        it 'should show an internal review subject line when the outgoing message is an internal review
+            request' do
+            make_request(@default_params.merge(:outgoing_message => {:body => "What a useless response! You suck.",
+                                                                     :what_doing => 'internal_review'},
+                                               :preview => '1'))
+            response.body.should match('Internal review of Freedom of Information request')
+        end
+
+        it 'should show a normal subject line when the outgoing message is a normal sort' do
+            make_request(@default_params.merge(:preview => '1'))
+            response.body.should match("Re:")
         end
 
         it "should allow re-editing of a preview" do
