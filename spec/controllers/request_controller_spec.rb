@@ -1366,14 +1366,15 @@ describe RequestController, "when viewing an individual response for reply/follo
                                :incoming_message_id => incoming_messages(:useless_incoming_message),
                                :submitted_followup => 1}
 
+            @default_session_params = {:user_id => users(:bob_smith_user).id}
         end
 
-        def make_request(params=@default_params)
-            post :show_response, params
+        def make_request(params=@default_params, session_params=@default_session_params)
+            post :show_response, params, session_params
         end
 
         it "should require login" do
-            make_request
+            make_request(@default_params, {})
             post_redirect = PostRedirect.get_last_post_redirect
             response.should redirect_to(:controller => 'user',
                                         :action => 'signin',
@@ -1381,26 +1382,22 @@ describe RequestController, "when viewing an individual response for reply/follo
         end
 
         it "should not let you if you are logged in as the wrong user" do
-            session[:user_id] = users(:silly_name_user).id
-            make_request
+            make_request(@default_params, :user_id => users(:silly_name_user).id)
             response.should render_template('user/wrong_user')
         end
 
         it "should give an error and render 'show_response' template when a body isn't given" do
-            session[:user_id] = users(:bob_smith_user).id
             make_request(@default_params.merge({:outgoing_message => {:body => ''}}))
             assigns[:outgoing_message].errors[:body].should == ["Please enter your follow up message"]
             response.should render_template('show_response')
         end
 
         it "should show preview when input is good" do
-            session[:user_id] = users(:bob_smith_user).id
             make_request(@default_params.merge(:preview => '1'))
             response.should render_template('followup_preview')
         end
 
         it "should allow re-editing of a preview" do
-            session[:user_id] = users(:bob_smith_user).id
             make_request(@default_params.merge(:preview => 0, :reedit => "Re-edit this request"))
             response.should render_template('show_response')
         end
@@ -1412,7 +1409,6 @@ describe RequestController, "when viewing an individual response for reply/follo
             info_requests(:fancy_dog_request).get_last_public_response_event.calculated_state.should == 'waiting_clarification'
 
             # make the followup
-            session[:user_id] = users(:bob_smith_user).id
             make_request
 
             # check it worked
@@ -1431,7 +1427,6 @@ describe RequestController, "when viewing an individual response for reply/follo
         end
 
         it "should give an error if the same followup is submitted twice" do
-            session[:user_id] = users(:bob_smith_user).id
             # make the followup once
             make_request
             response.should redirect_to(:action => 'show',
