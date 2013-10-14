@@ -1,5 +1,7 @@
 <% if @show_requests %>
   <% @title =  _("{{user_name}} - Freedom of Information requests", :user_name => h(@display_user.name)) %>
+<% elsif @show_annotations %>
+  <% @title =  _("{{user_name}} - Freedom of Information request annotation", :user_name => h(@display_user.name)) %>
 <% else %>
   <% @title = _("{{user_name}} - user profile", :user_name => h(@display_user.name)) %>
 <% end %>
@@ -147,7 +149,9 @@
         <p><%= _('The search index is currently offline, so we can\'t show the Freedom of Information requests this person has made.')%></p>
       <% end %>
     <% end %>
+<% end %>
 
+<% if @show_annotations %>
     <% if !@xapian_comments.nil? %>
         <% if @xapian_comments.results.empty? %>
             <% if @page == 1 %>
@@ -170,9 +174,10 @@
             <%= will_paginate WillPaginate::Collection.new(@page, @per_page, @display_user.visible_comments.size) %>
         <% end %>
     <% end %>
+<% end %>
 
 </div>
-<% end %>
+
 <% if @show_profile && @is_you %>
     <h2 id="email_subscriptions"> <%= _("Things you're following")%></h2>
     <%= render :partial => 'change_receive_email' %>

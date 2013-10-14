@@ -75,6 +75,7 @@ Alaveteli::Application.routes.draw do
     match '/user/:url_name' => 'user#show', :as => :show_user
     match '/user/:url_name/profile' => 'user#show', :as => :show_user_profile, :view => 'profile'
     match '/user/:url_name/requests' => 'user#show', :as => :show_user_requests, :view => 'requests'
+    match '/user/:url_name/annotations' => 'user#show', :as => :show_user_annotations, :view => 'annotations'
     match '/user/:url_name/wall' => 'user#wall', :as => :show_user_wall
     match '/user/contact/:id' => 'user#contact', :as => :contact_user
 
