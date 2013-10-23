@@ -9,7 +9,7 @@
       <%= text_field_tag 'query', params[:query], { :size => 30, :title => "type your search term here" } %>
       <% if !@public_bodies.blank? %>
          <%- @public_bodies.each do |public_body| %>
-           <%= hidden_field_tag "public_bodies[]", public_body.id %>
+           <%= hidden_field_tag "public_body_ids[]", public_body.id %>
          <%- end %>
       <% end %>
       <%= submit_tag _('Search') %>
@@ -31,7 +31,7 @@
       <%= form_tag(select_authorities_path, {:id => "select_form"}) do %>
         <% if !@public_bodies.blank? %>
           <% @public_bodies.each do |public_body| %>
-            <%= hidden_field_tag "public_bodies[]", public_body.id %>
+            <%= hidden_field_tag "public_body_ids[]", public_body.id %>
           <% end %>
         <% end %>
 
@@ -55,7 +55,7 @@
     <%= form_tag(new_batch_path, {:id => "select_form"}) do %>
       <%- @include_checkbox_in_authority_listing = false %>
       <%- @public_bodies.each do |public_body| %>
-        <%= hidden_field_tag "public_bodies[]", public_body.id %>
+        <%= hidden_field_tag "public_body_ids[]", public_body.id %>
         <%= render :partial => 'public_body/body_listing_single', :locals => { :public_body => public_body } %>
       <% end %>
       <%= submit_tag _('Make a request to these authorities') %>

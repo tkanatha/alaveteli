@@ -26,7 +26,7 @@
             <% end %>
         <% else %>
           <% if @include_checkbox_in_authority_listing %>
-            <%= check_box_tag "public_bodies[]", public_body.id %>
+            <%= check_box_tag "public_body_ids[]", public_body.id %>
           <% end %>
             <% if !@include_request_link_in_authority_listing.nil? %>
             <%= link_to _("Make your own request"), public_body_path(public_body) %>.

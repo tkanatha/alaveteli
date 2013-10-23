@@ -48,8 +48,8 @@ class RequestController < ApplicationController
         if !params[:query].nil?
             @search_bodies = perform_search_typeahead(params[:query], PublicBody)
         end
-        if !params[:public_bodies].nil?
-            @public_bodies = PublicBody.where({:id => params[:public_bodies]}).all
+        if !params[:public_body_ids].nil?
+            @public_bodies = PublicBody.where({:id => params[:public_body_ids]}).all
         end
     end
 
@@ -187,7 +187,7 @@ class RequestController < ApplicationController
     end
 
     def new_batch
-        if params[:public_bodies].blank?
+        if params[:public_body_ids].blank?
             redirect_to select_authorities_path and return
         end
         # TODO: Pass public bodies list through new and preview template forms

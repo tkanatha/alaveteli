@@ -2525,12 +2525,12 @@ describe RequestController, "#new_batch", :focus => true do
             end
 
             it 'should be successful' do
-                get :new_batch, {:public_bodies => [@public_body.id]}, {:user_id => @user.id}
+                get :new_batch, {:public_body_ids => [@public_body.id]}, {:user_id => @user.id}
                 response.should be_success
             end
 
             it 'should render the "new" template' do
-                get :new_batch, {:public_bodies => [@public_body.id]}, {:user_id => @user.id}
+                get :new_batch, {:public_body_ids => [@public_body.id]}, {:user_id => @user.id}
                 response.should render_template('request/new')
             end
 
@@ -2543,7 +2543,7 @@ describe RequestController, "#new_batch", :focus => true do
 
                 post :new_batch, { :info_request => { :title => "What does it all mean?",
                                                       :tag_string => "" },
-                                   :public_bodies => [@public_body.id],
+                                   :public_body_ids => [@public_body.id],
                                    :outgoing_message => { :body => "This is a silly letter." },
                                    :submitted_new_request => 1,
                                    :preview => 1 }, { :user_id => @user.id }
@@ -2552,7 +2552,7 @@ describe RequestController, "#new_batch", :focus => true do
 
             it "should give an error and render 'new' template when a summary isn't given" do
                 post :new_batch, { :info_request => { :tag_string => "" },
-                                   :public_bodies => [@public_body.id],
+                                   :public_body_ids => [@public_body.id],
                                    :outgoing_message => { :body => "This is a silly letter." },
                                    :submitted_new_request => 1,
                                    :preview => 1 }, { :user_id => @user.id }
@@ -2562,7 +2562,7 @@ describe RequestController, "#new_batch", :focus => true do
 
             it "should allow re-editing of a request" do
                 post :new_batch, { :info_request => { :tag_string => "" },
-                                   :public_bodies => [@public_body.id],
+                                   :public_body_ids => [@public_body.id],
                                    :outgoing_message => { :body => "This is a silly letter." },
                                    :submitted_new_request => 1,
                                    :preview => 0,
@@ -2643,7 +2643,7 @@ describe RequestController, "#select_authorities" do
             end
 
             it 'should assign a list of public bodies to the view if passed a list of ids' do
-                get :select_authorities, {:public_bodies => [public_bodies(:humpadink_public_body).id]},
+                get :select_authorities, {:public_body_ids => [public_bodies(:humpadink_public_body).id]},
                                          {:user_id => @user.id}
                 assigns[:public_bodies].size.should == 1
                 assigns[:public_bodies][0].name.should == public_bodies(:humpadink_public_body).name
