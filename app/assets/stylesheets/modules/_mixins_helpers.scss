@@ -6,7 +6,7 @@
 //    overflow: hidden;
 //    /* IE 6/7 fallback */
 //    *text-indent: -9999px;
-//    
+//
 //    &:before {
 //        content: "";
 //        display: block;
@@ -19,4 +19,9 @@
     text-indent: 150%;
     white-space: nowrap;
     overflow: hidden;
+}
+.de-ir{
+    text-indent: 0%;
+    white-space: normal;
+    overflow: auto;
 }

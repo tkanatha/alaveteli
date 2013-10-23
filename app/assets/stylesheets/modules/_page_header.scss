@@ -1,15 +1,84 @@
 // Import Settings
 @import "_page_header-settings";
 
+
+
+// ----------------------------------------------
+//     Layout
+// ----------------------------------------------
+
+.header_content{
+    @include grid-row;
+}
+
+#page_header{
+    // Hide menu items by default on mobile
+    .ms_header,
+    .login-block,
+    .main_menu{
+        display:none;
+    }
+    // …and show a button to reveal them
+    .rsp_menu_button{
+        @include grid-column(4);
+        float: right;
+        a{
+            @include button;
+            &.open{
+                display: block;
+            }
+            &.close{
+                display: none;
+            }
+        }
+    }
+    // Squeeze the logo up on small screens to make room for the button
+    .logo{
+        @include grid-column(6);
+        margin-bottom: 1em;
+        padding: 1em;
+    }
+
+    &:target{
+        // Hide menu button when menu is open
+        .rsp_menu_button{
+            .open{
+                display:none;
+            }
+            .close{
+                display:block;
+            }
+        }
+
+        // Show menu items when menu is targeted
+        .login-block,
+        .main_menu{
+            display:block;
+            clear:both;
+        }
+
+    }
+
+    @media( min-width: $main_menu-mobile_menu_cutoff ){
+        // On larger screens show the menu
+        .ms_header,
+        .login-block,
+        .main_menu{
+            display:block;
+        }
+
+        // …and hide the menu button
+        .rsp_menu_button{
+            display:none;
+        }
+    }
+}
 .main_menu{
-    //@include grid-row;
-    background-color: $main_menu-bg;
     padding: 0  0 1em 0;
     @media( min-width: $main_menu-mobile_menu_cutoff ){
         padding: 0;
     }
     ul{
-        // @include inline-list;
         list-style: none;
         @include grid-row;
 
@@ -22,29 +91,28 @@
             &.menu-help{ @include grid-column(1); padding: 0; }
         }
 
-
         &.menu-search{
+
             @include grid-column(12);
             padding: 0.35em 1em;
+
             @media( min-width: $main_menu-mobile_menu_cutoff ){
                 @include grid-column(3);
-                padding: 0.35em 0;
+                padding: 0.35em 0 0 0;
             }
 
+            form{
+                @include grid-row;
+                padding-right: 1em;
+            }
             input{
-                background-color: mix($main_menu-search_bg, $main_menu-bg, 50%);
-                border: none;
-                padding: 0.25em;
-                width: 80%;
-                transition: all 0.3s ease-out;
-                color: $main_menu-search_text;
-                &:focus{
-                    background-color: $main_menu-search_bg;
-                }
+                @include grid-column($columns:9);
+                margin:0;
             }
             label{
-                cursor: pointer;
-                width: 20%;
+                @include prefix-postfix-base;
+                @include grid-column($columns:3,$float:left);
+                border:none;
                 img{
                     max-width: 100%;
                 }
@@ -55,11 +123,79 @@
             display:block;
             width:100%;
             height:100%;
-            color: $main_menu-link_text;
-            font-weight: bold;
-            padding: 0.5em 1em;
+            min-height: 2.875em;
+            padding: 0.6em 1em;
+        }
+        &.active a{
             @media( min-width: $main_menu-mobile_menu_cutoff ){
-                padding: 0.5em 0;
+                padding-top: 1.2em;
+                margin-top: -0.5em;
+            }
+        }
+
+    }
+
+}
+.login-block{
+    p{
+        padding: 0.5em 1em;
+        margin:0;
+    }
+    a{
+        display:block;
+        font-weight: bold;
+        padding: 0.5em 1em;
+    }
+    @media( min-width: $main_menu-mobile_menu_cutoff ){
+        a{
+            display:inline;
+            padding:0 1em 0 0;
+        }
+        p{ padding:0; }
+
+        padding: 1em 2em;
+        margin-top: 1em;
+        float: right;
+
+    }
+}
+
+
+
+
+// ----------------------------------------------
+//     Style
+// ----------------------------------------------
+
+
+.page_header{
+    background-color: mix($main_menu-bg, $main_menu-active_link_bg, 50%);
+}
+.main_menu{
+    background-color: $main_menu-bg;
+    li{
+        &.menu-search{
+            input{
+                background-color: mix($main_menu-search_bg, $main_menu-bg, 50%);
+                border: none;
+                transition: all 0.3s ease-out;
+                color: $main_menu-search_text;
+
+                &:focus{
+                    background-color: $main_menu-search_bg;
+                }
+            }
+            label{
+                cursor: pointer;
+                text-align: center;
+            }
+        }
+
+        a{
+            color: transparentize($main_menu-link_text, 0.2);
+            font-weight: normal;
+
+            @media( min-width: $main_menu-mobile_menu_cutoff ){
                 font-weight: normal;
                 text-align: center;
             }
@@ -71,25 +207,32 @@
 
             &:hover{
                 background-color: lighten($main_menu-link_bg, 5%);
+                color:  transparentize($main_menu-link_text, 0);
             }
         }
         &.active a{
-            &{
+            color:  transparentize($main_menu-link_text, 0);
+            font-weight: bold;
+
+            @media( min-width: $main_menu-mobile_menu_cutoff ){
                 background-color: $main_menu-active_link_bg;
-                padding-top: 1em;
-                margin-top: -0.5em;
-                color: $main_menu-bg;
-                font-weight: bold;
+                color: $main_menu-active_link_text;
             }
         }
 
         &.menu-newrequest a,
         &.menu-viewrequests a{
             background: $c-requests;
+            &:hover{
+                background-color: lighten($c-requests, 5%);
+            }
         }
         &.menu-viewauthorities a,
         &.menu-emailalerts a{
             background: $c-authorities;
+            &:hover{
+                background-color: lighten($c-authorities, 5%);
+            }
         }
 
         @media( min-width: $main_menu-mobile_menu_cutoff ){
@@ -99,45 +242,32 @@
             &.menu-emailalerts a{
                 background: $main_menu-link_bg;
             }
+            &.active a{
+                background-color: $main_menu-active_link_bg;
+                &:hover{
+                    background-color: $main_menu-active_link_bg;
+                }
+            }
         }
     }
 
 }
 
-// $c-requests
-// $c-authorities
-// $c-users
 .login-block{
     background: $c-users;
     p{
-        padding: 0.5em 1em;
-        margin:0;
         color: transparentize( $main_menu-link_text, 0.5 );
     }
     a{
-        display:block;
-        padding: 0.5em 1em;
-        font-weight: bold;
-        color: $main_menu-link_text;
+        font-weight: normal;
+        color: transparentize($main_menu-link_text, 0.2);
+        &:hover{
+            background-color: lighten($c-users, 5%);
+            color:  transparentize($main_menu-link_text, 0);
+        }
     }
     @media( min-width: $main_menu-mobile_menu_cutoff ){
-        a{
-            display:inline;
-            padding:0 1em 0 0;
-        }
-        p{ padding:0; }
-        padding: 1em 2em;
-        float: right;
-        margin-top: -5em;
         font-size: 0.8em;
+        background: transparent;
     }
-}
-.page_header{
-    background-color: mix($main_menu-bg, $main_menu-active_link_bg, 50%);
-}
-.logo{
-    @include grid-row;
-    margin-top: -3em;
-    margin-bottom: 1em;
-    padding: 1em;
 }

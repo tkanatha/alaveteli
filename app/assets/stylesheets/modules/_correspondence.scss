@@ -1,0 +1,45 @@
+.correspondence{
+    //border: 1px solid #ccc;
+    border-top: 15px solid #ccc;
+    padding: 2em;
+    margin-bottom: 2em;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+
+    &.outgoing{
+        border-top-color: $c-users;
+        a{
+            color: $c-users;
+        }
+    }
+    &.incoming{
+        border-top-color: $c-authorities;
+        font-family: AmericanTypewriter, 'American Typewriter', Courier, 'CourierNewPSMT', 'Courier New', monospace;
+        a{
+            color: $c-authorities;
+        }
+    }
+
+    .meta{
+        font-size: 0.875em;
+        text-align: right;
+        padding-bottom: 1.5em;
+        @media (min-width: 28.75em){
+            // float:right;
+            padding-left: 2em;
+        }
+        strong{
+            display:block;
+        }
+    }
+}
+.correspondence-meta{
+    font-size: 0.875em;
+    text-align: right;
+    font-weight: normal;
+    margin: 0 0 1em 0;
+    strong{
+        display:block;
+        font-weight: bold;
+    }
+}

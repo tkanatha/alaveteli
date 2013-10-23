@@ -1,10 +1,14 @@
 // Base Colours if not overriden
 $main_menu-bg: #333 !default;
+
 $main_menu-search_bg: #eee !default;
 $main_menu-search_text: #333 !default;
+
 $main_menu-link_bg: #333 !default;
-$main_menu-active_link_bg: $body-bg !default;
 $main_menu-link_text: #fff !default;
-$main_menu-bg: #333 !default;
+
+$main_menu-active_link_bg: $body-bg !default;
+$main_menu-active_link_text: $main_menu-link_bg !default;
+
 
 $main_menu-mobile_menu_cutoff: 46.875em;

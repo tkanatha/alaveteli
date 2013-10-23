@@ -1,0 +1,57 @@
+.general_frontpage{
+    // text-align: center;
+}
+
+.frontpage_actions{
+    @include grid-row;
+    h2{
+        font-size: 1em;
+        font-weight: normal;
+    }
+    .frontpage_make_request,
+    .frontpage_search_requests
+    {
+        @include grid-column(12);
+        @media(min-width: 37.5em){
+            @include grid-column(6);
+        }
+
+        // background-color: darken($body-bg, 5%);
+        text-align: center;
+    }
+    .make_request_button{
+        @include button;
+        font-size: 1.6875em;
+        small{
+            display:block;
+        }
+    }
+}
+
+.request-examples{
+    @include grid-column(12);
+    @include block-grid(1);
+    margin:0;
+    padding: 0.9375em;
+    @media(min-width: 37.5em){
+        @include block-grid(3);
+        li{
+            width:32%;
+        }
+        li:nth-child(2){
+            margin: 0 2%;
+        }
+    }
+}
+#frontpage_examples{
+    &>p{
+        text-align: center;
+    }
+}
+.more_requests_button{
+    //@include button;
+    @include button($button-med, $primary-color, false, false);
+    margin: auto;
+}
+
+

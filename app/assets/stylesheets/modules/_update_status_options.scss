@@ -11,7 +11,7 @@
     }
 
     .submit_status_update{
-        @include button($button-med, $primary-color, false, false, false, true);
+        @include button($button-med, $primary-color, false, false, false);
         display:block;
         margin: auto;
     }

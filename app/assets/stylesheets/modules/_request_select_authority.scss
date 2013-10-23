@@ -1,0 +1,86 @@
+.request_select_authority{
+    @include grid-row(nest);
+
+    h1
+    {
+        @include grid-column(12);
+        @media(min-width: 35em){
+            @include grid-column(10, true, true);
+            padding-left: 0.340909091em;
+            padding-right: 0.340909091em;
+        }
+
+    }
+    .authority_selection
+    {
+        @include grid-column(12, true, true);
+
+        @media(min-width: 35em){
+            @include grid-column(10, true, true);
+        }
+
+        &>div{
+            @include grid-row;
+            padding: 0 0.9375em;
+            @media(min-width: 35em){
+                padding:0;
+            }
+        }
+
+        // .query{
+        //     @include grid-column(9);
+        // }
+        // input[name="commit"]{
+        //     @include prefix-postfix-base;
+        //     @include postfix($is-button: true);
+        //     @include grid-column($columns:3,$float:right);
+        // }
+
+    }
+    .request_select_authority_results{
+        @include grid-column(12);
+        min-height: 20em;
+        padding-top: 4em;
+        ul{
+            list-style: none;
+        }
+        li{
+            clear: both;
+            @include grid-row;
+            border-top: 2px solid darken($body-bg, 20%);
+            margin-bottom: 1.5em;
+            padding-top:1em;
+        }
+        .authority-details{
+            @include grid-column(12);
+            p{
+                margin:0;
+            }
+            @media(min-width: 35em){
+                @include grid-column(6);
+            }
+        }
+        .authority-request_count{
+            text-align: center;
+            font-size: 0.8em;
+            @include grid-column(12);
+            padding: 1em 0;
+            @media(min-width: 35em){
+                @include grid-column(2);
+            }
+        }
+        .authority-make_request{
+            @include grid-column(12);
+            @media(min-width: 35em){
+                @include grid-column(4);
+            }
+            a{
+                @include button($button-med, $primary-color, 0, true);
+            }
+        }
+    }
+    .make_request_help_link{
+        text-align: center;
+    }
+}
+

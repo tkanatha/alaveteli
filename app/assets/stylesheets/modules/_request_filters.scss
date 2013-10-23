@@ -1,12 +1,28 @@
 .request_filters{
+    clear: both;
     form{
         @include grid-row;
     }
     .list-filter-item{
-        @include grid-column(3);
+        @include grid-column(12);
+        @media (min-width: 21.875em){
+            @include grid-column(6);
+        }
+        @media (min-width: 37.5em){
+            @include grid-column(4);
+        }
+        @media (min-width: 46.875em){
+            @include grid-column(3);
+        }
 
         &.submit{
-            @include grid-column(1);
+            @include grid-column(12);
+            @media (min-width: 37.5em){
+                @include grid-column(4);
+            }
+            @media (min-width: 46.875em){
+                @include grid-column(1);
+            }
             padding-top: 1em;
         }
 
@@ -18,7 +34,11 @@
         }
 
         &.search-query{
-            @include grid-column(5);
+            @include grid-column(12);
+
+            @media (min-width: 46.875em){
+                @include grid-column(5);
+            }
             input{
                 background-image: url(/assets/form_icons/search.png);
                 padding-left: 2em
@@ -27,7 +47,18 @@
 
         &.status_filters{
             @include grid-column(12);
+
+            h3{
+                display: inline;
+                font-size: 1em;
+            }
+            .filter-request-types{
+                display: inline;
+                @include sub-nav;
+                font-size: 0.8em;
+            }
         }
+
         label{
             display:block;
         }

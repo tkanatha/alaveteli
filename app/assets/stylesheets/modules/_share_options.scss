@@ -1,0 +1,12 @@
+.share_options{
+
+    // Hide by default
+    display:none;
+    // Show when targeted
+    &:target{
+        display:block;
+    }
+
+    @include grid-row;
+
+}
