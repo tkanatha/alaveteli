@@ -142,4 +142,8 @@ FactoryGirl.define do
         last_edit_comment "Making an edit"
     end
 
+    factory :info_request_batch do
+        title "Example title"
+        user
+    end
 end

@@ -1,4 +1,5 @@
 # == Schema Information
+# Schema version: 20131024114346
 #
 # Table name: outgoing_messages
 #
@@ -12,6 +13,8 @@
 #  last_sent_at                 :datetime
 #  incoming_message_followup_id :integer
 #  what_doing                   :string(255)      not null
+#  prominence                   :string(255)      default("normal"), not null
+#  prominence_reason            :text
 #
 
 # models/outgoing_message.rb:
