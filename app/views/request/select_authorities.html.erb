@@ -27,7 +27,7 @@
               <%= hidden_field_tag "public_body_ids[]", public_body.id %>
             <% end %>
           <% end %>
-          <select multiple name="public_body_ids[]" style="width: 100%">
+          <select multiple name="public_body_ids[]" style="width: 100%" size="15">
             <% if @search_bodies %>
               <% @search_bodies.results.each do |result| %>
                   <% unless (@public_bodies && @public_bodies.include?(result[:model])) || !result[:model].is_requestable? %>
@@ -55,7 +55,7 @@
             <%= hidden_field_tag "public_body_ids[]", public_body.id %>
           <% end %>
         <% end %>
-        <select multiple name="remove_public_body_ids[]" style="width: 100%">
+        <select multiple name="remove_public_body_ids[]" style="width: 100%" size="15">
           <% if @public_bodies %>
             <% @public_bodies.each do |public_body| %>
                 <option value="<%= public_body.id %>"><%= public_body.name %></option>
