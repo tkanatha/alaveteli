@@ -2664,6 +2664,8 @@ describe RequestController, "#select_authorities", :focus => true do
     context "when batch requests is enabled" do
 
         before do
+            get_fixtures_xapian_index
+            load_raw_emails_data
             AlaveteliConfiguration.stub!(:allow_batch_requests).and_return(true)
         end
 
