@@ -2684,7 +2684,7 @@ describe RequestController, "#select_authorities", :focus => true do
             end
 
             it 'should assign a list of search results to the view if passed a query' do
-                get :select_authorities, {:query => "Quango"}, {:user_id => @user.id}
+                get :select_authorities, {:public_body_query => "Quango"}, {:user_id => @user.id}
                 assigns[:search_bodies].results.size.should == 1
                 assigns[:search_bodies].results[0][:model].name.should == public_bodies(:geraldine_public_body).name
             end

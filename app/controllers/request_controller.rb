@@ -44,8 +44,8 @@ class RequestController < ApplicationController
     end
 
     def select_authorities
-        if !params[:query].nil?
-            @search_bodies = perform_search_typeahead(params[:query], PublicBody, 1000)
+        if !params[:public_body_query].nil?
+            @search_bodies = perform_search_typeahead(params[:public_body_query], PublicBody, 1000)
         end
         if !params[:public_body_ids].nil?
             if !params[:remove_public_body_ids].nil?
