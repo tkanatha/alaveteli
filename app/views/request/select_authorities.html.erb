@@ -6,7 +6,7 @@
 </p>
 
 <div>
-  <%= form_tag(select_authorities_path, {:method => 'get', :id => 'body_search_form'}) do %>
+  <%= form_tag(select_authorities_path, {:method => 'get', :id => 'body_search_form', :remote => true, "data-type" => 'json'}) do %>
     <%= text_field_tag 'public_body_query', params[:public_body_query], { :size => 30, :title => "type your search term here" } %>
     <% if !@public_bodies.blank? %>
        <%- @public_bodies.each do |public_body| %>
@@ -74,4 +74,4 @@
     </div>
   </div>
 </div>
-
+<%= javascript_include_tag 'jquery_ujs.js', 'ba-throttle-debounce.js', 'select-authorities.js' %>
