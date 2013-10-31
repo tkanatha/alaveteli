@@ -6,7 +6,7 @@
 </p>
 
 <div>
-  <%= form_tag(select_authorities_path, {:method => 'get'}) do %>
+  <%= form_tag(select_authorities_path, {:method => 'get', :id => 'body_search_form'}) do %>
     <%= text_field_tag 'public_body_query', params[:public_body_query], { :size => 30, :title => "type your search term here" } %>
     <% if !@public_bodies.blank? %>
        <%- @public_bodies.each do |public_body| %>
@@ -16,12 +16,12 @@
 <% end %>
 </div>
 
-<table border="0">
+<table>
   <tr>
-    <td valign="top" align="left" style="width:45%">
-      <%= form_tag(select_authorities_path, {:id => "select_form"}) do %>
+    <td style="width:45%">
+      <%= form_tag(select_authorities_path, {:id => "body_select_form"}) do %>
         <div>
-          <%= hidden_field_tag "public_body_query", params[:public_body_query] %>
+          <%= hidden_field_tag "public_body_query", params[:public_body_query], { :id => 'public_body_select_query' } %>
           <% if !@public_bodies.blank? %>
             <% @public_bodies.each do |public_body| %>
               <%= hidden_field_tag "public_body_ids[]", public_body.id %>
@@ -39,17 +39,17 @@
         </div>
     </td>
 
-    <td valign="middle" align="center" style="width:10%; text-align:center">
+    <td style="width:10%; text-align:center">
       <%= submit_tag _(' > ') %>
       <% end %>
-      <%= form_tag(select_authorities_path, {:id => "deselect_form"}) do %>
+      <%= form_tag(select_authorities_path, {:id => "body_deselect_form"}) do %>
       <%= submit_tag _(' < ') %>
     </td>
 
-    <td valign="top" align="left" style="width:45%;">
+    <td style="width:45%;">
 
       <div>
-        <%= hidden_field_tag "public_body_query", params[:public_body_query] %>
+        <%= hidden_field_tag "public_body_query", params[:public_body_query], { :id => 'public_body_deselect_query' } %>
         <% if @public_bodies %>
           <% @public_bodies.each do |public_body| %>
             <%= hidden_field_tag "public_body_ids[]", public_body.id %>
@@ -67,10 +67,10 @@
     </td>
   </tr>
   <tr>
-  <td valign="top" align="left" style="width:45%"></td>
-  <td valign="middle" align="center" style="width:10%;"></td>
-  <td valign="top" align="left" style="width:45%;">
-     <%= form_tag(new_batch_path, {:id => "select_form"}) do %>
+  <td style="width:45%"></td>
+  <td style="width:10%;"></td>
+  <td style="width:45%;">
+     <%= form_tag(new_batch_path, {:id => "body_submit_form"}) do %>
         <% if @public_bodies %>
           <% @public_bodies.each do |public_body| %>
             <%= hidden_field_tag "public_body_ids[]", public_body.id %>
