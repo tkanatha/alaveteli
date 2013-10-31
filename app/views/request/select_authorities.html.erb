@@ -13,42 +13,35 @@
          <%= hidden_field_tag "public_body_ids[]", public_body.id %>
        <%- end %>
     <% end %>
-<% end %>
+  <% end %>
 </div>
 
-<table>
-  <tr>
-    <td style="width:45%">
+<div id="body_selection">
+  <div id="body_lists">
+    <div id="body_candidates" class="body_list">
       <%= form_tag(select_authorities_path, {:id => "body_select_form"}) do %>
-        <div>
-          <%= hidden_field_tag "public_body_query", params[:public_body_query], { :id => 'public_body_select_query' } %>
-          <% if !@public_bodies.blank? %>
-            <% @public_bodies.each do |public_body| %>
-              <%= hidden_field_tag "public_body_ids[]", public_body.id %>
-            <% end %>
+        <%= submit_tag _(' > ') %>
+        <%= hidden_field_tag "public_body_query", params[:public_body_query], { :id => 'public_body_select_query' } %>
+        <% if !@public_bodies.blank? %>
+          <% @public_bodies.each do |public_body| %>
+            <%= hidden_field_tag "public_body_ids[]", public_body.id %>
           <% end %>
-          <select multiple name="public_body_ids[]" style="width: 100%" size="15">
-            <% if @search_bodies %>
-              <% @search_bodies.results.each do |result| %>
-                  <% unless (@public_bodies && @public_bodies.include?(result[:model])) || !result[:model].is_requestable? %>
-                  <option value="<%= result[:model].id %>"><%= result[:model].name %></option>
-                  <% end %>
+        <% end %>
+        <select multiple name="public_body_ids[]" style="width: 100%" size="15">
+        <% if @search_bodies %>
+          <% @search_bodies.results.each do |result| %>
+              <% unless (@public_bodies && @public_bodies.include?(result[:model])) || !result[:model].is_requestable? %>
+              <option value="<%= result[:model].id %>"><%= result[:model].name %></option>
               <% end %>
-            <% end %>
-          </select>
-        </div>
-    </td>
-
-    <td style="width:10%; text-align:center">
-      <%= submit_tag _(' > ') %>
+          <% end %>
+        <% end %>
+        </select>
       <% end %>
+    </div>
+
+    <div id="body_selections" class="body_list">
       <%= form_tag(select_authorities_path, {:id => "body_deselect_form"}) do %>
-      <%= submit_tag _(' < ') %>
-    </td>
-
-    <td style="width:45%;">
-
-      <div>
+        <%= submit_tag _(' < ') %>
         <%= hidden_field_tag "public_body_query", params[:public_body_query], { :id => 'public_body_deselect_query' } %>
         <% if @public_bodies %>
           <% @public_bodies.each do |public_body| %>
@@ -62,22 +55,20 @@
             <% end %>
           <% end %>
         </select>
-      </div>
       <% end %>
-    </td>
-  </tr>
-  <tr>
-  <td style="width:45%"></td>
-  <td style="width:10%;"></td>
-  <td style="width:45%;">
-     <%= form_tag(new_batch_path, {:id => "body_submit_form"}) do %>
-        <% if @public_bodies %>
-          <% @public_bodies.each do |public_body| %>
-            <%= hidden_field_tag "public_body_ids[]", public_body.id %>
+
+      <div id="body_submission">
+       <%= form_tag(new_batch_path, {:id => "body_submit_form"}) do %>
+          <% if @public_bodies %>
+            <% @public_bodies.each do |public_body| %>
+              <%= hidden_field_tag "public_body_ids[]", public_body.id %>
+            <% end %>
           <% end %>
+         <%= submit_tag _('Make a request to these authorities') %>
         <% end %>
-       <%= submit_tag _('Make a request to these authorities') %>
-      <% end %>
-  </td>
-</table>
+      </div>
+
+    </div>
+  </div>
+</div>
 
