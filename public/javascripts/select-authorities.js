@@ -36,7 +36,7 @@ $(document).ready(function() {
 
   // Add a hidden element to the submit form for every option in the selected list
   $('#body_submit_button').click(function(){
-    $('#select_body_selections').each(function()
+    $('#select_body_selections option').each(function()
       {
         $('#body_submit_form').append('<input type="hidden" value="' + $(this).val() + '" name="public_body_ids[]">' );
       })
