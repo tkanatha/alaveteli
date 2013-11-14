@@ -7,6 +7,8 @@ if File.exist? "/etc/debian_version" and File.open("/etc/debian_version").read.s
 end
 source 'https://rubygems.org'
 
+gem 'unicorn'
+
 gem 'rails', '3.1.12'
 gem 'pg'
 
