@@ -1,0 +1,140 @@
+.request_list{
+
+    .results_block{
+        list-style: none;
+    }
+    .request_listing{
+        @include grid-row;
+        clear:both;
+        margin-bottom: 0.625em;
+    }
+    .request_info{
+        @include grid-column(12);
+
+        @media (min-width: 28.125em){
+            @include grid-column(8);
+            min-height: 5em;
+        }
+
+        @media (min-width: 50em){
+            @include grid-column(6);
+        }
+
+
+        h3{
+            font-size: 1em;
+            margin-bottom: 0;
+            padding:0.625em 0.625em 0 0.625em;
+            a{
+                color: $body-font-color;
+            }
+        }
+        p{
+            font-size: 0.875em;
+            padding: 0 0.714285714em 0.714285714em 0.714285714em;
+            margin: 0;
+        }
+    }
+
+    .request_status{
+
+        @include grid-column(12);
+        text-align: center;
+
+        @media (min-width: 28.125em){
+            @include grid-column(4);
+            padding-left: 0;
+            min-height: 5em;
+        }
+
+        @media (min-width: 50em){
+            @include grid-column(2);
+            text-align: center;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        p{
+            font-size: 0.75em;
+            font-weight: bold;
+            font-style: italic;
+
+            @media (min-width: 28.125em){
+                padding-top: 2em;
+            }
+
+        }
+    }
+
+    .request_preview{
+        display: none;
+
+        @media (min-width: 50em){
+            display: block;
+            @include grid-column(4);
+            min-height: 5em;
+        }
+
+        blockquote{
+            font-size: 0.625em;
+            border-left: none;
+            p{
+                padding: 0.625em;
+            }
+        }
+    }
+
+
+    .request_info,
+    .request_status,
+    .request_preview
+    {
+        background-color: #fff;
+        background-clip: content-box;
+
+    }
+    .status_successful,
+    .status_partially_successful{
+        .request_info,
+        .request_status,
+        .request_preview
+        {
+            background-color: transparentize($c-success, 0.9);
+        }
+
+        .request_status{
+            color: $c-success;
+        }
+    }
+
+    .status_waiting_response_overdue,
+    .status_waiting_response_very_overdue,
+    .status_gone_postal
+    {
+        .request_info,
+        .request_status,
+        .request_preview
+        {
+            background-color: transparentize($c-pending, 0.9);
+        }
+
+        .request_status{
+            color: $c-pending;
+        }
+    }
+
+    .status_unsuccessful,
+    .status_not_held
+    {
+        .request_info,
+        .request_status,
+        .request_preview
+        {
+            background-color: transparentize($c-failure, 0.9);
+        }
+
+        .request_status{
+            color: $c-failure;
+        }
+    }
+}
