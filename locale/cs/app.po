@@ -679,12 +679,9 @@ msgstr ""
 
 msgid "Default locale"
 msgstr "Původní nastavení"
-<<<<<<< HEAD
-=======
 
 msgid "Defunct."
 msgstr ""
->>>>>>> origin/rails-3-develop
 
 msgid "Delayed response to your FOI request - "
 msgstr "Zpožděná odpověď na váš dotaz –"
@@ -1851,7 +1848,6 @@ msgstr "Instituce od {{start_count}} do {{end_count}} z {{total_count}}"
 msgid "Public authority – {{name}}"
 msgstr "Veřejná instituce – {{name}}"
 
-<<<<<<< HEAD
 msgid "Public body"
 msgstr "Instituce"
 
@@ -1866,7 +1862,7 @@ msgstr "Stránka (viditelná pro všechny)"
 
 msgid "Public page not available"
 msgstr "Stránku nelze načíst"
-=======
+
 msgid "Public bodies that most frequently replied with \"Not Held\""
 msgstr ""
 
@@ -1875,7 +1871,6 @@ msgstr ""
 
 msgid "Public bodies with the fewest successful requests"
 msgstr ""
->>>>>>> origin/rails-3-develop
 
 msgid "Public bodies with the most requests"
 msgstr ""
