@@ -24,6 +24,14 @@
                 @include grid-column(1);
             }
             padding-top: 1em;
+            input{
+                @include button($button-med, $c-success, 0, true, false, true);
+                background-image: url(/assets/form_icons/search.png);
+                background-repeat: no-repeat;
+                background-size: auto 60%;
+                text-indent: -9999px;
+                background-position: center center;
+            }
         }
 
         &.date-range{
