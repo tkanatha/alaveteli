@@ -1,6 +1,14 @@
 @import "notice_banner-settings";
 
 .notice_banner{
+
+    background-color: $c-notice-background;
+    padding:1em 2em;
+    border-top: 10px solid $c-notice-border;
+    font-size: 1.2em;
+    margin-bottom:2em;
+    clear:both;
+
     &.successful{
         background-color: $c-notice-success-background;
         border-color: $c-notice-success-border;
@@ -18,11 +26,15 @@
         border-color: $c-notice-contrast-border;
         h3,p{ color: #eee; }
     }
-    background-color: $c-notice-background;
-    padding:1em 2em;
-    border-top: 10px solid $c-notice-border;
-    font-size: 1.2em;
-    margin-bottom:2em;
+    &.authority_note{
+        background-color: $c-notice-pending-background;
+        border: none;
+        h2,h3,p{
+            font-size: 0.875em;
+            display:inline;
+        }
+    }
+
 
     // Set icons for notices
     &.icon-email{

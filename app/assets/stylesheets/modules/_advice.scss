@@ -1,0 +1,31 @@
+.advice{
+    background-color: $body-font-color;
+    padding: 1.25em;
+    color: $body-bg;
+    margin-top: -2em;
+    margin-bottom: 2em;
+
+    h3{
+        margin:0;
+        color: $body-bg;
+        opacity: 0.3;
+    }
+
+    ul{
+        list-style: none;
+        font-size: 0.875em;
+    }
+    li{
+        padding: 1em 0;
+        border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    a{
+        display: inline-block;
+        font-weight: bold;
+        text-decoration: underline;
+        color: mix($c-success, $body-bg, 80%);
+        &:hover{
+            color: mix($c-success, $body-bg, 70%);
+        }
+    }
+}

@@ -73,6 +73,10 @@
         }
     }
 }
+
+
+
+
 .main_menu{
     padding: 0  0 1em 0;
     @media( min-width: $main_menu-mobile_menu_cutoff ){
@@ -168,9 +172,7 @@
 // ----------------------------------------------
 
 
-.page_header{
-    background-color: mix($main_menu-bg, $main_menu-active_link_bg, 50%);
-}
+
 .main_menu{
     background-color: $main_menu-bg;
     li{

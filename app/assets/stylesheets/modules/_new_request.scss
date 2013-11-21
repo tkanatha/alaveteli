@@ -1,0 +1,21 @@
+.new_request-header{
+    @include grid-row();
+}
+.new_request-header_subject{
+    @include grid-column(8, true);
+}
+.new_request-body{
+    @include grid-column(8, false, false, false, false, 4, false);
+    textarea{
+        min-height: 20em;
+    }
+}
+.new_request-advice{
+    @include grid-column(4, false, false, false, 8, false, false);
+}
+
+.form_button{
+    input{
+        @include button($button-lrg, $c-success, false, false, false, true);
+    }
+}
