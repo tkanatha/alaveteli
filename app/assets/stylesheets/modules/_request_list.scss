@@ -34,6 +34,15 @@
             padding: 0 0.714285714em 0.714285714em 0.714285714em;
             margin: 0;
         }
+        a{
+            font-weight: bold;
+            &[href*="/user/"]{
+                color: $c-users;
+            }
+            &[href*="/body/"]{
+                color: $c-authorities;
+            }
+        }
     }
 
     .request_status{
